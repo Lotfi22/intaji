@@ -1,33 +1,25 @@
-@extends('layouts.ui')
+@extends('layouts.solic')
 
 @section('content')
-
-
-
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <div class="container-fluid">
-        <div class="card mb-4">
-            <h4 class="card-header">
+        <div class="card">
+            
+            <h4 class="card-header col-md-12">
                 Détacher {{ count($tickets) }} Tickets pour ce livreur :
             </h4>
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-md-2">
+            
+            <div class="card-header col-md-12">
+                <div class="row col-md-12">
+                    <div class="col-md-12">
                         <input onblur="this.focus()" autofocus onchange="SearchFunction();" 
-                        class="col-md-2 form-control" id="search"  placeholder="filter avec Code Bar" />
+                        class="col-md-12 form-control" id="search"  placeholder="filter avec Code Bar" />
                     </div>
 
-                    <!-- <div class="col-md-2" style="">
-                        <div class="form-check">
-                            <input type="checkbox"  class="form-check-input" id="checkAll">
-                            <label class="form-check-label" for="checkAll">séléctionner tout :</label>
-                        </div>
-                    </div> -->
                     &nbsp;
                 </div>
-
-
-
             </div>
 
             <div class="card-body">
@@ -80,7 +72,6 @@
     {
         if(event.getModifierState("CapsLock")==true)
         {
-            swal.stopLoading();
             swal.close();
             //
         }

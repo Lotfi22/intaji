@@ -1,4 +1,4 @@
-@extends('layouts.ui')
+@extends('layouts.solic')
 
 @section('content')
 
@@ -67,7 +67,7 @@
 
     <div class="row">
 
-		<div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+		<div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
 		    <div class="card">
 		        <div class="card-body p-3">
 		            <div class="row">
@@ -101,7 +101,7 @@
 		</div>
 
 
-		<div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+		<div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
 		    <div class="card">
 		        <div class="card-body p-3">
 		            <div class="row">
@@ -134,66 +134,21 @@
 		    </div>
 		</div>
 
-		<div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" style="filter: blur(0.1rem);">
-		    <div class="card">
-		        <div class="card-body p-3">
-		            <div class="row">
-		                <div class="col-8">
-		                    <div class="numbers">
-		                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Vente </p>
-		                        <h5 class="font-weight-bolder mb-0">
-		                            
-		                            <span class="text-success text-sm font-weight-bolder">Comming soon</span>
-		                        </h5>
-		                    </div>
-		                </div>
-		                <div class="col-4 text-end">
-		                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-		                        <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		</div>
-
-		<div class="col-xl-3 col-sm-6" style="filter: blur(0.1rem);">
-		    <div class="card">
-		        <div class="card-body p-3">
-		            <div class="row">
-		                <div class="col-8">
-		                    <div class="numbers">
-		                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Vente</p>
-		                        <h5 class="font-weight-bolder mb-0">
-		                            {{-- $103,430 --}}
-		                            <span class="text-success text-sm font-weight-bolder">Comming soon</span>
-		                        </h5>
-		                    </div>
-		                </div>
-		                <div class="col-4 text-end">
-		                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-		                        <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		</div>
 	</div>
 </div>		
 
 
-<div class="card" style="margin-top: 2%;" >
+<div class="card row col-md-12" style="margin-top: 2%;" >
 
-   <div class="card-header">
+    <div class="card-header row col-md-12">
 
-        <form method="post" action="/statistiques/filter">
+        <form class="row col-md-12" method="post" action="/statistiques/filter">
             @csrf
-            <div class="row">
+            <div class="row col-md-12">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="small mb-1" for="date_debut">date début : </label>
-                        <input  class="form-control py-4" id="date_debut"
+                        <label class="small" for="date_debut">date début : </label>
+                        <input  class="form-control" id="date_debut"
                          name="date_debut" value="{{$date_debut}}"
                          type="date" />
                     </div>
@@ -201,8 +156,8 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="small mb-1" for="date_fin">date fin: </label>
-                        <input  class="form-control py-4" id="date_fin"
+                        <label class="small " for="date_fin">date fin: </label>
+                        <input  class="form-control" id="date_fin"
                          name="date_fin" value="{{$date_fin}}"
                          type="date" />
                     </div>
@@ -214,124 +169,6 @@
                 </div>
         </form>
     </div>
-
-
-
-
-    <div class="card" style="margin-top: 2%;" >
-    
-        <div class="card-body">
-            
-            <div class="table-responsive">
-    
-                <h4 class="text-center"> Produit | Quantité Envoyée vers dépot</h4>
-    
-                <form method="post" action="/statistiques/recevoir">
-                    
-                    {{ csrf_field() }}
-                    
-                    <table class="table table-bordered" id="dataTable003" width="100%" cellspacing="0">
-                        
-                        <thead>
-                            <tr>
-                                <th class="text-center" style="cursor:pointer;">Produit</th>
-                                <th class="text-center" style="cursor:pointer;">Quantité envoyée</th>
-                                <th class="text-center" style="cursor:pointer;">Quantité reçue</th>
-                                <th class="text-center" style="cursor:pointer;">Date</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody style="cursor:pointer;">
-                            
-                            
-                            
-                            @forelse($qte_vers_depot as $produit_qte)
-                            
-                                @if(App\Produit::getQteProduitParNomAuDepot($produit_qte->nomproduit,$date_debut)>=$produit_qte->nb_tickets)
-                                    <tr style="background-color:aaffaa;">
-                                 @else
-                                    <tr>
-                                @endif
-                                
-                                
-                                    <td class="text-center">{{ $produit_qte->nomproduit ?? ''}}</td>
-                                    <td class="text-center" id="qte_envoye_{{ $produit_qte->id_produit }}">{{ $produit_qte->nb_tickets ?? '0'}}</td>
-                                    <td class="text-center"> 
-                                        
-                                        @if(App\Produit::getQteProduitParNomAuDepot($produit_qte->nomproduit,$date_debut)>=$produit_qte->nb_tickets)
-                                            <input placeholder="{{ App\Produit::getQteProduitParNomAuDepot($produit_qte->nomproduit,$date_debut) }}" name="qte_recue_{{ $produit_qte->id_produit }}" id="qte_recue_{{ $produit_qte->id_produit }}"  type="number" min="0" class="is-valid form-control" onchange="check_equal(this);">
-                                         @else
-                                            <input placeholder="{{ App\Produit::getQteProduitParNomAuDepot($produit_qte->nomproduit,$date_debut) }}" name="qte_recue_{{ $produit_qte->id_produit }}" id="qte_recue_{{ $produit_qte->id_produit }}"  type="number" min="0" class="form-control" onchange="check_equal(this);">
-                                        @endif
-                                        
-                                    </td>
-                                    <td class="text-center">{{ $date_debut ?? ''}}</td>
-                                </tr>
-                             @empty
-
-                                <td class="text-center"> --- </td>
-                                <td class="text-center"> --- </td>
-                                <td class="text-center"> --- </td>
-                                <td class="text-center">{{ $date_debut ?? ''}}</td>
-                             
-                             
-                            @endforelse
-                            
-                        </tbody>
-                        
-                    </table>
-                    <button type="submit" style="display: block; margin-left: auto; margin-right: auto; width: 50%;" class="btn btn-outline-success col-md-11" id="validation">Valider</button>
-                </form>
-                
-                <hr>
-                
-            </div>
-            
-        </div>
-
-        <script>
-            
-            function check_equal(objet)
-            {
-                $("#validation").attr("class","btn btn-success col-md-11 valider");
-                
-                var val_input = ($(objet).val());
-                
-                var qte_enstock = ($(objet).parent().prev().text());
-                
-                if(val_input >= parseInt(qte_enstock))
-                {
-                    $(objet).parent().parent().css("background-color","#aaffaa");
-                    
-                    $(objet).addClass("is-valid");
-                }
-                else
-                {
-                    $(objet).parent().parent().css("background-color","#ffffff");
-                    $(objet).removeClass("is-valid");
-                }
-            }
-            
-            
-            function imprimer3()
-            {
-                $('#dataTable003').printThis();
-            }
-            
-            
-            
-        </script>
-        
-        <button id="btnPrint3" onclick="imprimer3();" style="display: block; margin-left: auto; margin-right: auto; width: 50%;" class="btn btn-outline-info  text-center col-md-6" >
-            Imprimer
-        </button>
-        
-    
-    </div>
-
-
-
-
 
 
     <div class="card-body">
@@ -539,7 +376,7 @@
 
 
 
-@endsection@extends('layouts.ui')
+@endsection
 
 @section('content')
 
