@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/statistiques','StatistiqueController@index')->name('stats');
 
 Route::post('/statistiques/recevoir','StatistiqueController@recevoir');
@@ -25,6 +27,16 @@ Route::post('/rapport/rediriger1','RapportController@reidiriger1');
 Route::get('/rapport/modifier/produit/{id_produit}/statut/{statut}/debut/{date_debut}/fin/{date_fin}','RapportController@reidiriger2');
 
 Route::post('/rapport/modifier/produit/{id_produit}/statut/{statut}/debut/{date_debut}/fin/{date_fin}/post','RapportController@reidiriger3');
+
+Route::get('/home/mes_depot','DepotController@index1');
+
+Route::post('/home/mes_depot/ajouter','DepotController@ajouter');
+
+Route::post('/home/mes_depot/modifier','DepotController@modifier');
+
+Route::post('/BL/fit_produits/ajax','TicketController@fit_produits_bl');
+
+Route::post('/ticket/affecter/livreur/{id_livreur}/BL','TicketController@new_bl');
 
 
 

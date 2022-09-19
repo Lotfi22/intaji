@@ -88,7 +88,9 @@ class TicketController  extends Controller
         
         $_livreur = $le_livreur;
         
-        $tickets = DB::select("select *,t.id as id_ticket, t.updated_at as pupdated_at,t.created_at as pcreated_at,p.nom from tickets t,produits p where (t.id_produit=p.id) and t.id in (select id_ticket from sorties s where id_livreur=$livreur) and satut='sortie'");
+        $tickets = DB::select("select *,t.id as id_ticket, t.updated_at as pupdated_at,t.created_at as pcreated_at,p.nom 
+        from tickets t,produits p 
+        where (t.id_produit=p.id) and t.id in (select id_ticket from sorties s where id_livreur=$livreur) and satut='sortie'");
         
         return view('tickets.retour',compact('tickets','livreur','_livreur','le_livreur'));
     }
@@ -302,7 +304,9 @@ class TicketController  extends Controller
         
         $id_livreur = $le_livreur->id;
         
-        $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte from produits p, sorties s,tickets t where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and date(s.created_at) = CURDATE()) group by p.id,p.nom order by p.nom");
+        $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+        from produits p, sorties s,tickets t 
+        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie' /*and date(s.created_at) = CURDATE()*/) group by p.id,p.nom order by p.nom");
                 
         $tickets = DB::select("select * from tickets where (satut <> 'sortie' /*and satut <> '0'*/ and satut <> 'annulé' ) and ( Date(updated_at) >= '$today' or Date(updated_at) = '$yesterday' or Date(updated_at) = '$yesterday2' or Date(updated_at) = '$yesterday3' or Date(updated_at) = '$yesterday4' or Date(updated_at) = '$yesterday5' or Date(updated_at) = '$yesterday6' or Date(updated_at) = '$yesterday7' or Date(updated_at) = '$yesterday8' or Date(updated_at) = '$yesterday9' or Date(updated_at) = '$yesterday10' or Date(updated_at) = '$yesterday11' or Date(updated_at) = '$yesterday12' or Date(updated_at) = '$yesterday13' or Date(updated_at) = '$yesterday14' or Date(updated_at) = '$yesterday15')  order by updated_at desc");
         
@@ -717,6 +721,22 @@ class TicketController  extends Controller
         ]);
     }
 
+    public function fit_produits_bl(Request $request)
+    {
+
+        $id_livreur = $request->id_livreur;
+
+        $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+        from produits p, sorties s,tickets t 
+        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie') 
+        group by p.id,p.nom order by p.nom");
+        
+        return response()->json($produit_qte);
+
+        # code...
+    }
+
+
     public function bl($ticket)
     {
         $ticket = Ticket::find($ticket);
@@ -730,6 +750,75 @@ class TicketController  extends Controller
         $current = date('Y-m-d');
         $file = "bonlivraison_".$current;
         $dompdf->stream("$file", array('Attachment'=>0));
+    }
+
+    public function new_bl($id_livreur,Request $request)
+    {
+
+        if(Check::CheckAuth(['admin','production','depot'])==false)
+        {
+            return redirect()->route('login.admin');     
+        }
+        
+        $client = ($request->nom_client);
+        
+        $adresse = ($request->adresse_client);
+
+        $data = $request->all();
+        array_shift($data);
+
+        $keys = (array_keys($data));
+        
+        $keys = (array_slice($keys,2));
+
+        array_pop($keys);
+
+        $informations = [];
+        
+        $j=0;
+
+        for ($i=0; $i < count($keys) ; $i++)
+        { 
+            
+            $nom_produit = ($data[$keys[$i]]);
+            $qte = ($data[$keys[$i+1]]);
+            $prix = ($data[$keys[$i+2]]);
+
+            $objet = (object)["produit"=>$nom_produit , "qte" => $qte , "prix" => $prix];
+            
+            $informations[$j] = $objet;
+    
+            $j++;
+
+            $i=$i+2;
+            //
+        }
+
+        $livreur = Livreur::find($id_livreur);
+
+        $dompdf = new Dompdf();
+
+        $options = $dompdf->getOptions(); 
+
+        $dompdf->setOptions($options);
+
+        $elements = $informations;
+
+        $html = Template::bl1($livreur,$elements,$client,$adresse);
+
+        $dompdf->loadHtml($html);
+
+        $dompdf->render();
+
+        $current = date('Y-m-d');
+
+        $file = "bonlivraison_".$current;
+
+        $dompdf->stream("$file", array('Attachment'=>1));
+
+
+        
+        # code...
     }
 }
 

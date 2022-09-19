@@ -8,24 +8,24 @@ function imprimer_bon(objet)
 	montant=$("#input_payement"+$id_eleve).val();
 
     $.ajax({
-	        headers: 
-	        {
-	           'X-CSRF-TOKEN': $('input[name="_token"]').val()
-	        },                    
-	        type:"POST",
-	        url:"/home/single_groupe/imprimer_bon/ajax",
-	        data:{id_eleve:$id_eleve,id_groupe:$id_groupe,mois:$mois,montant:montant},
+		headers: 
+		{
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},                    
+		type:"POST",
+		url:"/home/single_groupe/imprimer_bon/ajax",
+		data:{id_eleve:$id_eleve,id_groupe:$id_groupe,mois:$mois,montant:montant},
 
-	        success:function(data) 
-	        {
+		success:function(data) 
+		{
 
 
 
-	        	//
-	        }
+			//
+		}
 
-	        //
-        });
+	    //
+    });
 
 	//
 }

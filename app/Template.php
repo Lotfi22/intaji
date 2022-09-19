@@ -101,11 +101,11 @@ class Template extends Model
             <table width="100%">
                 <tr>
                     <td align="left">
-                        <h3>Essahel Food</h3>
+                        <h3>LION ROYAL</h3>
                         <pre>
                             RC: 16/00-5127021A18
                             MF : 16302737197
-                            Adresse : Alger CITE 32 KAIDI LOT 7 BORDK EL KIFFAN
+                            Adresse : Alger CITE Dar el beida
                         </pre>
                     </td>
                     <td align="">
@@ -193,5 +193,141 @@ class Template extends Model
         ';
         return $html;   
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    public static  function bl1(Livreur $livreur,$elements,$client,$adresse)
+    {
+        $total = 0;
+        $total = 0;
+        $html = '        
+            <!doctype html>
+            <html lang="en">
+            <head>
+            <meta charset="UTF-8">
+            <title>Bon de livraison!</title>
+            
+            <style type="text/css">
+                * {
+                    font-family: Verdana, Arial, sans-serif;
+                }
+                table{
+                    font-size: x-small;
+                }
+                tfoot tr td{
+                    font-weight: bold;
+                    font-size: x-small;
+                }
+                .gray {
+                    background-color: lightgray
+                }
+                .item{
+                    text-align:center;
+                }
+            </style>
+            
+            </head>
+            <body>
+            
+            <table width="100%">
+                <tr>
+                    <td align="left">
+                        <h3>LION ROYAL</h3>
+                        <pre>
+                            RC: 16/00-51277689O18
+                            MF : 16354322417
+                            Adresse : Alger CITE 32 DAR EL BEIDA
+                        </pre>
+                    </td>
+                    <td align="">
+                        <h3>Client : '.$client.'</h3>
+                        <pre>
+                            RC :  Divers CLient 
+                            MF :  
+                            Adresse : '.$adresse.'
+                        </pre>
+                    </td>
+
+                </tr>
+            
+            </table>
+            
+            <table width="100%">
+                <tr>
+                    <td><strong>Suivi Par :</strong>Admin</td>
+                    <td><strong>BL Numéro:</strong></td>
+                    <td><strong>Le:</strong> '.date('d-m-Y').'</td>
+                </tr>
+            
+            </table>
+            
+            <br/>
+            
+            <table width="100%">
+                <thead style="background-color: lightgray;">
+                <tr>
+                    <th style="cursor:pointer;">Nom Produit</th>
+                    <th style="cursor:pointer;">Quantité </th>
+                    <th style="cursor:pointer;">Prix Unitaire </th>
+                    <th style="cursor:pointer;">Total </th>
+                </tr>
+                </thead>
+                <tbody>
+                    ';
+                    foreach($elements as $element)
+                    {
+                        $prix = $element->prix ?? 1000;
+                        $html = $html.'<tr>';
+                        $html = $html.'<td class="item">'.$element->produit.'</td>';
+                        $html = $html.'<td class="item">'.$element->qte.'</td>';
+                        $html = $html.'<td class="item">'.$prix.' DA</td>';
+                        $html = $html.'<td class="item">'.$prix*$element->qte.' DA</td>';
+                        $html = $html.'</tr>';
+                        $total = $total + $prix*$element->qte;
+                    }
+                                                               
+                $html=$html.'                
+                </tbody>
+            
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td align="right">Total HTA</td>
+                        <td align="center">'.$total.' DA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td align="center">Total TVA</td>
+                        <td align="center">'.$total*0.19.'</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td align="center">Total TTC</td>
+                        <td align="right" class="gray">'.$total*1.19.' DA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td align="center">Timbre</td>
+                        <td align="right" class="gray"> </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td align="center">Net à payer</td>
+                        <td align="right" class="gray">'.$total*1.19.' DA</td>
+                    </tr>
+
+                </tfoot>
+            </table>
+            
+            </body>
+            </html>        
+        
+        ';
+        return $html;   
+    }
+
+
+
 
 }

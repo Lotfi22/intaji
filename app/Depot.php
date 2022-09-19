@@ -13,7 +13,7 @@ class Depot extends Authenticatable
     protected $guard = 'depot';
 
     protected $fillable = [
-        'name', 'email', 'password','paswword_text'
+        'name', 'email', 'depot' , 'password','paswword_text'
     ];
 
     protected $hidden = [

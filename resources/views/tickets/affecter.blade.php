@@ -76,13 +76,79 @@
                             Colis Retour
                         </a>
                     </div>
+
+                    
                     <div class="col-md-4">
-                        <a target="_blank" class="col-md-12 btn btn-primary btn-sm" href="{{ route('livreur.bl', ['livreur' => $_livreur]) }}">
-                            Imprimer BL
-                        </a>
+                        <button onclick="fit_produits();" data-toggle="modal" data-target="#Bon_livraison" class="col-md-12 btn btn-primary btn-sm"> 
+                            <i class="fa fa-print"></i> Imrimer BL
+                        </button>
                     </div>
 
-                    &nbsp;
+                    <div class="modal fade " id="Bon_livraison" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="lineModalLabel"> <i class="fa fa-print"></i>Editer le BL</h3>
+                                </div>
+
+                                <div class="row modal-body">
+                                    <form id="formulaire_bl" class="row col-md-12" action="/ticket/affecter/livreur/{{$le_livreur->id}}/BL" method="post" enctype="multipart/form-data">
+                                        
+                                        @csrf
+                                        
+                                        <div class="form-group col-md-3">
+                                            <label for="client">client</label>
+
+                                            <select name="client" id="client" class="form-control col-md-12 select2-show-search">
+
+                                                <option class="form-control" value="">cl 1</option>
+                                                <option class="form-control" value="">cl 2</option>
+                                                <option class="form-control" value="">cl 3</option>
+
+                                            </select>
+
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label for="produit">Produit</label>
+                                            <input id="produit" type="text" value="" name="produit" class="form-control"
+                                            placeholder="">
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label for="qte">Quantité</label>
+                                            <input id="qte" type="text" value="" name="qte" class="form-control"
+                                            placeholder="Entrer le qte">
+                                        </div>
+
+
+                                        <div class="form-group col-md-3">
+                                            <label for="prix">Prix.U</label>
+                                            <input id="prix" type="text" value="" name="prix" class="form-control"
+                                            placeholder="Entrer le prix">
+                                        </div>
+
+
+                                        <div class="form-group col-md-12">
+                                            <input id="valider" type="submit" value="Valider" name="valider" class="col-m-12 btn btn-primary">
+                                        </div>
+
+
+                                    </form>
+
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    
                 </div>
 
 
@@ -143,6 +209,7 @@
 
 
     <script>
+
         window.addEventListener("keydown", function(event) {
 
             if (event.getModifierState("CapsLock") == true) {
@@ -166,25 +233,55 @@
 
 
     <script type="text/javascript">
-        /*if( (event.getModifierState("CapsLock"))===true)
-            {
 
-                swal.stopLoading();
-                swal.close();
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-                //
-            }
-            else
-            {
+        var id_livreur = <?php echo json_encode($_livreur); ?>;
 
-                $(obj).val("");
+        function fit_produits() 
+        {
 
-                swal("Attention", "Veuillez Allumer Ver Maj", "warning");
+            $.ajax({
+                headers: 
+                {
+                    'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                },                    
+                type:"POST",
+                url:"/BL/fit_produits/ajax",
+                data:{id_livreur : id_livreur},
 
-                //
-            }*/
+                success:function(data) 
+                {
+                    var to_append = '';
 
+                    to_append += '{{ csrf_field() }}'
 
+                    to_append += '<div class="form-group col-md-6"><label for="nom_client">Client</label><input required id="nom_client" type="text" name="nom_client" class="form-control"placeholder=""></div>';
+                    to_append += '<div class="form-group col-md-6"><label for="adresse_client">Adresse Client</label><input required id="adresse_client" type="text" name="adresse_client" class="form-control"placeholder=""></div>';
+                    
+                    for (i = 0; i < data.length; i++) 
+                    {
+    
+                        to_append += '<div class="form-group col-md-4"><label for="produit'+data[i].id+'">Produit</label><input readonly id="produit'+data[i].id+'" type="text" value=" '+data[i].nom+' " name="produit'+data[i].id+'" class="form-control"placeholder=""></div>';
+                        to_append += '<div class="form-group col-md-4"><label for="qte'+data[i].id+'">Quantité</label><input required id="qte'+data[i].id+'" type="number" value="'+data[i].qte+'" name="qte'+data[i].id+'" class="form-control"placeholder="Entrer le qte"></div>';
+                        to_append += '<div class="form-group col-md-4"><label for="prix'+data[i].id+'">Prix.U</label><input required id="prix'+data[i].id+'" type="text" name="prix'+data[i].id+'" class="form-control"placeholder="Entrer le prix"></div>';
+
+                        
+
+                    }
+                    to_append += '<hr>';
+                    to_append += '<div class="form-group col-md-12"><input id="valider" type="submit" value="Valider" name="valider" class="col-m-12 btn btn-primary"></div>'
+                    
+                    $("#formulaire_bl").html(to_append);
+                    //
+                }
+
+	            //
+            });
+
+            
+            //
+        }
 
         /**/
     </script>

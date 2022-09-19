@@ -62,7 +62,7 @@
                                                 onclick="return confirm('etes vous sure  ?')"
                                                 class="text-white btn btn-danger">
 
-                                                <i class="fas fa-trash"></i>
+                                                <i class="fa fa-trash"></i>
 
                                             </a>
 

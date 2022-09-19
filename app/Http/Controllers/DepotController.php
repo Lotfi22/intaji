@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use Hash;
 use App\Commune;
 use App\Depot;
@@ -21,9 +21,47 @@ class DepotController extends Controller
     public function index()
     {
         $depots =Depot::all();
-        return view('depots.index',compact('depots'));
+        
+        $mes_depots = DB::select("select * from mes_depots");
+        
+        return view('depots.index',compact('depots','mes_depots'));
     }
 
+
+    public function index1()
+    {
+        $mes_depots = DB::select("select * from mes_depots");
+        
+        return view('depots.mes_depots',compact('mes_depots'));
+    }
+
+    
+    public function ajouter(Request $request)
+    {   
+        $nom_depot = $request->nom_depot;
+
+        $adresse_depot = $request->adresse_depot;
+
+        DB::insert("insert into mes_depots(nom,adresse) values ('$nom_depot','$adresse_depot') ");
+        
+        return back()->with('success', 'un nouveau dépot a été inséré avec succés ');
+    }
+
+    public function modifier(Request $request)
+    {
+        
+        $nom_depot = $request->nom_depot;
+
+        $adresse_depot = $request->adresse_depot;
+
+        $id_depot = substr($request->id_depot,7,1);
+        
+        DB::update("update mes_depots set nom = '$nom_depot' , adresse = '$adresse_depot' where id = $id_depot ");
+
+        return back()->with('success', 'Le dépot a été modifié avec succés ');
+
+        # code...
+    }
     
     public function create()
     {
@@ -31,9 +69,11 @@ class DepotController extends Controller
     }
     public function store(Request $request)
     {
+
         $depot = new Depot();
         $depot->name = $request->get('name');
         $depot->email = $request->get('email');
+        $depot->depot = $request->get('depot');
         $depot->password = Hash::make($request->get('password'));
         $depot->password_text = $request->get('password');
         $depot->save();
@@ -58,6 +98,9 @@ class DepotController extends Controller
             return redirect()->back()->with('error', 'Nouveau mot de passe ne peut aps etre vide ');
         }
 
+        $depot->name = $request->get('name');
+        $depot->email = $request->get('email');
+        $depot->depot = $request->get('depot');
         $depot->password = Hash::make($request->get('new_password'));
         $depot->password_text = $request->get('new_password');
         try {
