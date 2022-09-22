@@ -36,7 +36,7 @@ Route::post('/home/mes_depot/modifier','DepotController@modifier');
 
 Route::post('/BL/fit_produits/ajax','TicketController@fit_produits_bl');
 
-Route::post('/ticket/affecter/livreur/{id_livreur}/BL','TicketController@new_bl');
+Route::post('/ticket/affecter/livreur/{id_livreur}/BL','TicketController@ajout_livraison');
 
 
 

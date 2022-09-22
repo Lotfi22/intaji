@@ -15,6 +15,7 @@ use App\Sortie;
 use App\Retour;
 use App\Ticket;
 use App\Check;
+use App\Livraison;
 use DB;
 use Auth;
 use Dompdf\Dompdf;
@@ -820,9 +821,73 @@ class TicketController  extends Controller
 
         $dompdf->stream("$file", array('Attachment'=>1));
 
-
-        
         # code...
     }
+
+    public function ajout_livraison($id_livreur,Request $request)
+    {
+        
+        if(Check::CheckAuth(['admin','production','depot'])==false)
+        {
+            return redirect()->route('login.admin');     
+        }
+        
+        $client = ($request->nom_client);
+        
+        $adresse = ($request->adresse_client);
+
+        $data = $request->all();
+        array_shift($data);
+
+        $keys = (array_keys($data));
+        
+        $keys = (array_slice($keys,2));
+
+        array_pop($keys);
+
+        $informations = [];
+        
+        $j=0;
+
+        for ($i=0; $i < count($keys) ; $i++)
+        { 
+            
+            $nom_produit = ($data[$keys[$i]]);
+            $qte = ($data[$keys[$i+1]]);
+            $prix = ($data[$keys[$i+2]]);
+
+            $objet = (object)["produit"=>$nom_produit , "qte" => $qte , "prix" => $prix];
+            
+            $informations[$j] = $objet;
+    
+            $j++;
+
+            $i=$i+2;
+            //
+        }
+
+        $next_livraison = (Livraison::get_next_num_livraison());
+        
+        foreach ($informations as $info) 
+        {
+            $produit = $info->produit;
+            $qte = $info->qte;
+            $prix = $info->prix;
+
+            DB::insert("insert into livraisons
+            (num_livraison,id_client,nom_produit,qte,prix,id_commande)
+            values ($next_livraison,1,'$produit','$qte','$prix',0)");
+
+           session()->flash('notification.message' , 'Demmade Numéro '.$next_livraison.' ajoutée avec succés');
+
+           session()->flash('notification.type' , 'success'); 
+
+           return back();
+
+            //
+        }
+
+        //
+    } 
 }
 

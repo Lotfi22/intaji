@@ -89,7 +89,7 @@
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title" id="lineModalLabel"> <i class="fa fa-print"></i>Editer le BL</h3>
+                                    <h3 class="modal-title" id="lineModalLabel"> <i class="fa fa-pencil"></i>Editer la Livraison</h3>
                                 </div>
 
                                 <div class="row modal-body">
@@ -264,7 +264,7 @@
     
                         to_append += '<div class="form-group col-md-4"><label for="produit'+data[i].id+'">Produit</label><input readonly id="produit'+data[i].id+'" type="text" value=" '+data[i].nom+' " name="produit'+data[i].id+'" class="form-control"placeholder=""></div>';
                         to_append += '<div class="form-group col-md-4"><label for="qte'+data[i].id+'">Quantité</label><input required id="qte'+data[i].id+'" type="number" value="'+data[i].qte+'" name="qte'+data[i].id+'" class="form-control"placeholder="Entrer le qte"></div>';
-                        to_append += '<div class="form-group col-md-4"><label for="prix'+data[i].id+'">Prix.U</label><input required id="prix'+data[i].id+'" type="text" name="prix'+data[i].id+'" class="form-control"placeholder="Entrer le prix"></div>';
+                        to_append += '<div class="form-group col-md-4"><label for="prix'+data[i].id+'">Prix.U</label><input required id="prix'+data[i].id+'" type="number" name="prix'+data[i].id+'" class="form-control"placeholder="Entrer le prix"></div>';
 
                         
 
