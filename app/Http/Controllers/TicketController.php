@@ -37,7 +37,7 @@ class TicketController  extends Controller
         }
         
         $tickets = DB::select("select t.id,t.id_produit,t.created_at,t.updated_at,t.satut,t.num_ticket_produit,t.codebar,t.impression,t.maj ,p.nom  as nom from tickets t,produits p where (p.id=t.id_produit) and (date(t.updated_at) = date(now())) order by t.created_at desc");
-                
+                        
         $nbrtickets = count(Ticket::all());
         
         $date_debut = date('Y-m-d');
@@ -306,7 +306,8 @@ class TicketController  extends Controller
         
         $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
         from produits p, sorties s,tickets t 
-        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie' /*and date(s.created_at) = CURDATE()*/) group by p.id,p.nom order by p.nom");
+        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie' /*and date(s.created_at) = CURDATE()*/) 
+        group by p.id,p.nom order by p.nom");
                 
         $tickets = DB::select("select * from tickets where (satut <> 'sortie' /*and satut <> '0'*/ and satut <> 'annulé' ) and ( Date(updated_at) >= '$today' or Date(updated_at) = '$yesterday' or Date(updated_at) = '$yesterday2' or Date(updated_at) = '$yesterday3' or Date(updated_at) = '$yesterday4' or Date(updated_at) = '$yesterday5' or Date(updated_at) = '$yesterday6' or Date(updated_at) = '$yesterday7' or Date(updated_at) = '$yesterday8' or Date(updated_at) = '$yesterday9' or Date(updated_at) = '$yesterday10' or Date(updated_at) = '$yesterday11' or Date(updated_at) = '$yesterday12' or Date(updated_at) = '$yesterday13' or Date(updated_at) = '$yesterday14' or Date(updated_at) = '$yesterday15')  order by updated_at desc");
         
@@ -352,7 +353,10 @@ class TicketController  extends Controller
         
         $id_livreur = $request['livreur'];
         
-        $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte from produits p, sorties s,tickets t where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and date(s.created_at) = CURDATE()) group by p.id,p.nom order by p.nom");
+        $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+        from produits p, sorties s,tickets t 
+        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie' /*and date(s.created_at) = CURDATE()*/) 
+        group by p.id,p.nom order by p.nom");
 
         return response()->json([
             'ticket'=>$request['ticket'],

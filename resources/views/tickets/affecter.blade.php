@@ -80,7 +80,7 @@
                     
                     <div class="col-md-4">
                         <button onclick="fit_produits();" data-toggle="modal" data-target="#Bon_livraison" class="col-md-12 btn btn-primary btn-sm"> 
-                            <i class="fa fa-print"></i> Imrimer BL
+                            <i class="fa fa-arrow-right"></i> Envoyer la demande de livraison 
                         </button>
                     </div>
 

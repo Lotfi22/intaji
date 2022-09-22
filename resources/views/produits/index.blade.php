@@ -127,17 +127,17 @@
                                 class="form-control" id="reference">
                         </div>
 
-                        <div class="form-group">
+{{--                         <div class="form-group">
                             <label for="exampleInputEmail1">Description : </label>
                             <input type="text" class="form-control" value="{{ old('description') }}" name="description"
                                 id="desc" placeholder="">
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">prix gros : </label>
+ --}}                        <div class="form-group">
+                            <label for="exampleInputEmail1">prix : </label>
                             <input type="text" class="form-control" value="{{ old('prix_gros') }}" name="prix_gros"
                                 id="prix_gros" placeholder="">
                         </div>
-                        <div class="form-group">
+                        {{--<div class="form-group">
                             <label for="exampleInputEmail1">prix Semi Gros :</label>
                             <input type="text" value="{{ old('prix_semi_gros') }}" name="prix_semi_gros"
                                 class="form-control" id="" placeholder=" ">
@@ -158,8 +158,8 @@
                             <label for="exampleInputEmail1">Prix Autre : </label>
                             <input type="text" value="{{ old('prix_autre') }}" name="prix_autre" class="form-control"
                                 id="prix_autre" placeholder="">
-                        </div>
-
+                        </div>--}}
+ 
 
                         <div class="btn-group" role="group">
                             <button type="submit" class="btn btn-primary btn_ajouter">Save</button>
