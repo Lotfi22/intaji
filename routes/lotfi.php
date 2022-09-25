@@ -36,8 +36,17 @@ Route::post('/home/mes_depot/modifier','DepotController@modifier');
 
 Route::post('/BL/fit_produits/ajax','TicketController@fit_produits_bl');
 
-Route::post('/ticket/affecter/livreur/{id_livreur}/BL','TicketController@ajout_livraison');
+Route::post('/ticket/affecter/livreur/{id_livreur}/BL','LivraisonController@ajout_livraison');
 
+Route::get('/home/livraisons','LivraisonController@index');
+
+Route::post('/home/livraisons/show_livraison/ajax','LivraisonController@show_livraison');
+
+Route::post('/home/livraisons/approuver/ajax','LivraisonController@approuver');
+
+Route::post('/home/livraisons/rejeter/ajax','LivraisonController@rejeter');
+
+Route::post('/home/livraisons/last_approbation/BL','LivraisonController@new_BL');
 
 
 

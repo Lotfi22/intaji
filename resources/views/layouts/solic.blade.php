@@ -259,6 +259,7 @@
 
                                     <li aria-haspopup="true"><a href="/home/caisse" class=""><i class="ion-cash"></i> Caisse</a></li>
 
+                                    <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="ion-cash"></i>Livraisons</a></li>
 
 
                                     {{--  --}}                                        

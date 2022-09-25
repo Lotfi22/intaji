@@ -256,8 +256,11 @@
 
                     to_append += '{{ csrf_field() }}'
 
-                    to_append += '<div class="form-group col-md-6"><label for="nom_client">Client</label><input required id="nom_client" type="text" name="nom_client" class="form-control"placeholder=""></div>';
-                    to_append += '<div class="form-group col-md-6"><label for="adresse_client">Adresse Client</label><input required id="adresse_client" type="text" name="adresse_client" class="form-control"placeholder=""></div>';
+
+
+                    to_append += '<div class="form-group col-md-12"><label for="nom_client">nom_client</label><select name="nom_client" id="nom_client" class="form-control col-md-12 select2-show-search"><option class="form-control" value="cl1">cl 1</option><option class="form-control" value="cl2">cl 2</option><option class="form-control" value="cl3">cl 3</option></select></div>';
+                    
+                    to_append += '<div style="display:none;" class="form-group col-md-6"><label for="adresse_client">Adresse Client</label><input id="adresse_client" value="adresse client" type="text" name="adresse_client" class="form-control"placeholder=""></div>';
                     
                     for (i = 0; i < data.length; i++) 
                     {
@@ -270,6 +273,10 @@
 
                     }
                     to_append += '<hr>';
+
+                    to_append += '<div class="form-group col-md-12"><label for="freelancer">Freelancer</label><input id="freelancer" placeholder="Freelancer" type="text" class="form-control"></div><hr>';
+
+
                     to_append += '<div class="form-group col-md-12"><input id="valider" type="submit" value="Valider" name="valider" class="col-m-12 btn btn-primary"></div>'
                     
                     $("#formulaire_bl").html(to_append);

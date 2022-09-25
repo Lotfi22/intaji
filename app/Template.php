@@ -255,8 +255,8 @@ class Template extends Model
             
             <table width="100%">
                 <tr>
-                    <td><strong>Suivi Par :</strong>Admin</td>
-                    <td><strong>BL Numéro:</strong></td>
+                    <td><strong>Suivi Par : </strong>Admin</td>
+                    <td><strong>BL Numéro : '.$num_bl.'</strong></td>
                     <td><strong>Le:</strong> '.date('d-m-Y').'</td>
                 </tr>
             
@@ -328,6 +328,137 @@ class Template extends Model
     }
 
 
+
+    public static  function bl_lion_royal(Livreur $livreur,$elements,$client,$adresse,$remise,$num_bl)
+    {
+        $total = 0;
+        $total = 0;
+        $html = '        
+            <!doctype html>
+            <html lang="en">
+            <head>
+            <meta charset="UTF-8">
+            <title>Bon de livraison!</title>
+            
+            <style type="text/css">
+                * {
+                    font-family: Verdana, Arial, sans-serif;
+                }
+                table{
+                    font-size: x-small;
+                }
+                tfoot tr td{
+                    font-weight: bold;
+                    font-size: x-small;
+                }
+                .gray {
+                    background-color: lightgray
+                }
+                .item{
+                    text-align:center;
+                }
+            </style>
+            
+            </head>
+            <body>
+            
+            <table width="100%">
+                <tr>
+                    <td align="left">
+                        <h3>LION ROYAL</h3>
+                        <pre>
+                            RC: 16/00-51277689O18
+                            MF : 16354322417
+                            Adresse : Alger CITE 32 DAR EL BEIDA
+                            <img src="/assets/images/brand/lion.jpeg" >
+                        </pre>
+                    </td>
+                    <td align="">
+                        <h3>Client : '.$client.'</h3>
+                        <pre>
+                            RC :  Divers CLient 
+                            MF :  
+                            Adresse : '.$adresse.'
+                        </pre>
+                    </td>
+
+                </tr>
+            
+            </table>
+            
+            <table width="100%">
+                <tr>
+                    <td><strong>Suivi Par : </strong>Admin</td>
+                    <td><strong>BL Numéro : '.$num_bl.'</strong></td>
+                    <td><strong>Le:</strong> '.date('d-m-Y').'</td>
+                </tr>
+            
+            </table>
+            
+            <br/>
+            
+            <table width="100%">
+                <thead style="background-color: lightgray;">
+                <tr>
+                    <th style="cursor:pointer;">Nom Produit</th>
+                    <th style="cursor:pointer;">Quantité </th>
+                    <th style="cursor:pointer;">Prix Unitaire </th>
+                    <th style="cursor:pointer;">Total </th>
+                </tr>
+                </thead>
+                <tbody>
+                    ';
+                    foreach($elements as $element)
+                    {
+                        $prix = $element->prix ?? 1000;
+                        $html = $html.'<tr>';
+                        $html = $html.'<td class="item">'.$element->produit.'</td>';
+                        $html = $html.'<td class="item">'.$element->qte.'</td>';
+                        $html = $html.'<td class="item">'.$prix.' DA</td>';
+                        $html = $html.'<td class="item">'.$prix*$element->qte.' DA</td>';
+                        $html = $html.'</tr>';
+                        $total = $total + $prix*$element->qte;
+                    }
+                                                               
+                $html=$html.'                
+                </tbody>
+            
+                <tfoot>
+                    <tr style="display:none;">
+                        <td colspan="2"></td>
+                        <td align="right">Total HTA</td>
+                        <td align="center">'.$total.' DA</td>
+                    </tr>
+                    <tr style="display:none;">
+                        <td colspan="2"></td>
+                        <td align="center">Total TVA</td>
+                        <td align="center">'.$total*0.19.'</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td align="center">Total HT </td>
+                        <td align="right" class="gray">'.$total.' DA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td align="center">Remise '.$remise.'%</td>
+                        <td align="right" class="gray"> '.$total*($remise/100).' DA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td align="center">Net à payer</td>
+                        <td align="right" class="gray">'.$total*(1-($remise/100)).' DA</td>
+                    </tr>
+
+                </tfoot>
+            </table>
+            
+            </body>
+            </html>        
+        
+        ';
+        return $html;   
+    }
 
 
 }
