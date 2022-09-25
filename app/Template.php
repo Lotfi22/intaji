@@ -367,10 +367,8 @@ class Template extends Model
                     <td align="left">
                         <h3>LION ROYAL</h3>
                         <pre>
-                            RC: 16/00-51277689O18
-                            MF : 16354322417
-                            Adresse : Alger CITE 32 DAR EL BEIDA
-                            <img src="/assets/images/brand/lion.jpeg" >
+
+                        <img src="'.public_path().'\lion.jpeg" >
                         </pre>
                     </td>
                     <td align="">

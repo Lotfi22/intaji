@@ -14,6 +14,7 @@ use App\Check;
 use App\Livraison;
 use DB;
 use Auth;
+use PDF;
 use Dompdf\Dompdf;
 use Carbon\Carbon;
 
@@ -204,15 +205,17 @@ class LivraisonController extends Controller
 
         $livreur = Livreur::find($id_livreur);
 
-        $dompdf = new Dompdf();
+        $dompdf = new dompdf();
 
         $options = $dompdf->getOptions(); 
 
-        $dompdf->setOptions($options);
-        
         $options->set('isRemoteEnabled', true);
         
+
+        $dompdf->setOptions($options);
+        
         $elements = $informations;
+
 
         $num_bl = Livraison::get_num_bl($num_livraison);
         
