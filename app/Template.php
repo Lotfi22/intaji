@@ -88,7 +88,7 @@ class Template extends Model
                     font-size: x-small;
                 }
                 .gray {
-                    background-color: lightgray
+                    background-color: white lightgray
                 }
                 .item{
                     text-align:center;
@@ -351,12 +351,19 @@ class Template extends Model
                     font-weight: bold;
                     font-size: x-small;
                 }
-                .gray {
-                    background-color: lightgray
-                }
                 .item{
                     text-align:center;
                 }
+
+                .table, .th, .td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                }                
+
+                .th, .td {
+                    padding:1%;
+                }
+
             </style>
             
             </head>
@@ -395,13 +402,13 @@ class Template extends Model
             
             <br/>
             
-            <table width="100%">
-                <thead style="background-color: lightgray;">
+            <table class="table" width="100%">
+                <thead>
                 <tr>
-                    <th style="cursor:pointer;">Nom Produit</th>
-                    <th style="cursor:pointer;">Quantité </th>
-                    <th style="cursor:pointer;">Prix Unitaire </th>
-                    <th style="cursor:pointer;">Total </th>
+                    <th class="th" style="cursor:pointer;">Nom Produit</th>
+                    <th class="th" style="cursor:pointer;">Quantité </th>
+                    <th class="th" style="cursor:pointer;">Prix Unitaire </th>
+                    <th class="th" style="cursor:pointer;">Total </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -410,10 +417,10 @@ class Template extends Model
                     {
                         $prix = $element->prix ?? 1000;
                         $html = $html.'<tr>';
-                        $html = $html.'<td class="item">'.$element->produit.'</td>';
-                        $html = $html.'<td class="item">'.$element->qte.'</td>';
-                        $html = $html.'<td class="item">'.$prix.' DA</td>';
-                        $html = $html.'<td class="item">'.$prix*$element->qte.' DA</td>';
+                        $html = $html.'<td class="td item">'.$element->produit.'</td>';
+                        $html = $html.'<td class="td item">'.$element->qte.'</td>';
+                        $html = $html.'<td class="td item">'.$prix.' DA</td>';
+                        $html = $html.'<td class="td item">'.$prix*$element->qte.' DA</td>';
                         $html = $html.'</tr>';
                         $total = $total + $prix*$element->qte;
                     }
@@ -423,29 +430,29 @@ class Template extends Model
             
                 <tfoot>
                     <tr style="display:none;">
-                        <td colspan="2"></td>
-                        <td align="right">Total HTA</td>
-                        <td align="center">'.$total.' DA</td>
+                        <td class="td" colspan="2"></td>
+                        <td class="td" align="right">Total HTA</td>
+                        <td class="td" align="center">'.$total.' DA</td>
                     </tr>
                     <tr style="display:none;">
-                        <td colspan="2"></td>
-                        <td align="center">Total TVA</td>
-                        <td align="center">'.$total*0.19.'</td>
+                        <td class="td" colspan="2"></td>
+                        <td class="td" align="center">Total TVA</td>
+                        <td class="td" align="center">'.$total*0.19.'</td>
                     </tr>
                     <tr>
-                        <td colspan="2"></td>
-                        <td align="center">Total HT </td>
-                        <td align="right" class="gray">'.$total.' DA</td>
+                        <td class="td" colspan="2"></td>
+                        <td class="td" align="center">Total HT </td>
+                        <td class="td" align="right">'.$total.' DA</td>
                     </tr>
                     <tr>
-                        <td colspan="2"></td>
-                        <td align="center">Remise '.$remise.'%</td>
-                        <td align="right" class="gray"> '.$total*($remise/100).' DA</td>
+                        <td class="td" colspan="2"></td>
+                        <td class="td" align="center">Remise '.$remise.'%</td>
+                        <td class="td" align="right"> '.$total*($remise/100).' DA</td>
                     </tr>
                     <tr>
-                        <td colspan="2"></td>
-                        <td align="center">Net à payer</td>
-                        <td align="right" class="gray">'.$total*(1-($remise/100)).' DA</td>
+                        <td class="td" colspan="2"></td>
+                        <td class="td" align="center">Net à payer</td>
+                        <td class="td" align="right">'.$total*(1-($remise/100)).' DA</td>
                     </tr>
 
                 </tfoot>

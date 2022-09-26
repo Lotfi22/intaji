@@ -48,6 +48,9 @@ Route::post('/home/livraisons/rejeter/ajax','LivraisonController@rejeter');
 
 Route::post('/home/livraisons/last_approbation/BL','LivraisonController@new_BL');
 
+Route::post('/home/livraisons/encaissements1','LivraisonController@encaissements1');
+
+
 
 
 

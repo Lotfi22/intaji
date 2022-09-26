@@ -178,6 +178,8 @@ class LivraisonController extends Controller
 
         $remise = ($request->remise);
 
+        DB::update("update livraisons set statut = 'BL' where num_livraison = $num_livraison");
+
         $livraison = (DB::select("select * from livraisons where num_livraison = $num_livraison"));
 
         $client = ($livraison[0]->id_client);
@@ -231,7 +233,33 @@ class LivraisonController extends Controller
 
         $dompdf->stream("$file", array('Attachment'=>1));
 
-    }    
+    }   
+
+
+    public function encaissements1(request $request)
+    {
+        
+        $versement = ($request->versement);
+        $num_livraison = ($request->num_livraison);
+
+        $livraison = DB::select("select  * from livraisons where num_livraison = $num_livraison");
+
+        $livraison = $livraison[0];
+
+        if($livraison->statut != "rejeté") 
+        {
+            
+            DB::update("update livraisons set versement = $versement,statut = 'encaissé',updated_at=now() where num_livraison = $num_livraison");
+
+            // code...
+        }        
+
+        $livraison = DB::select("select  * from livraisons where num_livraison = $num_livraison");
+
+        return response()->json($livraison[0]);
+
+        // code...
+    } 
 
     //
 }

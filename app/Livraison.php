@@ -37,6 +37,8 @@ class Livraison extends Model
             //
         }
 
+        return ($prods);
+
         return json_encode($prods);
 
         // code...

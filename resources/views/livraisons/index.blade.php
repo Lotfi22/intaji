@@ -25,7 +25,7 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center" id="datable-1" width="100%" cellspacing="0">
+                    <table class="table table-bordered text-center" id="datatable-10" width="100%" cellspacing="0">
 
                         <thead>
                             <tr style="cursor: pointer;">
@@ -52,8 +52,13 @@
                                         {!! $livraison->livreur !!}
                                     </td>
                                     <td>{{ App\Livraison::get_client($livraison->num_livraison) ?? '' }} </td>
-                                    <td>
-                                       {!! App\Livraison::get_products($livraison->num_livraison) !!}
+                                    <td class="text-left">
+                                        @foreach (App\Livraison::get_products($livraison->num_livraison) as $produit)
+                                         	
+                                        	{!! $produit !!}<br>
+
+                                         	{{-- expr --}}
+                                        @endforeach  
                                     </td>
                                     
                                     <td>
@@ -72,7 +77,7 @@
 
 									 	<td id="statut{{ $livraison->num_livraison }}" class="alert alert-info">
 
-									 @elseif(App\Livraison::get_statut($livraison->num_livraison) == "vendue")
+									 @elseif(App\Livraison::get_statut($livraison->num_livraison) == "BL")
 									 	<td id="statut{{ $livraison->num_livraison }}" class="alert alert-primary">
 
 									 @elseif(App\Livraison::get_statut($livraison->num_livraison) == "encaissé")
@@ -183,6 +188,7 @@
 
                     </form>
 
+                    @include('encaissement.encaissement')
 
 
 					{{--  --}}                    

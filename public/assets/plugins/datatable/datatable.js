@@ -45,6 +45,19 @@ $(function(e) {
 	} );
 	table.buttons().container()
 	.appendTo( '#datatable-5_wrapper .col-md-6:eq(0)');
+
+
+	//datatable-10
+
+	var table = $('#datatable-10').DataTable( {
+		lengthChange: false,
+		order:[[1,'desc']],
+		buttons: [ 'copy', 'excel', 'pdf']
+	} );
+	table.buttons().container()
+	.appendTo( '#datatable-10_wrapper .col-md-6:eq(0)');
+
+
 	
 	//datatbale-6
 	$('#datatbale-6').DataTable( {

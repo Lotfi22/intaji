@@ -29,6 +29,7 @@ class CreateLivraisonsTable extends Migration
             $table->string('freelancer')->default('Aucun');
             $table->string('BL')->default('/');
             $table->float('remise',8,0)->default(0);
+            $table->float('versement',8,0)->default(0);
             $table->unsignedBigInteger('id_commande')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

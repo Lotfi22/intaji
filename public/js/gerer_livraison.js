@@ -1,5 +1,8 @@
 document.getElementById("confirmer_approbation").style.display = "none";
 document.getElementById("la_remise").style.display = "none";
+document.getElementById("encaissements").style.display = "none";
+document.getElementById("versement_complet").style.display = "none";
+
 
 function get_livraison(objet) 
 {
@@ -46,6 +49,7 @@ function get_livraison(objet)
 			$("#prods_livraison").html(to_append);
 			$("#livreur").html('Livreur : '+data[0].livreur);
 			$("#client").html('Client : '+data[0].id_client);
+			$("#versement").val(totale);
 
 			if (data[0].statut=="en attente")
 			{	
@@ -68,6 +72,19 @@ function get_livraison(objet)
 
 				$("#rejeter").hide();
 				$("#approuver").hide();
+				$("#encaissements").hide();
+
+				//
+			}
+
+
+			if (data[0].statut!=="en attente" && data[0].statut!=="rejeté" && data[0].statut!=="validé")
+			{
+
+				$("#encaissements").show();
+				$("#rejeter").hide();
+				$("#approuver").hide();
+
 
 				//
 			}
@@ -109,9 +126,7 @@ function approuver(objet)
 
 			$("#approuver").hide();
 
-			$("#la_remise").show(1000);
-
-			/*$(".close").click();*/
+			$("#la_remise").show(1000);			
 
 			//
 		}
@@ -166,6 +181,9 @@ function afficher_confirmation(objet)
 	$(objet).hide('400', function() 
 	{
 		$("#confirmer_approbation").show(200)
+
+		$("#encaissements").show();
+
 	});
 
 	//
@@ -174,6 +192,8 @@ function afficher_confirmation(objet)
 function retour()
 {
 	
+	event.preventDefault();
+
 	$("#confirmer_approbation").hide('400', function() 
 	{
 		
@@ -210,6 +230,53 @@ function final_confirmation()
 
 	    //
     });
+
+	//
+}
+
+function valider_versement() 
+{
+
+	event.preventDefault();
+
+	var versement = $("#versement").val();
+
+	var num_livraison = $("#num_livraison").val();
+
+    $.ajax({
+		headers: 
+		{
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},                    
+		type:"POST",
+		url:"/home/livraisons/encaissements1",
+		data:{num_livraison:num_livraison,versement:versement},
+
+		success:function(data) 
+		{
+
+			$("#"+data.num_livraison).addClass("alert alert-success");
+			$("#statut"+data.num_livraison).attr('class','text-center alert alert-success');
+			$("#statut"+data.num_livraison).text('encaissé');
+			$("#modal_statut"+data.num_livraison).attr('class','text-center alert alert-success');
+			$("#modal_statut"+data.num_livraison).text('encaissé');
+			
+	
+			$("#versement_complet").show(500);
+			$("#versement").hide(500);
+			$("#valider_versement").hide(500);
+
+
+
+			/*$(".close").click();*/
+
+
+			//
+		}
+
+	    //
+    });
+
 
 	//
 }
