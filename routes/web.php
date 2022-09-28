@@ -239,3 +239,16 @@ Route::get('/down', function () {
     $clearcache = Artisan::call('down');
     echo "site down <br>";
 });
+
+
+
+Route::group(['prefix' => 'client', 'as' => 'client'], function () {
+    Route::get('/', ['as' => '.index', 'uses' => 'ClientController@index']);
+    Route::post('/update/{id_client}', ['as' => '.update', 'uses' => 'ClientController@update']);
+
+    Route::get('/test', ['as' => '.test', 'uses' => 'ClientController@test']);
+    Route::get('/destroy/{client}', ['as' => '.destroy', 'uses' => 'ClientController@destroy']);
+    Route::post('/create', ['as' => '.create', 'uses' => 'ClientController@store']);
+
+
+});

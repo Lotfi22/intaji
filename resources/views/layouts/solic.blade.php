@@ -20,6 +20,9 @@
         <!-- TITLE -->
         <title> INTAJI </title>
 
+
+        <link href="{{asset('css/toastr.css')}}" rel="stylesheet" />
+
         <!-- DASHBOARD CSS -->
 
         <link href="{{ asset('../../assets/css/style.css') }}" rel="stylesheet"/>
@@ -408,41 +411,15 @@
 
         <!-- ECHART PLUGIN -->
         <script src="{{ asset('../../assets/plugins/echarts/echarts.js') }}"></script>
+        <script src="{{ asset('js/toastr.min.js') }}"></script>        
         <script>
-
-            $('.js-example-basic-single').select2({
-                'width': '100%'
+            $(function() {
+                $("#input_id").focus();
             });
 
+        </script>        
 
-            $('#input_id').on('change',function(){
-            console.log('saz')
-            if($('#input_id').val().length >0){
-                let number = parseInt($('#input_id').val(), 10);
-
-                /**
-                 * هاد البارتي خليها نفيريفي المتركول ادا يكزيستي بجافا سكريبت قبل ما تبعتو
-                 */
-                // let matricules = [788];
-                //console.log(matricules);
-                // var res = false;
-                // matricules.map(function (matricule) {
-                //     res = res || matricule.matricule == number;
-                // });          
-                // console.log(res)
-                // if(res==false){
-                //     // toastr.error('Carte Non valide')
-                //     $('#input_id').val("")
-                // }else{
-                    window.location.href = 'http://localhost/gym/membre/compte/'+number;
-                // }
-            }
-            });
-
-        </script>
-
-
-
+    
         @yield('scripts')
     </body>
 </html>
