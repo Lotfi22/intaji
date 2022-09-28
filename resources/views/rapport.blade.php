@@ -152,7 +152,7 @@
 
                         
 
-                        <div style=" cursor:pointer;" data-toggle="modal" data-target="#squarespaceModal" onclick="" class="card col-md-3 " style="margin-top: 2%;">
+                        <div style=" cursor:pointer;" data-toggle="modal" data-target="#squarespaceModal" onclick="get_depots_qte({{ $produit->id }});" class="card col-md-3 " style="margin-top: 2%;">
 
                             <div class="card-body">
 
@@ -218,12 +218,12 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="lineModalLabel">Ajouter Produit : </h3>
+                    <h3 class="modal-title text-center" id="lineModalLabel">Produit par Dépots</h3>
                 </div>
                 
                 <div class="modal-body">
 
-                    <table class="table table-bordered" id="datablee-1" width="100%" cellspacing="0">
+                    <table class="table table-bordered text-center" id="datablee-1" width="100%" cellspacing="0">
                         
                         <thead>
                             <tr>
@@ -232,7 +232,7 @@
                             </tr>
                         </thead>
 
-                        <tbody id="">
+                        <tbody id="depots">
 
                         </tbody>
 
@@ -500,12 +500,51 @@
 
     $(document).ready(function () {
 
-      setInterval(getScannedTicket,1000)
+      //setInterval(getScannedTicket,1000)
 
     });
 
 
 
+</script>
+
+<script>
+    
+    function get_depots_qte(id_produit) 
+    {
+
+        $.ajax({
+            headers: 
+            {
+                'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            },                    
+            type:"POST",
+            url:"/rapport/get_qte_depots",
+            data:{id_produit:id_produit},
+
+            success:function(data) 
+            {
+
+                var depots = "";
+
+                for (var i = 0; i < data.length; i++) 
+                {
+                    depots+='<tr><td>'+data[i].depot+'</td><td>'+data[i].qte+'</td></tr>';
+                }
+
+                $("#depots").html(depots);
+
+                //
+            }
+
+            //
+        });
+
+
+        //
+    }
+
+    //
 </script>
 
 @endsection

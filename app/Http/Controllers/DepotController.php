@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Hash;
 use App\Commune;
 use App\Depot;
+use App\Ticket;
 
 class DepotController extends Controller
 {
@@ -122,4 +123,52 @@ class DepotController extends Controller
         return redirect()->route('depot.index')->with('success', 'le  agent a été supprimé ');
     }
 
+
+    public function get_qte_produit(Request $request)
+    {
+
+        $id_produit = $request->id_produit;
+
+        $mes_depots = DB::select("select * from mes_depots");
+
+        $tickets = (DB::select("select * from tickets 
+                where id_produit = $id_produit and satut = 'au_depot' "));
+
+        
+        $i=0;
+        $resultats=[];
+
+        foreach ($mes_depots as $depot) 
+        {
+
+            $cpt=0;
+
+            foreach ($tickets as $ticket) 
+            {
+
+                if (Ticket::is_in_depot($ticket->id,$depot->nom)) 
+                {
+
+                    $cpt++;
+
+                    // code...
+                }
+
+
+                //
+            }
+
+            $resultats[$i]=(object)["depot"=>$depot->nom,"qte"=>$cpt];
+
+            $i++;
+            
+            //
+        }
+
+        return response()->json($resultats);
+
+        // code...
+    }
+
+    //
 }
