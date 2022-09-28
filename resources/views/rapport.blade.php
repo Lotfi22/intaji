@@ -152,7 +152,7 @@
 
                         
 
-                        <div style=" cursor:pointer;" onclick="" class="card col-md-3 " style="margin-top: 2%;">
+                        <div style=" cursor:pointer;" data-toggle="modal" data-target="#squarespaceModal" onclick="" class="card col-md-3 " style="margin-top: 2%;">
 
                             <div class="card-body">
 
@@ -220,50 +220,25 @@
                 <div class="modal-header">
                     <h3 class="modal-title" id="lineModalLabel">Ajouter Produit : </h3>
                 </div>
+                
                 <div class="modal-body">
-                    <form action="{{ route('produit.create') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="nomduproduit">Photo : </label>
-                            <input type="file" name="image" class="form-control" id="image" placeholder=" ">
-                        </div>
 
-                        <div class="form-group">
-                            <label for="nomduproduit">Nom Produit</label>
-                            <input type="text" onkeyup="verif_nom();" value="{{ old('nom') }}" name="nom"
-                                class="form-control" id="nomduproduit" placeholder=" ">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Catégorie</label>
-                            <select class="form-control" name="id_categorie">
-                                @foreach ($categories as $categorie)
-                                    <option value="{{ $categorie->nom }}">
-                                        {{ $categorie->nom ?? '' }}
-                                    </option>
-                                @endforeach
+                    <table class="table table-bordered" id="datablee-1" width="100%" cellspacing="0">
+                        
+                        <thead>
+                            <tr>
+                                <th>Dépot</th>
+                                <th>Quantité</th>
+                            </tr>
+                        </thead>
 
-                            </select>
+                        <tbody id="">
 
-                        </div>
+                        </tbody>
 
-                        <div class="form-group">
-                            <label for="reference">Réference : </label>
-                            <input type="text" onkeyup="verif_nom();" value="{{ old('reference') }}" name="reference"
-                                class="form-control" id="reference">
-                        </div>
+                    </table>
 
-                        <div class="form-group">
-                            <label for="prix_gros">prix : </label>
-                            <input type="text" class="form-control" value="{{ old('prix_gros') }}" name="prix_gros"
-                                id="prix_gros" placeholder="">
-                        </div>
-
-
-                        <div class="btn-group" role="group">
-                            <button type="submit" class="btn btn-primary btn_ajouter">Save</button>
-                        </div>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" role="button">Fermer</button>
-                    </form>
+                    
                 </div>
             </div>
         </div>
