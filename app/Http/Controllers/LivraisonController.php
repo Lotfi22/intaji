@@ -211,7 +211,6 @@ class LivraisonController extends Controller
 
         $options = $dompdf->getOptions(); 
 
-        $options->set('isRemoteEnabled', true);
         
 
         $dompdf->setOptions($options);
@@ -223,6 +222,15 @@ class LivraisonController extends Controller
         
         $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl);
 
+        $contxt = stream_context_create([
+            'ssl' => [
+            'verify_peer' => FALSE,
+            'verify_peer_name' => FALSE,
+            'allow_self_signed'=> TRUE
+            ]
+        ]);
+        $dompdf = $dompdf->set_options(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+        $dompdf->setHttpContext($contxt);               
         $dompdf->loadHtml($html);
 
         $dompdf->render();
@@ -231,7 +239,7 @@ class LivraisonController extends Controller
 
         $file = "bonlivraison_".$current;
 
-        $dompdf->stream("$file", array('Attachment'=>1));
+        $dompdf->stream("$file", array('Attachment'=>0));
 
     }   
 

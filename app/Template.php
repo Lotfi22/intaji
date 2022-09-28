@@ -332,7 +332,8 @@ class Template extends Model
     public static  function bl_lion_royal(Livreur $livreur,$elements,$client,$adresse,$remise,$num_bl)
     {
         $total = 0;
-        $total = 0;
+        $total = 0; 
+        // dd(asset('img/lion.png'));
         $html = '        
             <!doctype html>
             <html lang="en">
@@ -375,7 +376,6 @@ class Template extends Model
                         <h3>LION ROYAL</h3>
                         <pre>
 
-                        <img src="'.public_path().'\lion.jpeg" >
                         </pre>
                     </td>
                     <td align="">
