@@ -154,6 +154,10 @@
 
                                     {!! $ticket->satut == 'vers_depot' ? 'Confirmé' : '' !!}
 
+                                    @if ($ticket->satut == 'au_depot')
+                                        ({{ App\Ticket::get_depo($ticket->id) ?? '' }})
+                                    @endif
+
 
 
                                     @if ($ticket->satut == 'sortie')

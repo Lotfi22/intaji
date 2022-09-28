@@ -44,6 +44,7 @@ class TicketController  extends Controller
         $date_debut = date('Y-m-d');
         // date($request['date_debut'],'Y-m-d');
         $date_fin = date('Y-m-d');
+        
         return view('tickets.index',compact('tickets',
         'date_debut',
         'date_fin' ,
@@ -706,20 +707,26 @@ class TicketController  extends Controller
     public function au_depot_action(Request $request)
     {
 
+        $id_ticket=($request->ticket);
+
         if(Check::CheckAuth(['admin','production','depot'])==false)
         {
             return redirect()->route('login.admin');     
         }
 
         
-        if(auth()->guard('admin')->check()){$acteur= (Auth::guard('admin')->user()->email);} 
-        if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user()->email);}
-        if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user()->email);}
+        if(auth()->guard('admin')->check()){$acteur= (Auth::guard('admin')->user());} 
+        if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user());}
+        if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user());}
 
+        $depot = ($acteur->depot);
+
+        (DB::insert("insert into historiques (id_ticket,depot) 
+                    values ($id_ticket,'$depot')"));
         
         $ticket = Ticket::find($request['ticket']);
         $ticket->satut= "au_depot";
-        $ticket->maj= $acteur;
+        $ticket->maj= $acteur->email;
         $ticket->save();
         return response()->json([
             'ticket'=>$request['ticket']

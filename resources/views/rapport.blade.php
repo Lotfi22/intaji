@@ -152,13 +152,13 @@
 
                         
 
-                        <div style=" cursor:pointer;" onclick="rediriger('au_depot',{{ $produit->id }})" class="card col-md-3 " style="margin-top: 2%;">
+                        <div style=" cursor:pointer;" onclick="" class="card col-md-3 " style="margin-top: 2%;">
 
                             <div class="card-body">
 
                                 <h6 class="card-title">{{$produit->nom ?? ''}} / {{$produit->id_categorie ?? ''}} <span style="font-size:10px;"> (Au_Depot) </span>  </h6>
 
-                                <p class="card-text text-center" id="produit_au_depot_{{$produit->id}}">0</p>
+                                <p style="color: black;" class="card-text text-center" id="produit_au_depot_{{$produit->id}}">0</p>
 
                             </div>
 
@@ -211,6 +211,63 @@
 
 
 
+
+
+    <div class="modal fade " id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="lineModalLabel">Ajouter Produit : </h3>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('produit.create') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="nomduproduit">Photo : </label>
+                            <input type="file" name="image" class="form-control" id="image" placeholder=" ">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nomduproduit">Nom Produit</label>
+                            <input type="text" onkeyup="verif_nom();" value="{{ old('nom') }}" name="nom"
+                                class="form-control" id="nomduproduit" placeholder=" ">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Catégorie</label>
+                            <select class="form-control" name="id_categorie">
+                                @foreach ($categories as $categorie)
+                                    <option value="{{ $categorie->nom }}">
+                                        {{ $categorie->nom ?? '' }}
+                                    </option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reference">Réference : </label>
+                            <input type="text" onkeyup="verif_nom();" value="{{ old('reference') }}" name="reference"
+                                class="form-control" id="reference">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prix_gros">prix : </label>
+                            <input type="text" class="form-control" value="{{ old('prix_gros') }}" name="prix_gros"
+                                id="prix_gros" placeholder="">
+                        </div>
+
+
+                        <div class="btn-group" role="group">
+                            <button type="submit" class="btn btn-primary btn_ajouter">Save</button>
+                        </div>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" role="button">Fermer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -394,7 +451,7 @@
 
             console.log(obj)
 
-            $('#produit_genere_'+obj.id_produit).html(obj.nbrtickets).removeClass('alert alert-primary text-white').addClass('alert alert-primary text-white');
+            $('#produit_genere_'+obj.id_produit).html(obj.nbrtickets).removeClass('alert alert-primary text-black').addClass('alert alert-primary text-black');
 
           })
 
@@ -412,7 +469,7 @@
 
             console.log(obj)
 
-            $('#produit_vers_depot_'+obj.id_produit).html(obj.nbrtickets).removeClass('alert alert-primary text-white').addClass('alert alert-primary text-white');
+            $('#produit_vers_depot_'+obj.id_produit).html(obj.nbrtickets).removeClass('alert alert-primary text-black').addClass('alert alert-primary text-black');
 
           })
 
@@ -428,7 +485,7 @@
 
             console.log(obj)
 
-            $('#produit_au_depot_'+obj.id_produit).html(obj.nbrtickets).removeClass('alert alert-primary text-white').addClass('alert alert-primary text-white');
+            $('#produit_au_depot_'+obj.id_produit).html(obj.nbrtickets).removeClass('alert alert-primary text-balck').addClass('alert alert-primary text-balck');
 
           })
 
@@ -446,7 +503,7 @@
 
             console.log(obj)
 
-            $('#produit_sortie_'+obj.id_produit).html(obj.nbrtickets).removeClass('alert alert-primary text-white').addClass('alert alert-primary text-white');
+            $('#produit_sortie_'+obj.id_produit).html(obj.nbrtickets).removeClass('alert alert-primary text-black').addClass('alert alert-primary text-black');
 
           })
 
