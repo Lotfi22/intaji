@@ -246,4 +246,28 @@ class Ticket extends Model
         // code...
     }
 
+    public static function is_in_depot($id_ticket,$depot)
+    {
+
+        $ticket = DB::select("select * from historiques h
+            where (id_ticket = '$id_ticket') order by h.id desc");
+
+        if ($ticket[0]->depot == $depot) 
+        {
+
+            return true;
+
+            // code...
+        }
+        else
+        {
+
+            return false;
+
+            //
+        }
+
+        // code...
+    }
+
 }

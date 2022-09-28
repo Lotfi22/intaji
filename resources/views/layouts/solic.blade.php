@@ -412,6 +412,7 @@
         <!-- ECHART PLUGIN -->
         <script src="{{ asset('../../assets/plugins/echarts/echarts.js') }}"></script>
         <script src="{{ asset('js/toastr.min.js') }}"></script>        
+
         <script>
             $(function() {
                 $("#input_id").focus();

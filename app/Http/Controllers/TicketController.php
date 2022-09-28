@@ -698,6 +698,7 @@ class TicketController  extends Controller
 
 
         $tickets = Ticket::where('satut', '=', 'vers_depot')
+            ->orWhere('satut', '=', '0')
             ->orderBy('created_at','desc')
             ->get();
         return view('tickets.au_depot',compact('tickets'));

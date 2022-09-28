@@ -50,3 +50,4 @@ Route::post('/home/livraisons/last_approbation/BL','LivraisonController@new_BL')
 
 Route::post('/home/livraisons/encaissements1','LivraisonController@encaissements1');
 
+Route::post('/rapport/get_qte_depots','DepotController@get_qte_produit');
