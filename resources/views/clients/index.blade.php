@@ -119,7 +119,7 @@
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Téléphone </label>
-                            <input type="number" value="{{ old('telephone') }}" name="telephone" id="telephone" class="form-control"
+                            <input type="tel" value="{{ old('telephone') }}" name="telephone" id="telephone" class="form-control"
                                 id="exampleInputEmail1" placeholder="Entrer telephone ">
                         </div>
 
@@ -134,7 +134,7 @@
 
                                 <label class="control-label">{{ __('Wilaya') }}: </label>
 
-                                <select class="form-control" id="wilaya_select" name="wilaya_id">
+                                <select class="form-control wilaya_select" id="wilaya_select" name="wilaya_id">
 
                                     <option value="">{{ __('Please choose...') }}</option>
 
@@ -221,29 +221,9 @@
 
 <script>
 
-
-    $('#telephone').on('change',function(){
-        // console.log('saz')
-        if($('#telephone').val().length >0){
-            let number = parseInt($('#telephone').val(), 10);
-            let telephones = {!! json_encode($telephones) !!};
-            //console.log(matricules);
-            var res = false;
-            telephones.map(function (matricule) {
-                res = res || matricule.matricule == number;
-            });          
-            console.log(res)
-            if(res==false){
-                toastr.error('Téléphone Non valide')
-                $('#input_id').val("")
-            }else{
-                toastr.error('Téléphone Non valide')
-
-            }
-        }
-    });
-        function watchWilayaChanges() {
-            $('#wilaya_select').on('change', function (e) {
+        
+            $('.wilaya_select').on('change', function (e) {
+                console.log('saz');
                 e.preventDefault();
                 var $communes = $('#commune_select');
                 var $communesLoader = $('#commune_select_loading');
@@ -268,10 +248,8 @@
                         $iconDefault.show();
                     });
             });
-        }
-        $(document).ready(function () {
-            watchWilayaChanges();
-        });
+        
+
 </script>
 
 @endsection
