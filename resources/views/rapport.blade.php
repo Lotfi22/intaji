@@ -500,7 +500,7 @@
 
     $(document).ready(function () {
 
-      //setInterval(getScannedTicket,1000)
+        setInterval(getScannedTicket,1000)
 
     });
 

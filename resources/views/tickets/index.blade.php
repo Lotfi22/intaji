@@ -51,7 +51,7 @@
 
                         <div class="col-md-4">
 
-                            <button type="submit" style="margin-top:9%; color: #ffffff;" class="form-control btn btn-primary">
+                            <button type="submit" style="color: white; margin-top:9%;" class="form-control btn btn-primary">
 
                                 Filtrer
 

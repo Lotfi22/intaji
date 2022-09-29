@@ -26,9 +26,11 @@ class LivraisonController extends Controller
 
         $livraisons=DB::select("select distinct num_livraison,livreur,updated_at from livraisons order by num_livraison desc");
 
-        rsort($livraisons);
+        $versements = DB::select("select num_livraison,versement 
+        from versements
+        order by num_livraison");
 
-        return view('livraisons.index',compact('livraisons'));
+        return view('livraisons.index',compact('livraisons','versements'));
 
         // code...
     }
@@ -108,7 +110,11 @@ class LivraisonController extends Controller
 
         $livraison = DB::select("select * from livraisons where num_livraison = $num_livraison");
 
-        return response()->json($livraison);
+        $versements = DB::select("select * from versements where num_livraison = $num_livraison order by id asc");
+
+        $ret = (object)["livraison"=>$livraison ,"versements"=>$versements];
+
+        return response()->json($ret);
 
         // code...
     }
@@ -178,7 +184,7 @@ class LivraisonController extends Controller
 
         $remise = ($request->remise);
 
-        DB::update("update livraisons set statut = 'BL' where num_livraison = $num_livraison");
+        DB::update("update livraisons set statut = 'BL',remise=$remise where num_livraison = $num_livraison");
 
         $livraison = (DB::select("select * from livraisons where num_livraison = $num_livraison"));
 
@@ -217,9 +223,8 @@ class LivraisonController extends Controller
         
         $elements = $informations;
 
-
         $num_bl = Livraison::get_num_bl($num_livraison);
-        
+
         $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl);
 
         $contxt = stream_context_create([
@@ -246,6 +251,17 @@ class LivraisonController extends Controller
 
     public function encaissements1(request $request)
     {
+
+        if(auth()->guard('admin')->check())
+        {
+
+            $acteur= (Auth::guard('admin')->user()->email);
+
+        }
+        else
+        {
+            $acteur='No One';            
+        }        
         
         $versement = ($request->versement);
         $num_livraison = ($request->num_livraison);
@@ -257,17 +273,103 @@ class LivraisonController extends Controller
         if($livraison->statut != "rejeté") 
         {
             
-            DB::update("update livraisons set versement = $versement,statut = 'encaissé',updated_at=now() where num_livraison = $num_livraison");
+            DB::update("update livraisons set versement = $versement,statut = 'encaissement',updated_at=now() where num_livraison = $num_livraison");
+
+            DB::insert("insert into versements (num_livraison,versement,validateur) 
+            values ($num_livraison,$versement,'$acteur')");
+
+            $total_paye = DB::select("select sum(versement) as total_paye 
+            from versements where num_livraison = $num_livraison");
+
+            $total_payee = $total_paye[0]->total_paye ?? $versement;
+            
+            if ($total_payee==Livraison::get_total($num_livraison))
+            {
+                
+                DB::update("update livraisons set statut = 'terminé',updated_at=now() where num_livraison = $num_livraison");
+
+                // code...
+            }
 
             // code...
         }        
 
+
+
         $livraison = DB::select("select  * from livraisons where num_livraison = $num_livraison");
 
-        return response()->json($livraison[0]);
+        $versements = DB::select("select * from versements where num_livraison = $num_livraison order by id asc");
+
+        $ret = (object)["livraison"=>$livraison ,"versements"=>$versements];
+
+
+        return response()->json($ret);
 
         // code...
-    } 
+    }
+
+
+    public function test_depassement(Request $request)
+    {
+        
+        $num_livraison = ($request->num_livraison);
+        
+        $val = (float)($request->val);
+
+        $total_livraison = Livraison::get_total($num_livraison);
+
+        $total_paye = DB::select("select sum(versement)+$val as total_paye 
+        from versements where num_livraison = $num_livraison");
+
+        $total_payee = $total_paye[0]->total_paye ?? 0;
+
+        return response()->json($total_payee<=$total_livraison);
+
+        //
+    }    
+
+    public function get_BL($num_livraison)
+    {
+
+        $elements = (DB::select("select *,nom_produit as produit from livraisons where num_livraison = $num_livraison"));
+
+        $id_livreur = $elements[0]->livreur;
+        $livreur = Livreur::find($id_livreur);
+        $client = $elements[0]->id_client;
+        $adresse = "adresse_client";
+        $remise = $elements[0]->remise;
+        $num_bl = Livraison::get_num_bl($num_livraison);
+
+        $dompdf = new dompdf();
+
+        $options = $dompdf->getOptions(); 
+        $options->set(array('isRemoteEnabled' => true));
+        $dompdf->setOptions($options);    
+
+        $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl);
+
+        $contxt = stream_context_create([
+            'ssl' => [
+            'verify_peer' => FALSE,
+            'verify_peer_name' => FALSE,
+            'allow_self_signed'=> TRUE
+            ]
+        ]);
+        $dompdf = $dompdf->set_options(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+        $dompdf->setHttpContext($contxt);               
+        $dompdf->loadHtml($html);
+
+        $dompdf->render();
+
+        $current = date('Y-m-d');
+
+        $file = "bonlivraison_".$current;
+
+        $dompdf->stream("$file", array('Attachment'=>0));
+
+
+        // code...
+    }
 
     //
 }
