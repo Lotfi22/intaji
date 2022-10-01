@@ -27,7 +27,7 @@ function get_livraison(objet)
 			var to_append = '';
 
 			var totale = 0;
-
+			
 			for (var i = 0; i < data.livraison.length; i++) 
 			{
 				
@@ -45,7 +45,9 @@ function get_livraison(objet)
 
 
 			to_append += '<tr><td> </td><td> </td><td style="font-weight:bold;" >Total : </td><td style="font-weight:bold;" >'+formatMoney(totale)+' DA</td></tr>';
-
+			to_append += '<tr><td> </td><td> </td><td style="font-weight:bold;" >Remise '+data.livraison[0].remise+'% : </td><td style="font-weight:bold;" >'+formatMoney(totale*(data.livraison[0].remise)/100)+' DA</td></tr>';
+			to_append += '<tr><td> </td><td> </td><td style="font-weight:bold;" >Net à Payer : </td><td style="font-weight:bold;" >'+formatMoney(totale*(1-(data.livraison[0].remise)/100))+' DA</td></tr>';
+			
 			$("#prods_livraison").html(to_append);
 			$("#livreur").html('Livreur : '+data.livraison[0].livreur);
 			$("#client").html('Client : '+data.livraison[0].id_client);
@@ -106,7 +108,7 @@ function get_livraison(objet)
 
 			versements += '<tr class="alert alert-primary"><td style="font-weight:bold;" >Total Versement : </td><td>'+formatMoney(total_versements)+' DA</td></tr>';
 
-			var reste = totale - total_versements;
+			var reste = totale*(1-(data.livraison[0].remise/100)) - total_versements;
 
 			if (reste!==0)
 			{
@@ -336,7 +338,7 @@ function valider_versement()
 
 			versements += '<tr class="alert alert-success" ><td style="font-weight:bold;" >Total versements: </td><td>'+formatMoney(total_versements)+' DA</td></tr>';
 
-			var reste = totale - total_versements;
+			var reste = totale*(1-(data.livraison[0].remise/100)) - total_versements;
 
 			if (reste!==0)
 			{

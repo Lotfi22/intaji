@@ -44,9 +44,17 @@
                         <tbody>
 
                             @foreach ($livraisons as $livraison)
-                                <tr id="{{$livraison->num_livraison}}" style="cursor:pointer;" onclick="get_livraison(this)" num_livraison="{{$livraison->num_livraison}}" data-toggle="modal" data-target="#squarespaceModal">
 
-                                    <td>{!! $livraison->num_livraison !!}</td>
+                                @if (App\Livraison::get_statut($livraison->num_livraison) == "rejeté")
+
+                                    <tr class="alert alert-danger" id="{{$livraison->num_livraison}}" style="cursor:pointer;" onclick="get_livraison(this)" num_livraison="{{$livraison->num_livraison}}" data-toggle="modal" data-target="#squarespaceModal">
+                                 
+                                 @else
+
+                                    <tr id="{{$livraison->num_livraison}}" style="cursor:pointer;" onclick="get_livraison(this)" num_livraison="{{$livraison->num_livraison}}" data-toggle="modal" data-target="#squarespaceModal">
+                                @endif    
+
+                                    <td>Num{!! $livraison->num_livraison !!}</td>
                                     <td>{!! date_format(date_create($livraison->updated_at),"d/m/Y H:i:s") !!}</td>
                                     <td>
                                         {!! $livraison->livreur !!}
@@ -65,7 +73,7 @@
 
                                         {!! setlocale(LC_MONETARY,"en_US"); !!}
 
-                                    	{!! number_format((App\Livraison::get_total($livraison->num_livraison))); !!} DA
+                                    	{!! number_format((App\Livraison::get_total($livraison->num_livraison)*(1-($livraison->remise)/100))); !!} DA
                                     </td>
 
                                     @if (App\Livraison::get_statut($livraison->num_livraison) == "en attente")

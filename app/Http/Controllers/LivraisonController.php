@@ -24,7 +24,7 @@ class LivraisonController extends Controller
     public function index()
     {
 
-        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at from livraisons order by num_livraison desc");
+        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise from livraisons order by num_livraison desc");
 
         $versements = DB::select("select num_livraison,versement 
         from versements
@@ -270,6 +270,8 @@ class LivraisonController extends Controller
 
         $livraison = $livraison[0];
 
+        $remise = $livraison->remise;
+
         if($livraison->statut != "rejeté") 
         {
             
@@ -316,7 +318,13 @@ class LivraisonController extends Controller
         
         $val = (float)($request->val);
 
-        $total_livraison = Livraison::get_total($num_livraison);
+        $livraison = DB::select("select * from livraisons where num_livraison=$num_livraison");
+
+        $livraison = $livraison[0];
+
+        $remise = $livraison->remise;
+
+        $total_livraison = Livraison::get_total($num_livraison)*(1-($remise/100));
 
         $total_paye = DB::select("select sum(versement)+$val as total_paye 
         from versements where num_livraison = $num_livraison");
