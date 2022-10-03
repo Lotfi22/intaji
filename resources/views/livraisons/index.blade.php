@@ -45,20 +45,16 @@
 
                             @foreach ($livraisons as $livraison)
 
-                                @if (App\Livraison::get_statut($livraison->num_livraison) == "rejeté")
-
-                                    <tr class="alert alert-danger" id="{{$livraison->num_livraison}}" style="cursor:pointer;" onclick="get_livraison(this)" num_livraison="{{$livraison->num_livraison}}" data-toggle="modal" data-target="#squarespaceModal">
-                                 
-                                 @else
-
-                                    <tr id="{{$livraison->num_livraison}}" style="cursor:pointer;" onclick="get_livraison(this)" num_livraison="{{$livraison->num_livraison}}" data-toggle="modal" data-target="#squarespaceModal">
-                                @endif    
+                                <tr id="{{$livraison->num_livraison}}" style="cursor:pointer;" onclick="get_livraison(this)" num_livraison="{{$livraison->num_livraison}}" data-toggle="modal" data-target="#squarespaceModal">
 
                                     <td>Num{!! $livraison->num_livraison !!}</td>
+                                    
                                     <td>{!! date_format(date_create($livraison->updated_at),"d/m/Y H:i:s") !!}</td>
+                                    
                                     <td>
-                                        {!! $livraison->livreur !!}
+                                        {!! App\Livraison::get_livreur($livraison->num_livraison) ?? '' !!}
                                     </td>
+                                    
                                     <td>{{ App\Livraison::get_client($livraison->num_livraison) ?? '' }} </td>
                                     <td class="text-left">
                                         @foreach (App\Livraison::get_products($livraison->num_livraison) as $produit)

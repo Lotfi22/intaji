@@ -287,7 +287,8 @@
 
 
                 <!-- CONTAINER -->
-                <div class="container content-area relative">
+                <div class="container-fluid content-area relative">
+
 
                     @yield('content')
 
