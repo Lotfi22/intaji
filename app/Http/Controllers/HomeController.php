@@ -35,18 +35,13 @@ class HomeController extends Controller
     {
         $codebar = DNS1D::getBarcodePNG('4', 'C39+');
         file_put_contents('img/codebars/barcode.png', DNS1D::getBarcodePNG('4', 'C39+'));
-
         return view('codebar',compact('codebar'));
     }
 
     /**
-
      * Show the application dashboard.
-
      *
-
      * @return \Illuminate\Http\Response
-
      */
 
     public function index()

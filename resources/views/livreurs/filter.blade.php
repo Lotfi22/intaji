@@ -197,64 +197,65 @@
 
 
 
+            <div class="card-body">            
+                <div class="table-responsive">
 
-            <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
 
-                    <thead>
-
-                        <tr>
-
-                            <th class="text-center" style="cursor:pointer;">date Création</th>
-
-                            <th class="text-center" style="cursor:pointer;">date Affectation</th>
-
-                            <th class="text-center" style="cursor:pointer;">Nom Produit</th>
-
-                            <th class="text-center" style="cursor:pointer;">Code bare</th>
-
-                            <th class="text-center" style="cursor:pointer;">Statut </th>
-
-                            <th class="text-center" style="cursor:pointer;">Mis à jour par</th>
-
-
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        @foreach ($tickets as $ticket)
                             <tr>
 
-                                <td class="text-center">{{ $ticket->created_at ?? '' }}</td>
+                                <th class="text-center" style="cursor:pointer;">date Création</th>
 
-                                <td class="text-center">{{ $ticket->updated_at ?? '' }}</td>
+                                <th class="text-center" style="cursor:pointer;">date Affectation</th>
 
-                                <td class="text-center">{{ App\Produit::getNomProduit($ticket->id_produit) ?? '' }}</td>
+                                <th class="text-center" style="cursor:pointer;">Nom Produit</th>
 
-                                <td class="text-center">{{ $ticket->codebar ?? '' }}</td>
+                                <th class="text-center" style="cursor:pointer;">Code bare</th>
 
-                                <td class="text-center">
-                                    {{ $ticket->satut == '0' ? 'Vient d\'étre créé' : $ticket->satut }} </td>
+                                <th class="text-center" style="cursor:pointer;">Statut </th>
 
-                                <td class="text-center">{{ $ticket->maj ?? '' }}</td>
+                                <th class="text-center" style="cursor:pointer;">Mis à jour par</th>
+
+
 
                             </tr>
-                        @endforeach
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach ($tickets as $ticket)
+                                <tr>
+
+                                    <td class="text-center">{{ $ticket->created_at ?? '' }}</td>
+
+                                    <td class="text-center">{{ $ticket->updated_at ?? '' }}</td>
+
+                                    <td class="text-center">{{ App\Produit::getNomProduit($ticket->id_produit) ?? '' }}</td>
+
+                                    <td class="text-center">{{ $ticket->codebar ?? '' }}</td>
+
+                                    <td class="text-center">
+                                        {{ $ticket->satut == '0' ? 'Vient d\'étre créé' : $ticket->satut }} </td>
+
+                                    <td class="text-center">{{ $ticket->maj ?? '' }}</td>
+
+                                </tr>
+                            @endforeach
 
 
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
 
-                <br>
+                    <br>
 
 
 
+                </div>
             </div>
 
         </div>

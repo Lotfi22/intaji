@@ -208,23 +208,8 @@ class CommandeController extends Controller
     
     public function index()
     {
-        $confirmation=""; 
-
-        if(auth()->guard('fournisseur')->check()){
-            $id = Auth::guard('fournisseur')->id();
-            $commandes = DB::table('commandes')->where('fournisseur_id',$id)->orderBy('created_at','desc')->paginate(30);
-            $communes = Commune::all();
-            $wilayas =Wilaya::all();
-            return view('fournisseurs',compact('confirmation','commandes','communes','wilayas'));    
-        }  
-        $commandes = Commande::where('type','colier')->get();
-        $commandes = DB::table('commandes')->orderBy('created_at','desc')->paginate(30);
-        //$communes = Commune::all();
-        $fournisseurs = Fournisseur::all();
-        $wilayas =Wilaya::all();
-        $livreurs =Livreur::all();
-        $fournisseur_id = "";      
-        return view('admin',compact('confirmation','fournisseurs','commandes','data','communes','wilayas','livreurs','fournisseur_id'));
+        $commandes =  Commande::all();
+        return view('commandes.index',compact('commandes'));
     }
 
     public function show($id_commande){
