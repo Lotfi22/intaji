@@ -199,7 +199,7 @@
                                             </li>
 
                                             <li aria-haspopup="true">
-                                                <a href="/livreur">Livreurs</a>
+                                                <a href="/livreur" >Livreurs</a>
                                             </li>
 
                                         </ul>
@@ -225,24 +225,13 @@
 
                                         </ul>
                                     </li>                                                                      
-                                    <li aria-haspopup="true">
+                                    <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
                                         
                                         <a style="cursor: pointer;" class="sub-icon">
                                             <i class="mdi mdi-account-multiple"></i>Livreurs
                                             <i class="fa fa-angle-down horizontal-icon"></i>
                                         </a>
                                         
-                                        <ul class="sub-menu">
-
-                                            @foreach ($livreurs as $livreur)
-                                                
-                                                <li aria-haspopup="true">
-                                                    <a href="/livreur/filter/{{$livreur->id}}">Livreur : {{$livreur->email}} </a>
-                                                </li>
-
-                                                {{--  --}}
-                                            @endforeach
-                                        </ul>
                                     </li>                                                                                            
                                     <li aria-haspopup="true">
                                         
@@ -334,6 +323,42 @@
             </footer>
             <!-- FOOTER END -->
         </div>
+
+
+        <div class="modal fade" id="livreurModal" tabindex="-1" role="dialog" aria-labelledby="livreurModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="livreurModalLabel">Séléctionner Livreur</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        <div class="form-group">
+                            
+                            <label >Livreur: </label>
+                            
+                            <select class="js-example-basic-single affiche_livreurs" 
+                                name="livreur" id="livreur">
+                            
+                                <option value="">{{ __('Séléctionner ...') }}</option>
+                            
+                                @foreach ($livreurs as $livreur)
+                                    <option value="{{ $livreur->id }}">
+                                        {{ $livreur->name ?? '' }} {{ $livreur->prenom ?? '' }}
+                                    </option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- BACK-TO-TOP -->
         <a href="#top" id="back-to-top"><i class="fa fa-long-arrow-up"></i></a>
@@ -441,10 +466,36 @@
 
         <script>
             $(function() {
-                $("#input_id").focus();
+                $("#search").focus();
             });
 
         </script>        
+
+        <script>
+            
+
+
+
+        $('.affiche_livreurs').on('change', function(e) {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            var lien = "/livreur/filter/" + valueSelected;
+            $('#filter_livreur').attr('href', lien)
+            if(valueSelected.length>0){
+                window.location = lien
+            }
+        });
+
+            $(document).ready(function() {
+                $('.js-example-basic-single').select2({
+                    'width': '100%',
+                    "dropdownParent": $('#livreurModal'),
+                    'tags':true
+                });
+            });
+
+            //
+        </script>
 
     
         @yield('scripts')

@@ -72,7 +72,7 @@ class Livraison extends Model
 
         $statut = DB::select("select statut from livraisons 
             where num_livraison = $num_livraison");
-
+        
         return $statut[0]->statut;
         // code...
     }
