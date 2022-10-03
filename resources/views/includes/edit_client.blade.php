@@ -43,7 +43,7 @@
 
                                 <label class="control-label">{{ __('Wilaya') }}: </label>
 
-                                <select class="form-control" id="wilaya_select" name="wilaya_id2">
+                                <select class="form-control" id="wilaya_select2" name="wilaya_id2">
 
                                     <option  value="">{{ __('Please choose...') }}</option>
 
@@ -75,7 +75,7 @@
 
                                 <label class="control-label">{{ __('Commune') }}: </label>
 
-                                <select class="form-control" name="commune_id2" id="commune_select">
+                                <select class="form-control" name="commune_id2" id="commune_select2">
 
                                     <option  value="">{{ __('Please choose...') }}</option>
 
@@ -84,7 +84,7 @@
                                         <option
                                         <?php if($commune->id == $client->commune){ {echo "selected";} } ?>
 
-                                        value="{{$commune->id}}" {{$commune->id == ($client->commune_id ?? ($member->commune_id ?? '')) ? 'selected' : ''}}>
+                                        value="{{$commune->id}}" >
 
                                             {{$commune->name}}
 
@@ -94,7 +94,7 @@
 
                                 </select>
 
-                                <input class="form-control valid" id="commune_select_loading" value="{{ __('Loading...') }}"
+                                <input class="form-control valid" id="commune_select2_loading" value="{{ __('Loading...') }}"
 
                                     readonly style="display: none;"/>
 
