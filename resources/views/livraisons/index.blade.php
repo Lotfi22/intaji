@@ -1,5 +1,5 @@
 @extends('layouts.solic')
-
+@section('styles')
 <style>
     
     .blink{
@@ -14,7 +14,7 @@
     
 </style>
 
-
+@endsection
 
 @section('content')
     <div class="container-fluid">

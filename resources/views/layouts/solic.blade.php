@@ -51,6 +51,7 @@
         <link rel="stylesheet" href="{{ asset('../../assets/plugins/multipleselect/multiple-select.css') }}">
 
         <link href="{{ asset('../../assets/plugins/sweet-alert/sweetalert.css') }}" rel="stylesheet" />
+        @yield('styles')
         <style>
             .barre{
                 max-width: 1900px !important;
@@ -257,7 +258,25 @@
 
                                     <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="ion-cash"></i>Livraisons</a></li>
 
-                                    <li aria-haspopup="true"><a href="/" class=""><i class="ion-cash"></i>Commandes</a></li>
+                                    <li aria-haspopup="true">
+                                        <a href="#" style="cursor: pointer;" class="sub-icon">
+                                            <i class="mdi mdi-chart-line"></i> Client/Commande
+                                            <i class="fa fa-angle-down horizontal-icon"></i>
+                                        </a>
+                                        
+                                        <ul class="sub-menu">
+                                                
+                                            <li aria-haspopup="true">
+                                                <a href="{{route('commande.index')}}">Commandes</a>
+                                            </li>
+
+                                            <li aria-haspopup="true">
+                                                <a href="{{route('client.index')}}">Clients</a>
+                                            </li>
+
+
+                                        </ul>
+                                    </li>
 
 
                                     {{--  --}}                                        
