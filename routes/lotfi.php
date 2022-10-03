@@ -48,6 +48,10 @@ Route::post('/home/livraisons/rejeter/ajax','LivraisonController@rejeter');
 
 Route::post('/home/livraisons/last_approbation/BL','LivraisonController@new_BL');
 
+Route::get('/home/livraisons/voir/{num_livraison}/BL','LivraisonController@get_BL');
+
 Route::post('/home/livraisons/encaissements1','LivraisonController@encaissements1');
 
 Route::post('/rapport/get_qte_depots','DepotController@get_qte_produit');
+
+Route::post('/home/livraisons/test_depassement/ajax','LivraisonController@test_depassement');

@@ -15,8 +15,11 @@ class CreateVersementsTable extends Migration
     {
         Schema::create('versements', function (Blueprint $table) {
             $table->increments('id');
-            
-            $table->timestamps();
+            $table->unsignedBigInteger('num_livraison');
+            $table->float('versement',8,0)->default(0);
+            $table->string('validateur')->default("No One");
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

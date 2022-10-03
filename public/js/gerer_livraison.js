@@ -27,47 +27,49 @@ function get_livraison(objet)
 			var to_append = '';
 
 			var totale = 0;
-
-			for (var i = 0; i < data.length; i++) 
+			
+			for (var i = 0; i < data.livraison.length; i++) 
 			{
 				
-				var prod = '<td>'+data[i].nom_produit+'</td>';
-				var qte = '<td>'+data[i].qte+'</td>';
-				var prix = '<td>'+data[i].prix+' DA</td>';
-				var total = '<td>'+data[i].prix*data[i].qte+' DA</td>';
+				var prod = '<td>'+data.livraison[i].nom_produit+'</td>';
+				var qte = '<td>'+data.livraison[i].qte+'</td>';
+				var prix = '<td>'+formatMoney(data.livraison[i].prix)+' DA</td>';
+				var total = '<td>'+formatMoney(data.livraison[i].prix*data.livraison[i].qte)+' DA</td>';
 
 				to_append += '<tr>'+prod+''+qte+''+prix+''+total+'</tr>';
 
-				totale = totale + data[i].prix*data[i].qte;
+				totale = totale + data.livraison[i].prix*data.livraison[i].qte;
 
 				//
 			}
 
 
-			to_append += '<tr><td> </td><td> </td><td style="font-weight:bold;" >Total : </td><td style="font-weight:bold;" >'+totale+' DA</td></tr>';
-
+			to_append += '<tr><td> </td><td> </td><td style="font-weight:bold;" >Total : </td><td style="font-weight:bold;" >'+formatMoney(totale)+' DA</td></tr>';
+			to_append += '<tr><td> </td><td> </td><td style="font-weight:bold;" >Remise '+data.livraison[0].remise+'% : </td><td style="font-weight:bold;" >'+formatMoney(totale*(data.livraison[0].remise)/100)+' DA</td></tr>';
+			to_append += '<tr><td> </td><td> </td><td style="font-weight:bold;" >Net à Payer : </td><td style="font-weight:bold;" >'+formatMoney(totale*(1-(data.livraison[0].remise)/100))+' DA</td></tr>';
+			
 			$("#prods_livraison").html(to_append);
-			$("#livreur").html('Livreur : '+data[0].livreur);
-			$("#client").html('Client : '+data[0].id_client);
-			$("#versement").val(totale);
+			$("#livreur").html('Livreur : '+data.livraison[0].livreur);
+			$("#client").html('Client : '+data.livraison[0].id_client);
+			$("#versement").attr('max', totale);
 
-			if (data[0].statut=="en attente")
+			if (data.livraison[0].statut=="en attente")
 			{	
 				$(".alerte").remove();
 
-				$("#myTable").after('<h3 id="modal_statut'+data[0].num_livraison+'" class="alert alert-warning col-md-12 text-center alerte"> Statut Livraison : '+ data[0].statut +' </h3>')
+				$("#myTable").after('<h3 id="modal_statut'+data.livraison[0].num_livraison+'" class="alert alert-warning col-md-12 text-center alerte"> Statut Livraison : '+ data.livraison[0].statut +' </h3>')
 			}
 			else
 			{
 
 				$(".alerte").remove();
 
-				$("#myTable").after('<h3 id="modal_statut'+data[0].num_livraison+' " class="alerte alert col-md-12 text-center"> Statut Livraison : '+ data[0].statut +' </h3>')
+				$("#myTable").after('<h3 id="modal_statut'+data.livraison[0].num_livraison+' " class="alerte alert col-md-12 text-center"> Statut Livraison : '+ data.livraison[0].statut +' </h3>')
 
 
 				//
 			}
-			if (data[0].statut=="rejeté")
+			if (data.livraison[0].statut=="rejeté")
 			{
 
 				$("#rejeter").hide();
@@ -78,7 +80,7 @@ function get_livraison(objet)
 			}
 
 
-			if (data[0].statut!=="en attente" && data[0].statut!=="rejeté" && data[0].statut!=="validé")
+			if (data.livraison[0].statut!=="en attente" && data.livraison[0].statut!=="rejeté" && data.livraison[0].statut!=="validé")
 			{
 
 				$("#encaissements").show();
@@ -89,6 +91,46 @@ function get_livraison(objet)
 				//
 			}
 
+			var versements = ''			
+
+			var total_versements = 0;
+
+			for (var i = 0; i < data.versements.length; i++) 
+			{
+				
+
+				versements += '<tr> <td>'+data.versements[i].created_at+'</td> <td>'+formatMoney(data.versements[i].versement)+' DA</td> <td>'+data.versements[i].validateur+'</td> </tr>';
+
+				total_versements += data.versements[i].versement;
+
+				//
+			}
+
+			versements += '<tr class="alert alert-primary"><td style="font-weight:bold;" >Total Versement : </td><td>'+formatMoney(total_versements)+' DA</td></tr>';
+
+			var reste = totale*(1-(data.livraison[0].remise/100)) - total_versements;
+
+			if (reste!==0)
+			{
+				versements += '<tr><td style="font-weight:bold; color:red;">Reste : </td><td style="font-weight:bold; color:red;">'+formatMoney(reste)+' DA</td></tr>';
+
+				$("#versement").show(100);
+				$("#label_versement").show(100);
+				$("#valider_versement").show(100);
+				$("#versement_complet").hide(100);
+
+			}
+			else
+			{
+				versements += '<tr><td style="font-weight:bold; color:green;">Payement Complet</td><td style="font-weight:bold; color:green;">'+formatMoney(total_versements)+' DA</td></tr>';
+				
+				$("#versement").hide(100);
+				$("#label_versement").hide(100);
+				$("#valider_versement").hide(100);
+				$("#versement_complet").show(100);
+			}
+
+			$("#past_versements").html(versements);
 
 			//
 		}
@@ -241,7 +283,25 @@ function valider_versement()
 
 	var versement = $("#versement").val();
 
+	var max = $("#versement").attr('max');
+
+	var totale = max;
+
+	if (parseFloat(versement) > parseFloat(max)) 
+	{
+
+		var depassement = '<p id="depassement" class="alert alert-danger text-center"> Versement dépasse le total </p>';
+
+		$("#valider_versement").after(depassement);
+
+		return false;
+
+		//
+	}	
+
 	var num_livraison = $("#num_livraison").val();
+
+	$("#depassement").hide();
 
     $.ajax({
 		headers: 
@@ -255,17 +315,56 @@ function valider_versement()
 		success:function(data) 
 		{
 
-			$("#"+data.num_livraison).addClass("alert alert-success");
-			$("#statut"+data.num_livraison).attr('class','text-center alert alert-success');
-			$("#statut"+data.num_livraison).text('encaissé');
-			$("#modal_statut"+data.num_livraison).attr('class','text-center alert alert-success');
-			$("#modal_statut"+data.num_livraison).text('encaissé');
+			$("#"+data.livraison.num_livraison).addClass("alert alert-success");
+			$("#statut"+data.livraison.num_livraison).attr('class','text-center alert alert-success');
+			$("#statut"+data.livraison.num_livraison).text('terminé');
+			$("#modal_statut"+data.livraison.num_livraison).attr('class','text-center alert alert-success');
+			$("#modal_statut"+data.livraison.num_livraison).text('terminé');
 			
-	
-			$("#versement_complet").show(500);
-			$("#versement").hide(500);
-			$("#valider_versement").hide(500);
 
+			var versements = ''
+
+			var total_versements = 0;
+
+			for (var i = 0; i < data.versements.length; i++) 
+			{	
+
+				versements += '<tr><td>'+data.versements[i].created_at+'</td><td>'+formatMoney(data.versements[i].versement)+' DA</td> <td>'+data.versements[i].validateur+'</td> </tr>';
+
+				total_versements += data.versements[i].versement;
+
+				//
+			}
+
+			versements += '<tr class="alert alert-success" ><td style="font-weight:bold;" >Total versements: </td><td>'+formatMoney(total_versements)+' DA</td></tr>';
+
+			var reste = totale*(1-(data.livraison[0].remise/100)) - total_versements;
+
+			if (reste!==0)
+			{
+				versements += '<tr><td style="font-weight:bold; color:red;">Reste : </td><td style="font-weight:bold; color:red;">'+formatMoney(reste)+' DA</td></tr>';
+
+				$("#versement").show(100);
+				$("#label_versement").show(100);
+				$("#valider_versement").show(100);
+				$("#versement_complet").hide(100);
+
+			}
+			else
+			{
+				versements += '<tr class="alert alert-success"><td style="font-weight:bold; color:green;">Payement Complet</td><td style="font-weight:bold; color:green;">'+formatMoney(total_versements)+' DA</td></tr>';
+				
+				$("#versement").hide(100);
+				$("#label_versement").hide(100);
+				$("#valider_versement").hide(100);
+				$("#versement_complet").show(100);
+
+				$("#statut"+num_livraison).text('terminé');
+			}
+
+			$("#past_versements").hide()
+			$("#past_versements").html(versements);
+			$("#past_versements").show(1000)
 
 
 			/*$(".close").click();*/
@@ -277,6 +376,84 @@ function valider_versement()
 	    //
     });
 
+    $("#versement").val('');
 
 	//
+}
+
+function formatMoney(number) 
+{
+
+	var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+	ret = (ret.substr(1));
+
+  	return ret;
+}
+
+function test_depassement(objet)
+{
+
+	var total_livraison = ($(objet).attr('max'));
+
+	var num_livraison = $("#approuver").attr('num_livraison');
+
+	var val = ($(objet).val());
+
+    $.ajax({
+		headers: 
+		{
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},                    
+		type:"POST",
+		url:"/home/livraisons/test_depassement/ajax",
+		data:{val:val,num_livraison:num_livraison},
+
+		success:function(data) 
+		{
+
+			if(data)
+			{
+
+				$(objet).removeClass("is-invalid").addClass("is-valid");
+
+				$("#valider_versement").show();
+
+				$("#meggase_depassement").hide();
+				//
+			}
+			else
+			{
+
+				$(objet).removeClass("is-valid").addClass("is-invalid");
+
+				$("#valider_versement").hide();
+
+				var message = '<p id="meggase_depassement" style="color:red;" class="alert alert-danger text-center col-md-12"> Vous avez dépassez le reste!!</p>'
+				
+				$("#meggase_depassement").hide();
+				
+				$("#valider_versement").after(message);
+
+				//
+			}
+
+			//
+		}
+
+	    //
+    });
+
+
+	// body...
+}
+
+function get_bl() 
+{
+
+	var num_livraison = $("#approuver").attr('num_livraison');
+	
+	window.open("/home/livraisons/voir/"+num_livraison+"/BL", '_blank');
+
+	// body...
 }
