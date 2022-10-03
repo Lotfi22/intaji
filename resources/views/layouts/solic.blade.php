@@ -320,12 +320,12 @@
                         @csrf
                         <div class="form-group">
                             
-                            <label for="livreur">Livreur: </label>
+                            <label >Livreur: </label>
                             
-                            <select onchange="afficher_livreur(this);" class="form-control js-example-basic-single affiche_livreurs" size="5"
+                            <select class="js-example-basic-single affiche_livreurs" 
                                 name="livreur" id="livreur">
                             
-                                {{-- <option value="">{{ __('Séléctionner ...') }}</option> --}}
+                                <option value="">{{ __('Séléctionner ...') }}</option>
                             
                                 @foreach ($livreurs as $livreur)
                                     <option value="{{ $livreur->id }}">
@@ -455,24 +455,25 @@
         <script>
             
 
+
+
+        $('.affiche_livreurs').on('change', function(e) {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            var lien = "/livreur/filter/" + valueSelected;
+            $('#filter_livreur').attr('href', lien)
+            if(valueSelected.length>0){
+                window.location = lien
+            }
+        });
+
             $(document).ready(function() {
                 $('.js-example-basic-single').select2({
-                    'width': '100%'
+                    'width': '100%',
+                    "dropdownParent": $('#livreurModal'),
+                    'tags':true
                 });
             });
-
-
-            function afficher_livreur(objet)
-            {
-                event.preventDefault();
-
-                var optionSelected = $("option:selected", objet);
-                var valueSelected = objet.value;
-                var lien = "/livreur/filter/" + valueSelected;
-                $('#filter_livreur').attr('href', lien)
-                window.location = lien
-            };
-
 
             //
         </script>
