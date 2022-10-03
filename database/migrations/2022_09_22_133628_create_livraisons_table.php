@@ -20,6 +20,7 @@ class CreateLivraisonsTable extends Migration
             $table->unsignedBigInteger('id_client');
             $table->string('nom_produit');
             $table->string('livreur');
+            $table->string('id_depot');
             $table->integer('qte');
             $table->float('prix',8,0);
             $table->string('statut')->default('en attente');

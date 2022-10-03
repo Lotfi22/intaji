@@ -48,9 +48,10 @@ class Livraison extends Model
     public static function get_client($num_livraison)
     {
 
-        $client = DB::select("select id_client from livraisons where num_livraison = $num_livraison");
+        $client = DB::select("select nom,prenom from clients 
+        where id = (select id_client from livraisons where num_livraison = $num_livraison limit 1) ");
 
-        return $client[0]->id_client;
+        return $client[0]->nom.'  '.$client[0]->prenom;
         // code...
     }
 
@@ -85,6 +86,17 @@ class Livraison extends Model
         return $user[0]->user;
         // code...
     }
+
+    public static function get_livreur($num_livraison)
+    {
+
+        $livreur = DB::select("select email from livreurs where 
+        id=(select livreur from livraisons where num_livraison = $num_livraison limit 1)");
+
+        return $livreur[0]->email;
+        // code...
+    }
+
 
     public static function get_validator($num_livraison)
     {
