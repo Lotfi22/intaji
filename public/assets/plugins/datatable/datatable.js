@@ -52,7 +52,7 @@ $(function(e) {
 	var table = $('#datatable-10').DataTable( {
 		lengthChange: false,
 		order:[[1,'desc']],
-		buttons: [ 'copy', 'excel', 'pdf']
+		buttons: ['excel', 'pdf']
 	} );
 	table.buttons().container()
 	.appendTo( '#datatable-10_wrapper .col-md-6:eq(0)');
