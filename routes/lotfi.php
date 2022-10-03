@@ -38,6 +38,9 @@ Route::post('/BL/fit_produits/ajax','TicketController@fit_produits_bl');
 
 Route::post('/ticket/affecter/livreur/{id_livreur}/BL','LivraisonController@ajout_livraison');
 
+Route::post('/home/livraisons/get_client/ajax','LivraisonController@get_client');
+Route::post('/home/livraisons/get_livreur/ajax','LivraisonController@get_livreur');
+
 Route::get('/home/livraisons','LivraisonController@index');
 
 Route::post('/home/livraisons/show_livraison/ajax','LivraisonController@show_livraison');

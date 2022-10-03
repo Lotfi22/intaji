@@ -379,5 +379,36 @@ class LivraisonController extends Controller
         // code...
     }
 
+    public function get_client(Request $request)
+    {
+
+        $num_livraison = $request->num_livraison;
+
+        $client = DB::select("select nom,prenom from clients 
+        where id = (select id_client from livraisons where num_livraison = $num_livraison limit 1) ");
+
+        $client = $client[0]->nom.'  '.$client[0]->prenom;
+
+        return response()->json($client);
+
+        // code...
+    }
+
+
+    public function get_livreur(Request $request)
+    {
+
+        $num_livraison = $request->num_livraison;
+
+        $livreur = DB::select("select email from livreurs 
+        where id = (select livreur from livraisons where num_livraison = $num_livraison limit 1) ");
+
+        $livreur = $livreur[0]->email;
+
+        return response()->json($livreur);
+
+        // code...
+    }
+
     //
 }

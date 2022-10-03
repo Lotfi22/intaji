@@ -145,7 +145,7 @@
     <div class="modal fade " id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-content" id="details_livraison">
                 
                 <div class="modal-header">
                     <h3 class="modal-title text-center" id="lineModalLabel">Détails sur la livraison </h3>
@@ -217,6 +217,9 @@
                     @endif    
 
 					{{--  --}}                    
+            
+                    <button class="btn btn-primary col-md-12" onclick="imprimer_details();">Imprimer détails de la livraison </button>
+
                 </div>
             </div>
         </div>
@@ -227,7 +230,13 @@
 
     <script>
     	
+        function imprimer_details() 
+        {   
 
+            $('#details_livraison').printThis();
+
+            //
+        }
 
         //
     </script>

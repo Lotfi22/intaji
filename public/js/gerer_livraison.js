@@ -3,6 +3,63 @@ document.getElementById("la_remise").style.display = "none";
 document.getElementById("encaissements").style.display = "none";
 document.getElementById("versement_complet").style.display = "none";
 
+function get_client(num_livraison)
+{
+
+
+	var client = "";
+
+    $.ajax({
+		headers: 
+		{
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},                    
+		type:"POST",
+		url:"/home/livraisons/get_client/ajax",
+		data:{num_livraison:num_livraison},
+
+		success:function(data) 
+		{
+			
+			$("#client").html("Client : "+data);
+
+			//
+		}
+	    //
+    });
+
+
+	//
+}
+
+
+function get_livreur(num_livraison)
+{
+
+    $.ajax({
+		headers: 
+		{
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},                    
+		type:"POST",
+		url:"/home/livraisons/get_livreur/ajax",
+		data:{num_livraison:num_livraison},
+
+		success:function(data) 
+		{
+			
+			$("#livreur").html("Livreur : "+data);
+
+			//
+		}
+	    //
+    });
+
+
+	//
+}
+
+
 
 function get_livraison(objet) 
 {
@@ -49,8 +106,12 @@ function get_livraison(objet)
 			to_append += '<tr><td> </td><td> </td><td style="font-weight:bold;" >Net à Payer : </td><td style="font-weight:bold;" >'+formatMoney(totale*(1-(data.livraison[0].remise)/100))+' DA</td></tr>';
 			
 			$("#prods_livraison").html(to_append);
-			$("#livreur").html('Livreur : '+data.livraison[0].livreur);
-			$("#client").html('Client : '+data.livraison[0].id_client);
+			
+			/*$("#livreur").html('Livreur : '+data.livraison[0].livreur);*/
+			get_livreur(num_livraison);
+
+
+			/*$("#client").html();*/get_client(num_livraison);
 			$("#versement").attr('max', totale);
 
 			if (data.livraison[0].statut=="en attente")
