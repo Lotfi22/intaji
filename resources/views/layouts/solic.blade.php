@@ -51,7 +51,11 @@
         <link rel="stylesheet" href="{{ asset('../../assets/plugins/multipleselect/multiple-select.css') }}">
 
         <link href="{{ asset('../../assets/plugins/sweet-alert/sweetalert.css') }}" rel="stylesheet" />
-
+        <style>
+            .barre{
+                max-width: 1900px !important;
+            }            
+        </style>
     </head>
 
     <body class="default-header">
@@ -131,7 +135,7 @@
                 <!-- HORIZONTAL-MENU -->
                 <div class="sticky">
                     <div class="horizontal-main hor-menu clearfix">
-                        <div class="horizontal-mainwrapper container clearfix">
+                        <div class="horizontal-mainwrapper container barre clearfix">
                             <nav class="horizontalMenu clearfix">
                                 <ul class="horizontalMenu-list">
                                     
@@ -263,6 +267,8 @@
                                     <li aria-haspopup="true"><a href="/home/caisse" class=""><i class="ion-cash"></i> Caisse</a></li>
 
                                     <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="ion-cash"></i>Livraisons</a></li>
+
+                                    <li aria-haspopup="true"><a href="/" class=""><i class="ion-cash"></i>Commandes</a></li>
 
 
                                     {{--  --}}                                        
