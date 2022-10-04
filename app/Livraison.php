@@ -66,6 +66,52 @@ class Livraison extends Model
         // code...
     }
 
+    public static function get_versement($num_livraison)
+    {
+
+        $total_versement = DB::select("select sum(versement) as total from versements 
+            where num_livraison = $num_livraison");
+
+        return $total_versement[0]->total;
+        // code...
+    }
+
+    public static function get_reste($num_livraison)
+    {
+
+        $reste=(Livraison::get_total($num_livraison)-Livraison::get_versement($num_livraison));
+
+        if(Livraison::get_total($num_livraison)==Livraison::get_versement($num_livraison))
+        {
+            return '<span class="tag tag-rounded tag-green"> 0</span>';
+            //
+        }
+        else
+        {
+
+            return '<span class="tag tag-rounded tag-danger">'.$reste.' DA</span>';
+
+            //
+        }
+
+        //
+    }
+
+    public static function get_complet($num_livraison)
+    {
+
+        if(Livraison::get_total($num_livraison)==(Livraison::get_versement($num_livraison)))
+        {   
+            return '<span class="tag tag-rounded tag-green"> Complète</span>';
+        }
+        else
+        {
+            return '<p class="tag tag-rounded tag-red"> Incomplète</p>';
+        }
+
+        //
+    }
+
 
     public static function get_statut($num_livraison)
     {
@@ -115,6 +161,34 @@ class Livraison extends Model
             where num_livraison = $num_livraison and statut = 'validé' ");
 
         return count($validator);
+        // code...
+    }
+
+    public static function get_balance()
+    {
+
+        $balance = DB::select("select sum(prix*qte) as balance 
+        from livraisons l
+        where l.statut <> 'rejeté'");
+
+        return $balance[0]->balance;
+        // code...
+    }
+
+    public static function get_versements()
+    {
+
+        $versement = DB::select("select sum(versement) as versement 
+        from versements");
+
+        return $versement[0]->versement;
+        // code...
+    }
+
+    public static function get_restes()
+    {
+
+        return Livraison::get_balance()-Livraison::get_versements();
         // code...
     }
 

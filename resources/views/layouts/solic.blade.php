@@ -98,8 +98,8 @@
                                     
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                         <div class="drop-heading  text-center border-bottom pb-3">
-                                            <h5 class="text-dark mb-1">TASSHIL</h5>
-                                            <small class="text-muted">Logiciel De Gestion de l'école</small>
+                                            <h5 class="text-dark mb-1">Intaji</h5>
+                                            <small class="text-muted">Logiciel De Gestion de Production</small>
                                         </div>
                                         <a class="dropdown-item" href="/home"><i class="mdi mdi-account-outline mr-2"></i> <span>My profile</span></a>
 
@@ -316,7 +316,7 @@
                 <div class="container">
                     <div class="row align-items-center flex-row-reverse">
                         <div class="col-md-12 col-sm-12 text-center">
-                            Copyright © 2021 <a href="#">Intaji</a> Designed by <a href="#">Power Evo</a> All rights reserved.
+                            Copyright © 2022 <a href="#">Intaji</a> Designed by <a href="#">Power Evo</a> All rights reserved.
                         </div>
                     </div>
                 </div>
