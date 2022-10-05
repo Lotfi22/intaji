@@ -224,7 +224,32 @@
 
 
                                         </ul>
-                                    </li>                                                                      
+                                    </li>  
+
+
+                                    <li aria-haspopup="true">
+                                        <a href="#" style="cursor: pointer;" class="sub-icon">
+                                            <i class="mdi mdi-package-variant"></i>Commandes
+                                            <i class="fa fa-angle-down horizontal-icon"></i>
+                                        </a>
+                                        
+                                        <ul class="sub-menu">
+                                                
+                                            <li aria-haspopup="true">
+                                                <a href="{{route('commande.index')}}">Commandes</a>
+                                            </li>
+
+                                            <li aria-haspopup="true">
+                                                <a href="{{route('client.index')}}">Clients</a>
+                                            </li>
+
+
+                                        </ul>
+                                    </li>
+
+                                    <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="mdi mdi-forklift"></i>Livraisons</a></li>
+
+
                                     <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
                                         
                                         <a style="cursor: pointer;" class="sub-icon">
@@ -232,7 +257,10 @@
                                             <i class="fa fa-angle-down horizontal-icon"></i>
                                         </a>
                                         
-                                    </li>                                                                                            
+                                    </li>
+
+                                    <li aria-haspopup="true"><a href="/home/caisse" class=""><i class="ion-cash"></i> Caisse</a></li>
+
                                     <li aria-haspopup="true">
                                         
                                         <a href="/rapport" style="cursor: pointer;" class="sub-icon">
@@ -254,29 +282,6 @@
                                         </ul>
                                     </li>
 
-                                    <li aria-haspopup="true"><a href="/home/caisse" class=""><i class="ion-cash"></i> Caisse</a></li>
-
-                                    <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="ion-cash"></i>Livraisons</a></li>
-
-                                    <li aria-haspopup="true">
-                                        <a href="#" style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-chart-line"></i> Client/Commande
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="{{route('commande.index')}}">Commandes</a>
-                                            </li>
-
-                                            <li aria-haspopup="true">
-                                                <a href="{{route('client.index')}}">Clients</a>
-                                            </li>
-
-
-                                        </ul>
-                                    </li>
 
 
                                     {{--  --}}                                        

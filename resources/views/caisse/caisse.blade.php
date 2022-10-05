@@ -82,23 +82,38 @@
 
 	<div class="form-group">
 
-		<form class="col-md-12 row" method="post" action="/home/caisse/filter">
+        <div class="card-header row col-md-12">
 
-			{{ csrf_field() }}
+            <form class="row col-md-12" method="post" action="/home/caisse/filter">
+                @csrf
+                <div class="row col-md-12">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="small" for="date_debut">date début : </label>
+                            <input  class="form-control" id="date_debut"
+                             name="date_debut" value="{{$date_debut}}"
+                             type="date" />
+                        </div>
+                    </div>
 
-			<label for="date_debut" class="form-control col-md-4">
-					
-				<input type="date" id="date_debut" name="date_debut" class="form-control" value="{{$date_debut}}">
-			</label> 
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="small " for="date_fin">date fin: </label>
+                            <input  class="form-control" id="date_fin"
+                             name="date_fin" value="{{$date_fin}}"
+                             type="date" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        
+                        <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
 
-			<label for="date_fin" class="form-control col-md-4">
-					
-				<input type="date" id="date_fin" name="date_fin" class="form-control" value="{{$date_fin}}">
-			</label> 
-
-			<button class="col-md-4 btn btn-sm btn-primary" type="submit">Filter</button>
-
-		</form>
+                        <button type="submit" class="text-white form-control btn btn-primary">
+                            <span style="color:#fff;">Filtrer</span>
+                        </button>
+                    </div>
+            </form>
+        </div>
 
 		<div class="card mb-4">
 

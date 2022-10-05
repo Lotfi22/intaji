@@ -58,7 +58,7 @@ Route::post('/home/livraisons/encaissements1','LivraisonController@encaissements
 Route::post('/rapport/get_qte_depots','DepotController@get_qte_produit');
 
 Route::post('/home/livraisons/test_depassement/ajax','LivraisonController@test_depassement');
-
+Route::post('/home/livraisons/filter','LivraisonController@filter');
 
 //caisse : 
 

@@ -24,13 +24,52 @@ class LivraisonController extends Controller
     public function index()
     {
 
-        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise from livraisons order by num_livraison desc");
+        if(Check::CheckAuth(['admin','production','depot'])==false){
+
+            return redirect()->route('login.admin');     
+
+        }
+
+        $date_debut = date("Y-m-d",strtotime("-1 month"));
+        $date_fin = date('Y-m-d');        
+
+        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise
+        from livraisons 
+        where date(updated_at) between date('$date_debut') and date('$date_fin')
+        order by num_livraison desc");
 
         $versements = DB::select("select num_livraison,versement 
         from versements
         order by num_livraison");
 
-        return view('livraisons.index',compact('livraisons','versements'));
+        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin'));
+
+        // code...
+    }
+
+
+    public function filter(Request $request)
+    {
+
+        if(Check::CheckAuth(['admin','production','depot'])==false){
+
+            return redirect()->route('login.admin');     
+
+        }
+
+        $date_debut = $request->date_debut;
+        $date_fin = $request->date_fin;
+
+        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise
+        from livraisons 
+        where date(updated_at) between date('$date_debut') and date('$date_fin')
+        order by num_livraison desc");
+
+        $versements = DB::select("select num_livraison,versement 
+        from versements
+        order by num_livraison");
+
+        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin'));
 
         // code...
     }

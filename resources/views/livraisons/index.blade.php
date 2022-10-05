@@ -17,14 +17,47 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid row">        
 
         <h1 class="mt-4">Gestion livraisons</h1>
-        <div class="card mb-4">
+        <div class="card mb-4 row">
 
+            <div class="card-body row col-md-12">
 
-            <div class="card-body">
-                <div class="table-responsive">
+                <div class="card-header row col-md-12">
+
+                    <form class="row col-md-12" method="post" action="/home/livraisons/filter">
+                        @csrf
+                        <div class="row col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="small" for="date_debut">date début : </label>
+                                    <input  class="form-control" id="date_debut"
+                                     name="date_debut" value="{{$date_debut}}"
+                                     type="date" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="small " for="date_fin">date fin: </label>
+                                    <input  class="form-control" id="date_fin"
+                                     name="date_fin" value="{{$date_fin}}"
+                                     type="date" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                
+                                <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
+
+                                <button type="submit" class="text-white form-control btn btn-primary">
+                                    <span style="color:#fff;">Filtrer</span>
+                                </button>
+                            </div>
+                    </form>
+                </div>
+
+                <div class="table-responsive col-md-12">
                     <table class="table table-bordered text-center" id="datatable-10" width="100%" cellspacing="0">
 
                         <thead>

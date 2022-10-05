@@ -3,14 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
+
 use App\Livraison;
+
+use App\Check;
+
+use DB;
+
+use Auth;
 
 class CaisseController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+
+    }
+
     public function index()
     {
+
+        if(Check::CheckAuth(['admin','production'])==false){
+
+            return redirect()->route('login.admin');     
+
+        }
+
 
         $date_debut = date("Y-m-d",strtotime("-1 month"));;
         $date_fin = date('Y-m-d');

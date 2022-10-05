@@ -182,6 +182,7 @@ class Livraison extends Model
         from versements");
 
         return $versement[0]->versement;
+
         // code...
     }
 
