@@ -24,13 +24,52 @@ class LivraisonController extends Controller
     public function index()
     {
 
-        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise from livraisons order by num_livraison desc");
+        if(Check::CheckAuth(['admin','production','depot'])==false){
+
+            return redirect()->route('login.admin');     
+
+        }
+
+        $date_debut = date("Y-m-d",strtotime("-1 month"));
+        $date_fin = date('Y-m-d');        
+
+        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise
+        from livraisons 
+        where date(updated_at) between date('$date_debut') and date('$date_fin')
+        order by num_livraison desc");
 
         $versements = DB::select("select num_livraison,versement 
         from versements
         order by num_livraison");
 
-        return view('livraisons.index',compact('livraisons','versements'));
+        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin'));
+
+        // code...
+    }
+
+
+    public function filter(Request $request)
+    {
+
+        if(Check::CheckAuth(['admin','production','depot'])==false){
+
+            return redirect()->route('login.admin');     
+
+        }
+
+        $date_debut = $request->date_debut;
+        $date_fin = $request->date_fin;
+
+        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise
+        from livraisons 
+        where date(updated_at) between date('$date_debut') and date('$date_fin')
+        order by num_livraison desc");
+
+        $versements = DB::select("select num_livraison,versement 
+        from versements
+        order by num_livraison");
+
+        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin'));
 
         // code...
     }
@@ -375,6 +414,37 @@ class LivraisonController extends Controller
 
         $dompdf->stream("$file", array('Attachment'=>0));
 
+
+        // code...
+    }
+
+    public function get_client(Request $request)
+    {
+
+        $num_livraison = $request->num_livraison;
+
+        $client = DB::select("select nom,prenom from clients 
+        where id = (select id_client from livraisons where num_livraison = $num_livraison limit 1) ");
+
+        $client = $client[0]->nom.'  '.$client[0]->prenom;
+
+        return response()->json($client);
+
+        // code...
+    }
+
+
+    public function get_livreur(Request $request)
+    {
+
+        $num_livraison = $request->num_livraison;
+
+        $livreur = DB::select("select email from livreurs 
+        where id = (select livreur from livraisons where num_livraison = $num_livraison limit 1) ");
+
+        $livreur = $livreur[0]->email;
+
+        return response()->json($livreur);
 
         // code...
     }

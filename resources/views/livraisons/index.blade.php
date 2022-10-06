@@ -17,14 +17,47 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid row">        
 
         <h1 class="mt-4">Gestion livraisons</h1>
-        <div class="card mb-4">
+        <div class="card mb-4 row">
 
+            <div class="card-body row col-md-12">
 
-            <div class="card-body">
-                <div class="table-responsive">
+                <div class="card-header row col-md-12">
+
+                    <form class="row col-md-12" method="post" action="/home/livraisons/filter">
+                        @csrf
+                        <div class="row col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="small" for="date_debut">date début : </label>
+                                    <input  class="form-control" id="date_debut"
+                                     name="date_debut" value="{{$date_debut}}"
+                                     type="date" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="small " for="date_fin">date fin: </label>
+                                    <input  class="form-control" id="date_fin"
+                                     name="date_fin" value="{{$date_fin}}"
+                                     type="date" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                
+                                <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
+
+                                <button type="submit" class="text-white form-control btn btn-primary">
+                                    <span style="color:#fff;">Filtrer</span>
+                                </button>
+                            </div>
+                    </form>
+                </div>
+
+                <div class="table-responsive col-md-12">
                     <table class="table table-bordered text-center" id="datatable-10" width="100%" cellspacing="0">
 
                         <thead>
@@ -145,7 +178,7 @@
     <div class="modal fade " id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-content" id="details_livraison">
                 
                 <div class="modal-header">
                     <h3 class="modal-title text-center" id="lineModalLabel">Détails sur la livraison </h3>
@@ -217,6 +250,9 @@
                     @endif    
 
 					{{--  --}}                    
+            
+                    <button class="btn btn-primary col-md-12" onclick="imprimer_details();">Imprimer détails de la livraison </button>
+
                 </div>
             </div>
         </div>
@@ -227,7 +263,13 @@
 
     <script>
     	
+        function imprimer_details() 
+        {   
 
+            $('#details_livraison').printThis();
+
+            //
+        }
 
         //
     </script>

@@ -50,8 +50,8 @@ $(function(e) {
 	//datatable-10
 
 	var table = $('#datatable-10').DataTable( {
-		lengthChange: false,
-		order:[[1,'desc']],
+		lengthChange: true,
+		order:[[0,'desc']],
 		buttons: ['excel', 'pdf']
 	} );
 	table.buttons().container()

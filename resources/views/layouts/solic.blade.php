@@ -98,8 +98,8 @@
                                     
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                         <div class="drop-heading  text-center border-bottom pb-3">
-                                            <h5 class="text-dark mb-1">TASSHIL</h5>
-                                            <small class="text-muted">Logiciel De Gestion de l'école</small>
+                                            <h5 class="text-dark mb-1">Intaji</h5>
+                                            <small class="text-muted">Logiciel De Gestion de Production</small>
                                         </div>
                                         <a class="dropdown-item" href="/home"><i class="mdi mdi-account-outline mr-2"></i> <span>My profile</span></a>
 
@@ -224,7 +224,32 @@
 
 
                                         </ul>
-                                    </li>                                                                      
+                                    </li>  
+
+
+                                    <li aria-haspopup="true">
+                                        <a href="#" style="cursor: pointer;" class="sub-icon">
+                                            <i class="mdi mdi-package-variant"></i>Commandes
+                                            <i class="fa fa-angle-down horizontal-icon"></i>
+                                        </a>
+                                        
+                                        <ul class="sub-menu">
+                                                
+                                            <li aria-haspopup="true">
+                                                <a href="{{route('commande.index')}}">Commandes</a>
+                                            </li>
+
+                                            <li aria-haspopup="true">
+                                                <a href="{{route('client.index')}}">Clients</a>
+                                            </li>
+
+
+                                        </ul>
+                                    </li>
+
+                                    <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="mdi mdi-forklift"></i>Livraisons</a></li>
+
+
                                     <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
                                         
                                         <a style="cursor: pointer;" class="sub-icon">
@@ -232,7 +257,10 @@
                                             <i class="fa fa-angle-down horizontal-icon"></i>
                                         </a>
                                         
-                                    </li>                                                                                            
+                                    </li>
+
+                                    <li aria-haspopup="true"><a href="/home/caisse" class=""><i class="ion-cash"></i> Caisse</a></li>
+
                                     <li aria-haspopup="true">
                                         
                                         <a href="/rapport" style="cursor: pointer;" class="sub-icon">
@@ -254,29 +282,6 @@
                                         </ul>
                                     </li>
 
-                                    <li aria-haspopup="true"><a href="/home/caisse" class=""><i class="ion-cash"></i> Caisse</a></li>
-
-                                    <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="ion-cash"></i>Livraisons</a></li>
-
-                                    <li aria-haspopup="true">
-                                        <a href="#" style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-chart-line"></i> Client/Commande
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="{{route('commande.index')}}">Commandes</a>
-                                            </li>
-
-                                            <li aria-haspopup="true">
-                                                <a href="{{route('client.index')}}">Clients</a>
-                                            </li>
-
-
-                                        </ul>
-                                    </li>
 
 
                                     {{--  --}}                                        
@@ -316,7 +321,7 @@
                 <div class="container">
                     <div class="row align-items-center flex-row-reverse">
                         <div class="col-md-12 col-sm-12 text-center">
-                            Copyright © 2021 <a href="#">Intaji</a> Designed by <a href="#">Power Evo</a> All rights reserved.
+                            Copyright © 2022 <a href="#">Intaji</a> Designed by <a href="#">Power Evo</a> All rights reserved.
                         </div>
                     </div>
                 </div>
