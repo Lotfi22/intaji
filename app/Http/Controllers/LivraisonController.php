@@ -42,9 +42,11 @@ class LivraisonController extends Controller
         from versements
         order by num_livraison");
 
+        $livreurs = DB::select("select * from livreurs order by name");
+        
         $depots = DB::select("select * from mes_depots order by nom");
 
-        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin','depots'));
+        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin','depots','livreurs'));
 
         // code...
     }
@@ -216,6 +218,8 @@ class LivraisonController extends Controller
     public function new_bl(Request $request)
     {
 
+        $livreur = $request->livreur;
+
         $depot = $request->depot;
 
         if(Check::CheckAuth(['admin','production','depot'])==false)
@@ -227,14 +231,15 @@ class LivraisonController extends Controller
 
         $remise = ($request->remise);
 
-        DB::update("update livraisons set statut = 'BL',remise=$remise,id_depot='$depot' 
+        DB::update("update livraisons set 
+        statut = 'BL',remise=$remise,id_depot='$depot',livreur='$livreur'
         where num_livraison = $num_livraison");
 
         $livraison = (DB::select("select * from livraisons where num_livraison = $num_livraison"));
 
-        $client = ($livraison[0]->id_client);
-
-        $adresse = "adresse_client";
+        $client = Livraison::get_client($num_livraison);
+        
+        $adresse = Livraison::get_adresse_client($num_livraison);
 
         $id_livreur = ($livraison[0]->livreur);
 

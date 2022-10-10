@@ -381,7 +381,7 @@ class Template extends Model
                     <td align="">
                         <h3>Client : '.$client.'</h3>
                         <pre>
-                            RC :  Divers CLient 
+                            RC :  '.$client.' 
                             MF :  
                             Adresse : '.$adresse.'
                         </pre>

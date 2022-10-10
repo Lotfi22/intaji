@@ -48,10 +48,21 @@ class Livraison extends Model
     public static function get_client($num_livraison)
     {
 
-        $client = DB::select("select nom,prenom from clients 
+        $client = DB::select("select nom,prenom,telephone from clients 
         where id = (select id_client from livraisons where num_livraison = $num_livraison limit 1) ");
 
-        return $client[0]->nom.'  '.$client[0]->prenom;
+        return $client[0]->nom.' '.$client[0]->prenom.' | '.$client[0]->telephone;
+        // code...
+    }
+
+
+    public static function get_adresse_client($num_livraison)
+    {
+
+        $client = DB::select("select wilaya,commune from clients 
+        where id = (select id_client from livraisons where num_livraison = $num_livraison limit 1) ");
+
+        return $client[0]->wilaya.' '.$client[0]->commune;
         // code...
     }
 
