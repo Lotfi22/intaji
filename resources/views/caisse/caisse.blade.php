@@ -1,7 +1,10 @@
 @extends('layouts.solic')
 
 @section('content')
-	
+
+
+
+
 	<div class="page-header">
 
 		<div class="container-fluid py-4">
@@ -35,7 +38,7 @@
 				                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Encaissé : 
 
 											<span class="text-success text-sm font-weight-bolder">                  	
-			                            	{!! (int)(($versement/$balance)*100) !!}%
+			                            	{!! (int)(($versement/$balance)*100) ?? '' !!}%
 			                        		</span>
 				                        </p>
 				                        <h5 class="font-weight-bolder mb-0">
@@ -59,7 +62,7 @@
 
 											<span class="text-danger text-sm font-weight-bolder">                  	
 
-				                            	{!! (int)(($reste/$balance)*100+1) !!}%
+				                            	{!! (int)(($reste/$balance)*100+1) ?? '' !!}%
 				                        	</span>
 				                        </p>
 				                        <h5 class="font-weight-bolder mb-0">
@@ -81,6 +84,8 @@
 
 
 	<div class="form-group">
+
+
 
         <div class="card-header row col-md-12">
 
@@ -112,6 +117,7 @@
                             <span style="color:#fff;">Filtrer</span>
                         </button>
                     </div>
+                </div> 
             </form>
         </div>
 

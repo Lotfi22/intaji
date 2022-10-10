@@ -34,7 +34,7 @@
 
                             <label class="small mb-1" for="date_debut">Date début : </label>
 
-                            <input  class="form-control py-4" id="date_debut"  name="date_debut" type="date" value="{{date('Y-m-d')}}"/>
+                            <input  class="small form-control py-4" id="date_debut"  name="date_debut" type="date" value="{{date('Y-m-d')}}"/>
 
                         </div>
 
@@ -46,7 +46,7 @@
 
                             <label class="small mb-1" for="date_fin">Date Fin : </label>
 
-                            <input  class="form-control py-4"  
+                            <input  class="small form-control py-4"  
 
                             id="date_fin"  name="date_fin" type="date" value="{{date('Y-m-d')}}" />
 

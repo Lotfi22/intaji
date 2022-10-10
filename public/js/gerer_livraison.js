@@ -21,8 +21,7 @@ function get_client(num_livraison)
 		success:function(data) 
 		{
 			
-			$("#client").html("Client : "+data);
-
+			$("#client").html("Client : "+data.nom+" "+data.prenom + " | Tél : "+data.telephone + " | Adresse : "+data.wilaya+" "+data.commune);
 			//
 		}
 	    //
