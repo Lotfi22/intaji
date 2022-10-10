@@ -413,7 +413,7 @@
         <!-- STICKY JS -->
         <script src="{{ asset('../../assets/js/stiky.js') }}"></script>
 
-        <!-- CUSTOM JS -->
+        
 
         <!-- C3.JS CHART PLUGIN -->
         <script src="{{ asset('../../assets/plugins/charts-c3/d3.v5.min.js') }}"></script>
@@ -468,7 +468,7 @@
         <!-- ECHART PLUGIN -->
         <script src="{{ asset('../../assets/plugins/echarts/echarts.js') }}"></script>
         <script src="{{ asset('js/toastr.min.js') }}"></script>        
-
+        <script src="{{ asset('js/dynamic-form.js') }}"></script>        
         <script>
             $(function() {
                 $("#search").focus();
@@ -477,10 +477,6 @@
         </script>        
 
         <script>
-            
-
-
-
         $('.affiche_livreurs').on('change', function(e) {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
@@ -501,8 +497,6 @@
 
             //
         </script>
-
-    
         @yield('scripts')
     </body>
 </html>

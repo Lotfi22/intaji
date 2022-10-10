@@ -58,6 +58,12 @@ $(function(e) {
 	.appendTo( '#datatable-10_wrapper .col-md-6:eq(0)');
 
 
+	var table = $('#datatable-11').DataTable( {
+		lengthChange: true,
+		order:[[0,'desc']],
+	} );
+	table.buttons().container()
+	.appendTo( '#datatable-11_wrapper .col-md-6:eq(0)');
 	
 	//datatbale-6
 	$('#datatbale-6').DataTable( {
