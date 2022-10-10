@@ -30,12 +30,9 @@
                         <tr>
                             <td valign="top"></td>
                             <td align="left">
-                            <h3>-{{ App\Commande::get_client($num_commande)[0]->nom ?? '' }} {{ App\Commande::get_client($num_commande)[0]->prenom ?? '' }}</h3>
-                            <h3>-{{ App\Commande::get_client($num_commande)[0]->telephone ?? 'ss' }}</h3>
-                            <h3>-{{ App\Commande::get_client($num_commande)[0]->adress ?? '' }}</h3>
-                            <!-- <h3>{{ App\Commande::get_client($num_commande)[0]->wilaya ?? '' }}</h3> -->
-                            <h3>Shinra Electric power company</h3>
-                                
+                            <h3>Nom Prénom : {{ App\Commande::get_client($num_commande)[0]->nom ?? '' }} {{ App\Commande::get_client($num_commande)[0]->prenom ?? '' }}</h3>
+                            <h3> Téléphone : {{ App\Commande::get_client($num_commande)[0]->telephone ?? 'ss' }}</h3>
+                            
                             </td>
                         </tr>
 

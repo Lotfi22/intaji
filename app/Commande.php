@@ -30,16 +30,7 @@ class Commande extends Model
 
     }
 
-    public static function get_wilaya($num_commande)
-    {
-
-    }
-
-    public static function get_commune($num_commande)
-    {
-
-    }
-
+    
 
     public static function get_client($num_commande)
     {
