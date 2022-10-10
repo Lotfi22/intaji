@@ -375,7 +375,7 @@ class Template extends Model
                     <td align="left">
                         <h3>LION ROYAL</h3>
                         <pre>
-                            <img src="'.$codebar.'" width="50px" height="60px">
+                            <img src="'.asset($codebar).'" width="50px" height="60px">
 
                         </pre>
                     </td>

@@ -268,18 +268,6 @@ class LivraisonController extends Controller
 
         $options->set(array('isRemoteEnabled' => true));
 
-        $dompdf->setOptions($options);
-
-        file_put_contents('img/essahel_food/121213.svg',DNS1D::getBarcodeSVG($number_to_code_barre,'C128'));    
-        
-        $codebar = 'img/essahel_food/'.$number.'.svg';
-        
-        $elements = $informations;
-
-        $num_bl = Livraison::get_num_bl($num_livraison);
-
-        $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl,$codebar);
-
         $contxt = stream_context_create([
             'ssl' => [
             'verify_peer' => FALSE,
@@ -287,6 +275,18 @@ class LivraisonController extends Controller
             'allow_self_signed'=> TRUE
             ]
         ]);
+
+
+        $dompdf->setOptions($options);
+        
+        $codebar = 'lion.jpeg';
+        
+        $elements = $informations;
+
+        $num_bl = Livraison::get_num_bl($num_livraison);
+
+        $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl,$codebar);
+
         $dompdf = $dompdf->set_options(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
         $dompdf->setHttpContext($contxt);               
         $dompdf->loadHtml($html);
@@ -408,10 +408,7 @@ class LivraisonController extends Controller
         $options->set(array('isRemoteEnabled' => true));
         $dompdf->setOptions($options);    
 
-        file_put_contents('img/essahel_food/121213.svg',DNS1D::getBarcodeSVG(121213,'C128'));    
-
-
-        $codebar = 'img/essahel_food/121213.svg';
+        $codebar = 'hand-pay.png';
 
         $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl,$codebar);
 
