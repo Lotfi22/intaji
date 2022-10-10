@@ -518,8 +518,13 @@
                     'tags':true
                 });
             });
+            $(document).ready(function() {
+                $('.select2').select2({
+                    'width':"95%"
+                });
+            });
 
-            //
+//
         </script>
         @yield('scripts')
     </body>

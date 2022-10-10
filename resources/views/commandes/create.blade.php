@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="page-header">
-    <h4 class="page-title"> <i class="fa fa-plus"></i> Nouveau Commande</h4>
+    <h4 class="page-title"> <i class="fa fa-plus"></i> Nouvelle Commande</h4>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Accueil</a></li>
         <li class="breadcrumb-item active" aria-current="page">Commande</li>
@@ -27,7 +27,7 @@
                         'label'=>'status_client',
                         'name'=>'status_client',
                         'type'=>'select',
-                        'options'=>['SKHONE','BARED '],
+                        'options'=>['Motivé','Renseignments'],
                         'col'=>4
 
                         ],
@@ -46,7 +46,7 @@
                         <div class="form-group">
                             <label style="font-size:15px;" class="form-label">{{$input['label']}}</label>
                             @if($input['type'] == "select")
-                            <select class="form-control" name="{{$input['name']}}">
+                            <select class="form-control select2" name="{{$input['name']}}">
                                 @if($input['name']=="status_client")
                                     @foreach($input['options'] as $option)
                                     <option value="{{$option}}">
@@ -80,7 +80,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Prouit</label>
-                                <select class="form-control" id="produit" name="produit">
+                                <select class="form-control select2" id="produit" name="produit">
                                     @foreach($produits as $produit)
                                         <option value="{{$produit->nom}}">
                                             {{$produit->nom}}
@@ -178,7 +178,7 @@
 
         // ////////////////////////////////////////////////////////////////
         var dynamic_form = $("#dynamic_form2").dynamicForm("#dynamic_form2", "#plus52", "#minus52", {
-            limit: 10,
+            limit: "300",
             formPrefix: "dynamic_form2",
             normalizeFullForm: false
         });

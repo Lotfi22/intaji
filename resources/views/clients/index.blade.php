@@ -106,20 +106,20 @@
                         @csrf
                         <div class="form-group">
                             <label>Nom * : </label>
-                            <input type="text" value="{{ old('nom') }}" name="nom" class="form-control"
+                            <input type="text" value="{{ old('nom') }}" required name="nom" class="form-control"
                                 id="exampleInputEmail1" placeholder="Entrer Le Nom ">
                         </div>
 
                         <div class="form-group">
                             <label>Prénom * : </label>
-                            <input type="text" value="{{ old('prenom') }}" name="prenom" class="form-control"
+                            <input type="text" value="{{ old('prenom') }}" required name="prenom" class="form-control"
                                 id="exampleInputEmail1" placeholder="Entrer Le Prénom ">
                         </div>
 
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Téléphone </label>
-                            <input type="tel" value="{{ old('telephone') }}" name="telephone" id="telephone" class="form-control"
+                            <input type="tel" value="{{ old('telephone') }}" required name="telephone" id="telephone" class="form-control"
                                 id="exampleInputEmail1" placeholder="Entrer telephone ">
                         </div>
 
@@ -134,7 +134,7 @@
 
                                 <label class="control-label">{{ __('Wilaya') }}: </label>
 
-                                <select class="form-control wilaya_select" id="wilaya_select" name="wilaya_id">
+                                <select class="form-control wilaya_select " id="wilaya_select" name="wilaya_id">
 
                                     <option value="">{{ __('Please choose...') }}</option>
 
@@ -163,7 +163,7 @@
 
                                 <label class="control-label">{{ __('Commune') }}: </label>
 
-                                <select class="form-control" name="commune_id" id="commune_select">
+                                <select class="form-control " name="commune_id" id="commune_select">
 
                                     <option value="">{{ __('Please choose...') }}</option>
 
