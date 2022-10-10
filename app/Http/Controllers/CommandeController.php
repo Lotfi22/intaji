@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Type;
 use App\Boutique;
+use App\Client;
 use App\Commande;
 use App\Commune;
 use App\Wilaya;
@@ -11,6 +12,7 @@ use App\Livreur;
 use App\Stock;
 use App\Produit;
 use App\Fournisseur;
+use App\Livraison;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +28,7 @@ class CommandeController extends Controller
         // $this->middleware('auth:admin');
     }
 
+    
     public function affecterList(Request $request,$livreur)
     {
         $l = Livreur::find($livreur);
@@ -208,16 +211,44 @@ class CommandeController extends Controller
     
     public function index()
     {
-        $commandes =  Commande::all();
+        $date_debut = date("Y-m-d",strtotime("-1 month"));
+        $date_fin = date('Y-m-d');        
+
+        $commandes=DB::select("select distinct num_commande,updated_at
+                from commandes
+                where date(updated_at) between date('$date_debut') and date('$date_fin')
+            order by num_commande desc");        
+
         return view('commandes.index',compact('commandes'));
     }
 
     public function show($id_commande){
-        $commande =  Commande::find($id_commande);
-        return view('commandes.display',compact('commande'));
+        $num_commande = $id_commande;
+        $commandes =  Commande::where('num_commande',$id_commande)->get();
+        return view('commandes.view',compact('commandes','num_commande'));
     }
 
+    public function valider($id_commande){
+        $num_commande = $id_commande;
+        $num_livraison = Livraison::get_next_num_livraison();
 
+        $commandes =  Commande::where('num_commande',$id_commande)->update(['statut'=>"validé","num_livraison"=>"$num_livraison"]);
+        $commandes =  Commande::where('num_commande',$id_commande)->get();
+        foreach($commandes as $commande){
+            $livraison = new Livraison();
+            $livraison->num_livraison = $num_livraison;            
+            $livraison->qte = $commande->qte;            
+            $livraison->prix = $commande->prix;            
+            $livraison->id_commande = $num_commande;            
+            $livraison->id_client = $commande->id_client;            
+            $livraison->nom_produit = $commande->nom_produit;            
+            $livraison->livreur = 0;            
+            $livraison->id_depot = 0;            
+            $livraison->save();
+            
+        }
+        return redirect()->route('commande.index')->with('success', 'la commande vous a été accordée ');           
+    }
 
     public function download($id_commande){
         $commande =  Commande::find($id_commande);
@@ -504,34 +535,9 @@ class CommandeController extends Controller
 
     public function create()
     {
-        $livreurs =Livreur::all();
-        $fournisseurs =Fournisseur::all();
-        $communes = Commune::all();
-        $wilayas =Wilaya::all();
-        $types = Type::all();
-        //mt_rand(100000,999999);        
-        $number = 0;
-        do {
-            $number = mt_rand(100000,999999);
-        } while ( DB::table( 'commandes' )->where( 'code_tracking', $number )->exists() );
-        $code='ls'.$number;
-         
-        
-
-        if(Auth::guard('fournisseur')->user()){
-            $f = Auth::guard('fournisseur')->user();
-            $id= $f->id;
-            $fournisseur=json_encode($f,true);
-
-            $produits = Produit::where('fournisseur_id',$id)->get();
-            return view('commandes.create-fournisseur',compact('wilayas','communes','produits','livreurs','types','fournisseur','code'));        
-        }else{
-            $produits = Produit::all();
-            return view('commandes.create',compact('wilayas','communes','produits','livreurs','types','fournisseurs','code'));
-        }
-
-
-
+        $clients = Client::all();
+        $produits = Produit::all();
+        return view('commandes.create',compact('clients','produits'));
     }
 
     public function search(Request $request)
@@ -656,80 +662,31 @@ class CommandeController extends Controller
         return redirect()->route('commande.index')->with('success', 'commande inséré avec succés ! ');
 
     }
-     public function store(Request $request)
-    {       
-        $produits = array();
-        $total_produit = 0;
-        $total= 0;
-        $acteur = "";
-        $id_acteur = 0;        
-        $fournisseur = json_decode($request->get('fournisseur'), true);
-        
-        foreach ($request['dynamic_form']['dynamic_form'] as $array) {
+    public function store(Request $request)
+    {
+        $num_commande = Commande::orderBy('created_at', 'desc')->first();//dernier kamel  +1 
+        foreach ($request['dynamic_form2']['dynamic_form2'] as $array) {
 
-            if ($array['produit'] and $array['quantite']) {
-                $produit_json = json_decode($array['produit'], true);
-                $produit  = Produit::find($produit_json['id']);
-                $qteOld = $produit->quantite;
-                $qteNew = $qteOld - $array['quantite'];  
-                $produit->quantite = $qteNew;
-                $produit->save();
-                $total_produit = 1*$array['prix'];
-                $total = $total + $total_produit;
-    
-                $produit_json['quantite'] = $array['quantite'];
-                $produit_json['prix_vente'] = $array['prix'];
-                array_push($produits,$produit_json);
-    
-                $stock = new  Stock();
-                $stock->produit = $array['produit'];
-                $stock->produit_id = $produit->id;//$array['produit'];
-                $stock->fournisseur_id = $fournisseur['id'];//$fournisseur->id;//$array['produit'];
-                $stock->quantite = $array['quantite'];
-                $stock->operation = 'sortie';
-                $stock->save();                    
+            $commande = new Commande();
+            if($num_commande == null){
+                $commande->num_commande = 1;
             }else{
-                return redirect()->back()->with('error', 'vous avez essayé d\'insére une comamnde sans articlees ! ');
+                $commande->num_commande = $num_commande->num_commande+1;
             }
-        }    
-        $produits = json_encode($produits);
-        $livreur = json_decode($request->get('livreur'), true);
-        $dat = Carbon::now();
-        $commande = new Commande([
-            'prix'=>$request->get('prix'),
-            'code_tracking'=> $request['code_tracking'],
-            'nom_client'=>$request->get('nom_client'),
-            'telephone'=>$request->get('telephone'),
-            'wilaya'=>$request->get('wilaya_id'),
-            'commune'=>$request->get('commune'),
-            'note'=>$request->get('note'),
-            // 'type'=>'colier',
-            'type'=>'arrive',
-            'confirmed'=>0,
-            'adress'=>$request->get('adress') ?? '',
-            'state'=>'en_preparation',
-            'livreur'=>$request->get('livreur'),
-            'fournisseur'=>$request->get('fournisseur'),
-            'livreur_id'=>$livreur['id'],
-            'fournisseur_id'=>$fournisseur['id'],
-            'date_livraison'=>$request->get('date_livraison'),
-            'acteur'=>$acteur,
-            'id_acteur'=>$id_acteur,
-            'en_preparation'=>$dat,
-            'creance_livreur'=>'non solder',
-            'echange_nouveau'=>$request['echange_nouveau'],
-            'creance_fournisseur'=>'non solder',
-        ]);
-        file_put_contents('img/codebars/'.$request['code_tracking'].'.svg', DNS1D::getBarcodeSVG($request['code_tracking'], 'C128'));    
-        $commande->produit = $produits; 
-        $commande->total = $total; 
-        try {
-            $commande->save();
-        } catch (\Throwable $e) {
-            return redirect()->back()->with('error',  $e->getMessage());
-        }
 
-        return redirect()->route('coliers')->with('success', 'commande inséré avec succés ! ');
+            $commande->id_client = $request['client'];
+            $commande->nom_produit = $array['produit'];
+            $commande->qte = $array['quantite'];
+            $commande->prix = $array['prix_unitaire'];
+            $commande->user = Auth::guard('admin')->user()->id;
+            $commande->commentaire = $request['commentaire'] ?? 'sans commentaire';
+            $commande->freelancer = $request['freelancer'];
+            $commande->status_client = $request['status_client'];
+            $commande->save();
+            // $commande->num_livraison = "";            
+
+        }
+        return redirect()->route('commande.index')->with('success', 'commande inséré avec succés ! ');
     }
 
     /**

@@ -16,14 +16,10 @@ use Milon\Barcode\DNS2D;
 Route::group(['prefix' => 'commande', 'as' => 'commande'], function () {
     Route::get('/', ['as' => '.index', 'uses' => 'CommandeController@index']);
     Route::get('/show/create',['as'=>'.show.create', 'uses' => 'CommandeController@create']);
-    Route::post('/create', ['as' => '.create', 'uses' => 'CommandeController@store']);
-    Route::get('/destroy/{id_commande}', ['as' => '.destroy', 'uses' => 'CommandeController@destroy']);    
-    Route::get('/relancer/{id_commande}', ['as' => '.relancer', 'uses' => 'CommandeController@relancer']);    
-    Route::get('/edit/{id_demande}', ['as' => '.edit', 'uses' => 'CommandeController@edit']);
+    Route::post('/create', ['as' => '.store', 'uses' => 'CommandeController@store']);
     Route::get('/show/{id_commande}', ['as' => '.show', 'uses' => 'CommandeController@show']);
-    Route::post('/update/{id_demande}', ['as' => '.update', 'uses' => 'CommandeController@update']);    
-    Route::post('/search', ['as' => '.search', 'uses' => 'CommandeController@search']);    
-    Route::post('/change/state', ['as' => '.update.state', 'uses' => 'CommandeController@updateState']);    
+    Route::get('/valider/{id_commande}', ['as' => '.valider', 'uses' => 'CommandeController@valider']);
+    Route::get('/rejeter/{id_commande}', ['as' => '.rejeter', 'uses' => 'CommandeController@rejeter']);
 });
 
 
