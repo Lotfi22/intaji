@@ -392,8 +392,9 @@ class LivraisonController extends Controller
 
         $id_livreur = $elements[0]->livreur;
         $livreur = Livreur::find($id_livreur);
-        $client = $elements[0]->id_client;
-        $adresse = "adresse_client";
+        $client = Livraison::get_client($num_livraison);        
+        $adresse = Livraison::get_adresse_client($num_livraison);
+        
         $remise = $elements[0]->remise;
         $num_bl = Livraison::get_num_bl($num_livraison);
 
