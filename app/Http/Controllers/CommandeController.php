@@ -228,6 +228,15 @@ class CommandeController extends Controller
         return view('commandes.view',compact('commandes','num_commande'));
     }
 
+
+    public function rejeter($id_commande)
+    {
+        $commandes =  Commande::where('num_commande',$id_commande)->update(['statut'=>"rejeté"]);
+        return redirect()->route('commande.index')->with('success', 'la commande vous a été accordée ');           
+    }
+
+
+
     public function valider($id_commande){
         $num_commande = $id_commande;
         $num_livraison = Livraison::get_next_num_livraison();

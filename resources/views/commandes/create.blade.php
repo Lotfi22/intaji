@@ -93,15 +93,14 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Quantité:</label>
-                                <input type="number"  name="quantite" id="quantite" placeholder="quantite produit" class="form-control">
+                                <input type="number"  required name="quantite" id="quantite" placeholder="quantite produit" class="form-control">
                             </div>
                         </div>
-
 
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Prix Unitaire </label>
-                                <input type="number" name="prix_unitaire" id="prix_unitaire" class="form-control">
+                                <input type="number" required name="prix_unitaire" id="prix_unitaire" class="form-control">
                             </div>
                         </div>
 
@@ -154,7 +153,7 @@
 
         })
 
-        ////////////////////////////////////////// 
+        //////////////////////////////////////////
         $('.date_installation_gps').hide();
         $(':checkbox').change(function() {
             if ($('.date_installation_gps').is(':hidden')) {
