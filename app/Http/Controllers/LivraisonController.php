@@ -42,7 +42,9 @@ class LivraisonController extends Controller
         from versements
         order by num_livraison");
 
-        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin'));
+        $depots = DB::select("select * from mes_depots order by nom");
+
+        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin','depots'));
 
         // code...
     }
@@ -160,7 +162,7 @@ class LivraisonController extends Controller
 
     public function approuver(Request $request)
     {
-        
+
         if(auth()->guard('admin')->check())
         {
 
@@ -214,6 +216,8 @@ class LivraisonController extends Controller
     public function new_bl(Request $request)
     {
 
+        $depot = $request->depot;
+
         if(Check::CheckAuth(['admin','production','depot'])==false)
         {
             return redirect()->route('login.admin');     
@@ -223,7 +227,8 @@ class LivraisonController extends Controller
 
         $remise = ($request->remise);
 
-        DB::update("update livraisons set statut = 'BL',remise=$remise where num_livraison = $num_livraison");
+        DB::update("update livraisons set statut = 'BL',remise=$remise,id_depot='$depot' 
+        where num_livraison = $num_livraison");
 
         $livraison = (DB::select("select * from livraisons where num_livraison = $num_livraison"));
 
@@ -423,10 +428,10 @@ class LivraisonController extends Controller
 
         $num_livraison = $request->num_livraison;
 
-        $client = DB::select("select nom,prenom from clients 
+        $client = DB::select("select * from clients 
         where id = (select id_client from livraisons where num_livraison = $num_livraison limit 1) ");
 
-        $client = $client[0]->nom.'  '.$client[0]->prenom;
+        $client = $client[0];
 
         return response()->json($client);
 

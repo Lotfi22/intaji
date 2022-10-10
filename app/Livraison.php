@@ -160,7 +160,7 @@ class Livraison extends Model
         $validator = DB::select("select * from livraisons 
             where num_livraison = $num_livraison and statut = 'validé' ");
 
-        return count($validator);
+        return $num_livraison;
         // code...
     }
 
@@ -193,6 +193,37 @@ class Livraison extends Model
         // code...
     }
 
+
+    public static function get_balance_interval($date_debut,$date_fin)
+    {
+
+        $balance = DB::select("select sum(prix*qte) as balance 
+        from livraisons l
+        where l.statut <> 'rejeté'
+        and date(l.updated_at) between date('$date_debut') and date('$date_fin') ");
+
+        return $balance[0]->balance;
+        // code...
+    }
+
+    public static function get_versements_interval($date_debut,$date_fin)
+    {
+
+        $versement = DB::select("select sum(versement) as versement 
+        from versements
+        where date(updated_at) between date('$date_debut') and date('$date_fin')");
+
+        return $versement[0]->versement;
+
+        // code...
+    }
+
+    public static function get_restes_interval($date_debut,$date_fin)
+    {
+
+        return Livraison::get_balance_interval($date_debut,$date_fin)-Livraison::get_versements_interval($date_debut,$date_fin);
+        // code...
+    }
 
 
     //

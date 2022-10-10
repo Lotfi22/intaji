@@ -24,7 +24,7 @@ class CaisseController extends Controller
     public function index()
     {
 
-        if(Check::CheckAuth(['admin','production'])==false){
+        if(Check::CheckAuth(['admin'])==false){
 
             return redirect()->route('login.admin');     
 
@@ -56,6 +56,13 @@ class CaisseController extends Controller
     public function filter(Request $request)
     {
 
+        if(Check::CheckAuth(['admin'])==false){
+
+            return redirect()->route('login.admin');     
+
+        }
+
+
         $date_debut = $request->date_debut;
         $date_fin = $request->date_fin;
 
@@ -72,8 +79,13 @@ class CaisseController extends Controller
         $balance = Livraison::get_balance();
         $versement = Livraison::get_versements();
         $reste = Livraison::get_restes();
+
+
+        $balance_i = Livraison::get_balance_interval($date_debut,$date_fin);
+        $versement_i = Livraison::get_versements_interval($date_debut,$date_fin);
+        $reste_i = Livraison::get_restes_interval($date_debut,$date_fin);
         
-        return view('caisse.caisse',compact('livraisons','versements','date_debut','date_fin','balance','versement','reste'));
+        return view('caisse.caisse',compact('livraisons','versements','date_debut','date_fin','balance','versement','reste','balance_i','versement_i','reste_i'));
 
 
         // code...

@@ -139,72 +139,87 @@
                         <div class="horizontal-mainwrapper container barre clearfix">
                             <nav class="horizontalMenu clearfix">
                                 <ul class="horizontalMenu-list">
+                                    <?php use App\Check; ?>
                                     
-                                    <li aria-haspopup="true">
-                                        
-                                        <a style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-cube-outline"></i>Produit 
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="/categorie">Catégories</a>
-                                            </li>
+                                    @if(Check::CheckAuth(['admin']))
 
-                                            <li aria-haspopup="true">
-                                                <a href="/produit">Produits</a>
-                                            </li>
-                                        </ul>
-                                    </li>                                    
+                                        <li aria-haspopup="true">
+                                            
+                                            <a style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-cube-outline"></i>Produit 
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                            <ul class="sub-menu">
+                                                    
+                                                <li aria-haspopup="true">
+                                                    <a href="/categorie">Catégories</a>
+                                                </li>
+
+                                                <li aria-haspopup="true">
+                                                    <a href="/produit">Produits</a>
+                                                </li>
+                                            </ul>
+                                        </li>                                    
                                     
-                                    <li aria-haspopup="true"><a href="/home/mes_depot" class=""><i class="mdi mdi-home-map-marker"></i> Dépots</a></li>
-
-
-                                    <li aria-haspopup="true">
-                                        
-                                        <a style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-ticket-confirmation"></i>Tickets 
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="/impression">Impression</a>
-                                            </li>
-
-                                            <li aria-haspopup="true">
-                                                <a href="/ticket">Mes Tickets</a>
-                                            </li>
-                                        </ul>
-                                    </li>                                    
-
-                                    <li aria-haspopup="true">
-                                        
-                                        <a style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-account-multiple"></i>Agents
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="/production">Agents Production</a>
-                                            </li>
-
-                                            <li aria-haspopup="true">
-                                                <a href="/depot">Agents Dépots</a>
-                                            </li>
-
-                                            <li aria-haspopup="true">
-                                                <a href="/livreur" >Livreurs</a>
-                                            </li>
-
-                                        </ul>
-                                    </li>                                    
                                     
+                                        <li aria-haspopup="true"><a href="/home/mes_depot" class=""><i class="mdi mdi-home-map-marker"></i> Dépots</a></li>
+
+                                    @endif
+
+                                    @if(Check::CheckAuth(['admin','depot','production']))
+
+                                        <li aria-haspopup="true">
+                                            
+                                            <a style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-ticket-confirmation"></i>Tickets 
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                            <ul class="sub-menu">
+                                                
+                                                @if(Check::CheckAuth(['admin','production']))
+
+                                                    <li aria-haspopup="true">
+                                                        <a href="/impression">Impression</a>
+                                                    </li>
+
+                                                @endif
+
+                                                <li aria-haspopup="true">
+                                                    <a href="/ticket">Mes Tickets</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    @endif
+                                        
+                                    @if(Check::CheckAuth(['admin']))
+                                        <li aria-haspopup="true">
+                                            
+                                            <a style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-account-multiple"></i>Agents
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                            <ul class="sub-menu">
+                                                    
+                                                <li aria-haspopup="true">
+                                                    <a href="/production">Agents Production</a>
+                                                </li>
+
+                                                <li aria-haspopup="true">
+                                                    <a href="/depot">Agents Dépots</a>
+                                                </li>
+
+                                                <li aria-haspopup="true">
+                                                    <a href="/livreur" >Livreurs</a>
+                                                </li>
+
+                                            </ul>
+                                        </li>                                    
+                                    
+                                    @endif    
+
                                     <li aria-haspopup="true">
                                         
                                         <a style="cursor: pointer;" class="sub-icon">
@@ -226,29 +241,35 @@
                                         </ul>
                                     </li>  
 
+                                    @if(Check::CheckAuth(['admin']))
 
-                                    <li aria-haspopup="true">
-                                        <a href="#" style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-package-variant"></i>Commandes
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="{{route('commande.index')}}">Commandes</a>
-                                            </li>
+                                        <li aria-haspopup="true">
+                                            <a href="#" style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-package-variant"></i>Commandes
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                            <ul class="sub-menu">
+                                                    
+                                                <li aria-haspopup="true">
+                                                    <a href="{{route('commande.index')}}">Commandes</a>
+                                                </li>
 
-                                            <li aria-haspopup="true">
-                                                <a href="{{route('client.index')}}">Clients</a>
-                                            </li>
+                                                <li aria-haspopup="true">
+                                                    <a href="{{route('client.index')}}">Clients</a>
+                                                </li>
 
 
-                                        </ul>
-                                    </li>
+                                            </ul>
+                                        </li>
 
-                                    <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="mdi mdi-forklift"></i>Livraisons</a></li>
+                                    @endif
 
+                                    @if(Check::CheckAuth(['admin']))
+                                    
+                                        <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="mdi mdi-forklift"></i>Livraisons</a></li>
+
+                                    @endif
 
                                     <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
                                         
@@ -258,31 +279,34 @@
                                         </a>
                                         
                                     </li>
+                                
 
-                                    <li aria-haspopup="true"><a href="/home/caisse" class=""><i class="ion-cash"></i> Caisse</a></li>
+                                    @if(Check::CheckAuth(['admin']))
 
-                                    <li aria-haspopup="true">
-                                        
-                                        <a href="/rapport" style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-chart-line"></i> Stats
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="/rapport">Rapport</a>
-                                            </li>
+                                        <li aria-haspopup="true"><a href="/home/caisse" class=""><i class="ion-cash"></i> Caisse</a></li>
 
-                                            <li aria-haspopup="true">
-                                                <a href="/statistiques">Statistiques</a>
-                                            </li>
+                                        <li aria-haspopup="true">
+                                            
+                                            <a href="/rapport" style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-chart-line"></i> Stats
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                            <ul class="sub-menu">
+                                                    
+                                                <li aria-haspopup="true">
+                                                    <a href="/rapport">Rapport</a>
+                                                </li>
 
-
-                                        </ul>
-                                    </li>
+                                                <li aria-haspopup="true">
+                                                    <a href="/statistiques">Statistiques</a>
+                                                </li>
 
 
+                                            </ul>
+                                        </li>
+
+                                    @endif
 
                                     {{--  --}}                                        
                                 </ul>

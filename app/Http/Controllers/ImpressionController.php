@@ -304,14 +304,9 @@ class ImpressionController  extends Controller
 
             $ticket->maj = 'Pas encore';
 
-
-
-            $ticket->save();
-
-            
+            $ticket->save();       
 
             file_put_contents('img/essahel_food/'.$number.'.svg',DNS1D::getBarcodeSVG($number_to_code_barre,'C128'));    
-
             
 
             $codebar = 'img/essahel_food/'.$number.'.svg';

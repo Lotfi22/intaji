@@ -17,10 +17,10 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid row">        
+    <div class="container-fluid row" style="margin:1% 0%;">        
 
         <h1 class="mt-4">Gestion livraisons</h1>
-        <div class="card mb-4 row">
+        <div class="card mb-4 row" style="width: 100%;">
 
             <div class="card-body row col-md-12">
 
@@ -224,24 +224,59 @@
                     	{{-- expr --}}
                     
 
-                        <form method="post" action="/home/livraisons/last_approbation/BL" id="la_remise" style="margin-top:2%;" class="form-group">
+                        <form method="post" target="_blank" action="/home/livraisons/last_approbation/BL" id="la_remise" style="margin-top:2%;" class="form-group">
                             
                         	{{ csrf_field() }}
 
                         	<input style="display:none;" type="number" id="num_livraison" name="num_livraison" value="">
 
-                            <label class="col-md-7" for="remise">% Remise <input id="remise" type="number" min="0" max="100" value="0" placeholder="% Remise" name="remise" class="form-control"
-                            placeholder=""></label>
 
-                            <button id="confirmer" onclick="afficher_confirmation(this);" class="btn btn-sm btn-primary col-md-4">Confirmer</button>
+                            <div class="row col-md-12">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="small" for="depo">Dépot </label>
+            
+                                        <select name="depot" class="form-control col-md-12">                                
+                                            <option value="0" class="form-control">Sélectionner depot</option>
 
-                            <span id="confirmer_approbation">
-    	                        
-    	                        <button id="final_confirmation" type="submit" class="btn btn-sm btn-primary col-md-2">Oui, Confirmer</button>
+                                            @foreach ($depots as $depot)
+                                                
+                                                <option class="form-control" value="{{ $depot->id }}"> {!! $depot->nom !!} </option>
 
-    	                        <button onclick="retour();" class="btn btn-sm btn-warning col-md-2">Retour</button>
-                            </span>
+                                                {{-- expr --}}
+                                            @endforeach
 
+                                        </select>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    
+                                    <div class="form-group">
+                                        
+                                        <label class="col-md-12" for="remise">% Remise </label>
+
+                                        <input id="remise" type="number" min="0" max="100" value="0" placeholder="% Remise" name="remise" class="form-control"
+                                        placeholder="">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    
+                                    <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
+
+                                    <button id="confirmer" onclick="afficher_confirmation(this);" class="btn btn-sm btn-primary col-md-12">Confirmer</button>
+
+                                    <span id="confirmer_approbation">
+                                        
+                                        <button id="final_confirmation" type="submit" class="btn btn-sm btn-primary col-md-5">Oui, Confirmer</button>
+
+                                        <button onclick="retour();" class="btn btn-sm btn-warning col-md-5">Retour</button>
+                                    </span>
+                                </div>
+                            </div> 
                         </form>
 
                         @include('encaissement.encaissement')
@@ -251,7 +286,7 @@
 
 					{{--  --}}                    
             
-                    <button class="btn btn-primary col-md-12" onclick="imprimer_details();">Imprimer détails de la livraison </button>
+                    <button style="margin-top:5%;" class="btn btn-primary col-md-12" onclick="imprimer_details();">Imprimer détails de la livraison </button>
 
                 </div>
             </div>
