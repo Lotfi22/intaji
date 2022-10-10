@@ -232,7 +232,30 @@
 
 
                             <div class="row col-md-12">
-                                <div class="col-md-4">
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="small" for="livreur">Livreur </label>
+            
+                                        <select name="livreur" class="form-control col-md-12">                                
+                                            <option value="0" class="form-control">Sélectionner livreur</option>
+
+                                            @foreach ($livreurs as $livreur)
+                                                
+                                                <option class="form-control" value="{{ $livreur->id }}"> {!! $livreur->name !!} </option>
+
+                                                {{-- expr --}}
+                                            @endforeach
+
+                                        </select>
+
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="small" for="depo">Dépot </label>
             
@@ -252,7 +275,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     
                                     <div class="form-group">
                                         
@@ -263,7 +286,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     
                                     <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
 
