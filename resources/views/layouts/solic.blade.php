@@ -513,16 +513,20 @@
 
             $(document).ready(function() {
                 $('.js-example-basic-single').select2({
-                    'width': '100%',
+                    'width': '99%',
                     "dropdownParent": $('#livreurModal'),
                     'tags':true
                 });
             });
+
+
             $(document).ready(function() {
-                $('.select2').select2({
-                    'width':"95%"
+                $('.js-example-basic-single1').select2({
+                    'width': '99%',
+                    'tags':true
                 });
             });
+
 
 //
         </script>

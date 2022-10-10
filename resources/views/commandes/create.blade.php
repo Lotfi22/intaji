@@ -46,7 +46,7 @@
                         <div class="form-group">
                             <label style="font-size:15px;" class="form-label">{{$input['label']}}</label>
                             @if($input['type'] == "select")
-                            <select class="form-control select2" name="{{$input['name']}}">
+                            <select class="form-control js-example-basic-single1" name="{{$input['name']}}">
                                 @if($input['name']=="status_client")
                                     @foreach($input['options'] as $option)
                                     <option value="{{$option}}">
