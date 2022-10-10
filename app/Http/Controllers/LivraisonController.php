@@ -269,7 +269,9 @@ class LivraisonController extends Controller
         $options->set(array('isRemoteEnabled' => true));
 
         $dompdf->setOptions($options);
+
         file_put_contents('img/essahel_food/121213.svg',DNS1D::getBarcodeSVG($number_to_code_barre,'C128'));    
+        
         $codebar = 'img/essahel_food/'.$number.'.svg';
         
         $elements = $informations;
@@ -406,7 +408,12 @@ class LivraisonController extends Controller
         $options->set(array('isRemoteEnabled' => true));
         $dompdf->setOptions($options);    
 
-        $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl);
+        file_put_contents('img/essahel_food/121213.svg',DNS1D::getBarcodeSVG(121213,'C128'));    
+
+
+        $codebar = 'img/essahel_food/121213.svg';
+
+        $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl,$codebar);
 
         $contxt = stream_context_create([
             'ssl' => [
