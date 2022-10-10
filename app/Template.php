@@ -329,7 +329,7 @@ class Template extends Model
 
 
 
-    public static  function bl_lion_royal(Livreur $livreur,$elements,$client,$adresse,$remise,$num_bl)
+    public static  function bl_lion_royal(Livreur $livreur,$elements,$client,$adresse,$remise,$num_bl,$codebar)
     {
         $total = 0;
         $total = 0; 
@@ -375,7 +375,7 @@ class Template extends Model
                     <td align="left">
                         <h3>LION ROYAL</h3>
                         <pre>
-                        <img src="'.$codebar.'" width="50px" height="60px">
+                            <img src="'.$codebar.'" width="50px" height="60px">
 
                         </pre>
                     </td>
