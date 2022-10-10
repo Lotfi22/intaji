@@ -134,13 +134,13 @@
 
                                 <label class="control-label">{{ __('Wilaya') }}: </label>
 
-                                <select class="form-control wilaya_select " id="wilaya_select" name="wilaya_id">
+                                <select class="form-control wilaya_select " id="16" name="wilaya_id">
 
                                     <option value="">{{ __('Please choose...') }}</option>
 
                                     @foreach ($wilayas as $wilaya)
 
-                                        <option value="{{$wilaya->name}}" {{$wilaya->id == (old('wilaya_id') ?? ($member->wilaya_id ?? '')) ? 'selected' : ''}}>
+                                        <option id="{{$wilaya->id}}" value="{{$wilaya->name}}" {{$wilaya->id == (old('wilaya_id') ?? ($member->wilaya_id ?? '')) ? 'selected' : ''}}>
                                             {{$wilaya->id}}
                                                 - 
                                             {{$wilaya->name}}
@@ -236,7 +236,7 @@
                 $.ajax({
                     dataType: "json",
                     method: "GET",
-                    url: "/api/static/communes/ " + $(this).val()
+                    url: "/api/static/communes/"+$(this).find('option:selected').attr('id')
                 })
                     .done(function (response) {
                         $.each(response, function (key, commune) {

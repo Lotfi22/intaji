@@ -69,11 +69,15 @@ class LivraisonController extends Controller
         where date(updated_at) between date('$date_debut') and date('$date_fin')
         order by num_livraison desc");
 
+        $livreurs = DB::select("select * from livreurs order by name");
+
         $versements = DB::select("select num_livraison,versement 
         from versements
         order by num_livraison");
 
-        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin'));
+        $depots = DB::select("select * from mes_depots order by nom");
+
+        return view('livraisons.index',compact('livraisons','versements','date_debut','date_fin','livreurs','depots'));
 
         // code...
     }
@@ -243,6 +247,8 @@ class LivraisonController extends Controller
 
         $id_livreur = ($livraison[0]->livreur);
 
+        $livreur = 
+
         $j=0;
         
         foreach($livraison as $liv)
@@ -260,45 +266,24 @@ class LivraisonController extends Controller
             //
         }
 
-        $livreur = Livreur::find($id_livreur);
-
-        $dompdf = new dompdf();
-
-        $options = $dompdf->getOptions(); 
-
-        $options->set(array('isRemoteEnabled' => true));
-
-        $contxt = stream_context_create([
-            'ssl' => [
-            'verify_peer' => FALSE,
-            'verify_peer_name' => FALSE,
-            'allow_self_signed'=> TRUE
-            ]
-        ]);
-
-
-        $dompdf->setOptions($options);
-        
-        $codebar = 'lion.jpeg';
-        
+        $num_bl = $num_livraison;
         $elements = $informations;
 
-        $num_bl = Livraison::get_num_bl($num_livraison);
+        $pdf = PDF::loadView("bon_livraison",compact('livreur','elements','client','adresse','remise','num_bl'));
 
-        $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl,$codebar);
+        $pdf->getDomPDF()->setHttpContext(
+            stream_context_create([
+                'ssl' => [
+                    'allow_self_signed'=> TRUE,
+                    'verify_peer' => FALSE,
+                    'verify_peer_name' => FALSE,
+                ]
+            ])
+        );        
+        
+        $pdf->setPaper('A4', 'potrait');
 
-        $dompdf = $dompdf->set_options(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
-        $dompdf->setHttpContext($contxt);               
-        $dompdf->loadHtml($html);
-
-        $dompdf->render();
-
-        $current = date('Y-m-d');
-
-        $file = "bonlivraison_".$current;
-
-        $dompdf->stream("$file", array('Attachment'=>0));
-
+        return $pdf->stream("bon.pdf",array("Attachment"=>1));
     }   
 
 
@@ -402,35 +387,21 @@ class LivraisonController extends Controller
         $remise = $elements[0]->remise;
         $num_bl = Livraison::get_num_bl($num_livraison);
 
-        $dompdf = new dompdf();
+        $pdf = PDF::loadView("bon_livraison",compact('livreur','elements','client','adresse','remise','num_bl'));
 
-        $options = $dompdf->getOptions(); 
-        $options->set(array('isRemoteEnabled' => true));
-        $dompdf->setOptions($options);    
+        $pdf->getDomPDF()->setHttpContext(
+            stream_context_create([
+                'ssl' => [
+                    'allow_self_signed'=> TRUE,
+                    'verify_peer' => FALSE,
+                    'verify_peer_name' => FALSE,
+                ]
+            ])
+        );        
+        
+        $pdf->setPaper('A4', 'potrait');
 
-        $codebar = 'hand-pay.png';
-
-        $html = Template::bl_lion_royal($livreur,$elements,$client,$adresse,$remise,$num_bl,$codebar);
-
-        $contxt = stream_context_create([
-            'ssl' => [
-            'verify_peer' => FALSE,
-            'verify_peer_name' => FALSE,
-            'allow_self_signed'=> TRUE
-            ]
-        ]);
-        $dompdf = $dompdf->set_options(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
-        $dompdf->setHttpContext($contxt);               
-        $dompdf->loadHtml($html);
-
-        $dompdf->render();
-
-        $current = date('Y-m-d');
-
-        $file = "bonlivraison_".$current;
-
-        $dompdf->stream("$file", array('Attachment'=>0));
-
+        return $pdf->stream("bon.pdf",array("Attachment"=>1));
 
         // code...
     }

@@ -140,6 +140,7 @@
         $('.biometrique').hide()
         $('.standard').hide()
         $('#type_permis').on('change', function() {
+            
             var valueSelected = $(this).children(":selected").val();
             console.log(valueSelected)
             if (valueSelected == "standard") {
