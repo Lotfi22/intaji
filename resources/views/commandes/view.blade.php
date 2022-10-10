@@ -27,12 +27,52 @@
                         <tr>
                             <td valign="top"></td>
                             <td align="left">
-                            <h3>Nom Prénom : {{ App\Commande::get_client($num_commande)[0]->nom ?? '' }} {{ App\Commande::get_client($num_commande)[0]->prenom ?? '' }}</h3>
-                            <h3> Téléphone : {{ App\Commande::get_client($num_commande)[0]->telephone ?? 'ss' }}</h3>
-                            <h3> Téléphone : {{ App\Commande::get_client($num_commande)[0]->wilaya ?? ''}}</h3>
-                            <h3> Téléphone : {{ App\Commande::get_client($num_commande)[0]->commune ?? '' }}</h3>
-                            
+                            <td align="left">
+                                <h3>
+                                @if (App\Commande::get_statut($num_commande) == "en attente")
+                                    	
+                                        <span id="statut{{ $num_commande }}" class="alert alert-warning blink">
+                                           <i class="fa fa-spinner" aria-hidden="true"></i>    
+                                        
+                                        @elseif(App\Commande::get_statut($num_commande) == "rejeté")					   
+                                        
+                                         <span id="statut{{ $num_commande }}" class="alert alert-danger">
+                                        <i class="fa fa-ban" aria-hidden="true"></i>
+                                        
+                                        @elseif(App\Commande::get_statut($num_commande) == "validé")
+                                        
+                                         <span id="statut{{ $num_commande }}" class="alert alert-info">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        
+                                        @elseif(App\Commande::get_statut($num_commande) == "BL")
+                                         <span id="statut{{ $num_commande }}" class="alert alert-primary">
+                                        
+                                        <i class="fa fa-truck" aria-hidden="true"></i>
+                                        
+                                        @elseif(App\Commande::get_statut($num_commande) == "terminé")
+                                         
+                                        <span id="statut{{ $num_commande }}" class="alert alert-success">
+                                            
+                                        <img src="/payment-complet.png" height="30" width="30">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        
+                                        @elseif(App\Commande::get_statut($num_commande) == "encaissement")
+                                        
+                                        <span id="statut{{ $num_commande }}" class="alert alert-info">
+                                        
+                                        <img src="/hand-pay.jpg" width="30">
+                                        
+                                        
+                                        @endif
+                                        {!! App\Commande::get_statut($num_commande) ?? ''!!}                             
+                                        </span>
+                                        
+                                </h3>
                             </td>
+                            <td align="left"><h3>Nom Prénom : {{ App\Commande::get_client($num_commande)[0]->nom ?? '' }} {{ App\Commande::get_client($num_commande)[0]->prenom ?? '' }}</h3></td>
+                            <td align="left"><h3> Téléphone : {{ App\Commande::get_client($num_commande)[0]->telephone ?? 'ss' }}</h3></td>
+                            <td align="left"><h3> Wilaya : {{ App\Commande::get_client($num_commande)[0]->wilaya ?? ''}}</h3></td>
+                            <td align="left"><h3> Commune : {{ App\Commande::get_client($num_commande)[0]->commune ?? '' }}</h3></td>
                         </tr>
 
                     </table>
@@ -83,11 +123,11 @@
             <div class="card-footer text-center">
                 <div class="row">
                     <div class="col-md-6">
-                        <button class="btn btn-primary" href="{{route('commande.valider',['num_commande'=>$num_commande])}}" id="btn_valider">  Valider</button>
+                        <button class="col-md-12 btn btn-outline-primary "  id="btn_valider">  Valider</button>
                     </div>
 
                     <div class="col-md-6">
-                        <a class="btn btn-danger" href="{{route('commande.rejeter',['num_commande'=>$num_commande])}}">  rejeter</a>                
+                        <button class="btn btn-outline-danger  col-md-12"  id="btn_rejeter">  Rejeter </button>                        
                     </div>
 
 
@@ -116,7 +156,7 @@
 @section('scripts')
 <script>
 $( document ).ready(function() {
-		$("#btn_valider").on("click", function(e) {
+    $("#btn_valider").on("click", function(e) {
 		swal({
 			title: "Etes Vous Sure ?",
 			text: "Confirmer La Validation ",
@@ -141,6 +181,36 @@ $( document ).ready(function() {
 			 }
 		});		 
 	});
+
+
+
+
+    $("#btn_rejeter").on("click", function(e) {
+		swal({
+			title: "Etes Vous Sure ?",
+			text: "  ",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: '#DD6B55',
+			confirmButtonText: 'Oui',
+			cancelButtonText: "Annuler",
+			closeOnConfirm: false,
+			closeOnCancel: false		
+		},
+		function(isConfirm){
+			if (isConfirm){
+				console.log(document.getElementById('transfer_form'))
+				// document.getElementById('transfer_form').submit();
+                window.location.href = '{{route('commande.rejeter',['num_commande'=>$num_commande])}}'; //Will take you to Google.
+				swal.close()					
+			 } else {
+			   swal("Annulé", "Vous avez annuler", "error");
+				  e.preventDefault();
+			 }
+		});		 
+	});    
+
+
 })
 
 
