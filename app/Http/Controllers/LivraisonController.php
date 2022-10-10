@@ -266,10 +266,9 @@ class LivraisonController extends Controller
 
         $options = $dompdf->getOptions(); 
 
-        
+        $options->set(array('isRemoteEnabled' => true));
 
-        $dompdf->setOptions($options);
-        
+        $dompdf->setOptions($options);        
         $elements = $informations;
 
         $num_bl = Livraison::get_num_bl($num_livraison);
