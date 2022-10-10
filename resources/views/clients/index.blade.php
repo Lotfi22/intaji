@@ -140,7 +140,7 @@
 
                                     @foreach ($wilayas as $wilaya)
 
-                                        <option value="{{$wilaya->id}}" {{$wilaya->id == (old('wilaya_id') ?? ($member->wilaya_id ?? '')) ? 'selected' : ''}}>
+                                        <option value="{{$wilaya->name}}" {{$wilaya->id == (old('wilaya_id') ?? ($member->wilaya_id ?? '')) ? 'selected' : ''}}>
                                             {{$wilaya->id}}
                                                 - 
                                             {{$wilaya->name}}
@@ -169,7 +169,7 @@
 
                                     @foreach ($communes as $commune)
 
-                                        <option value="{{$commune->id}}" {{$commune->id == (old('commune_id') ?? ($member->commune_id ?? '')) ? 'selected' : ''}}>
+                                        <option value="{{$commune->name}}" {{$commune->id == (old('commune_id') ?? ($member->commune_id ?? '')) ? 'selected' : ''}}>
 
                                             {{$commune->name}}
 

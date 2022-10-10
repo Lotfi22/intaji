@@ -80,7 +80,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Prouit</label>
-                                <select class="form-control select2" id="produit" name="produit">
+                                <select class="form-control" id="produit" name="produit">
                                     @foreach($produits as $produit)
                                         <option value="{{$produit->nom}}">
                                             {{$produit->nom}}

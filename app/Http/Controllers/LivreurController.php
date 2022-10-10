@@ -332,6 +332,7 @@ class LivreurController extends Controller
 
         $options = $dompdf->getOptions(); 
 
+        $options->set(array('isRemoteEnabled' => true));
         $dompdf->setOptions($options);
 
         $html = Template::bl($livreur,$elements);
