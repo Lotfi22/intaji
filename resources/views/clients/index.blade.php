@@ -113,20 +113,22 @@
                         <div class="form-group">
                             <label>Prénom * : </label>
                             <input type="text" value="{{ old('prenom') }}" required name="prenom" class="form-control"
-                                id="exampleInputEmail1" placeholder="Entrer Le Prénom ">
+                                id="renom" placeholder="Entrer Le Prénom ">
                         </div>
 
 
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Téléphone </label>
-                            <input type="tel" value="{{ old('telephone') }}" required name="telephone" id="telephone" class="form-control"
-                                id="exampleInputEmail1" placeholder="Entrer telephone ">
+                            <label for="telephone">Téléphone *</label>
+                            <input type="tel" value="{{ old('telephone') }}" required name="telephone" id="telephone" onkeyup="verif_number(this);" class="form-control"
+                                id="telephone" placeholder="Entrer telephone ">
+
+                            <p id="err"> </p>                                
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Facebook </label>
+                            <label for="facebook">Facebook </label>
                             <input type="text" value="{{ old('facebook') }}" name="facebook" class="form-control"
-                                id="exampleInputEmail1" placeholder="Entrer telephone ">
+                                id="facebook" placeholder="Entrer telephone ">
                         </div>
 
 
@@ -192,14 +194,18 @@
                             </div>
 
 
+                        <div class="form-group row">
 
-                        <div class="btn-group" role="group">
+                            <div class="btn-group col-md-5" role="group">
 
-                            <button type="submit" class="btn btn-primary">Save</button>
+                                <button id="valider" type="submit" class="btn btn-outline-primary col-md-12">Save</button>
 
+                            </div>
+                            
+                            <div class="btn-group col-md-5" role="group">
+                                <button type="button" class="btn btn-outline-danger col-md-12" data-dismiss="modal" role="button">Fermer</button>
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" role="button">Fermer</button>
-
                     </form>
 
 
@@ -221,33 +227,118 @@
 
 <script>
 
+
+    function verif_number(objet) 
+    {
         
-            $('.wilaya_select').on('change', function (e) {
-                console.log('saz');
-                e.preventDefault();
-                var $communes = $('#commune_select');
-                var $communesLoader = $('#commune_select_loading');
-                var $iconLoader = $communes.parents('.input-group').find('.loader-spinner');
-                var $iconDefault = $communes.parents('.input-group').find('.material-icons');
-                $communes.hide().prop('disabled', 'disabled').find('option').not(':first').remove();
-                $communesLoader.show();
-                $iconDefault.hide();
-                $iconLoader.show();
-                $.ajax({
-                    dataType: "json",
-                    method: "GET",
-                    url: "/api/static/communes/"+$(this).find('option:selected').attr('id')
-                })
-                    .done(function (response) {
-                        $.each(response, function (key, commune) {
-                            $communes.append($('<option>', {value: commune.id}).text(commune.name));
-                        });
-                        $communes.prop('disabled', '').show();
-                        $communesLoader.hide();
-                        $iconLoader.hide();
-                        $iconDefault.show();
-                    });
+        num_tel = ($(objet).val());
+
+        if (num_tel.length!=10) 
+        {
+
+            if(num_tel.length>10)
+            {
+
+                $(objet).val(num_tel.substr(0,10));
+            }            
+
+            else
+            {
+
+                $(objet).removeClass("is-valid").addClass("is-invalid");
+
+                $("#valider").hide(100).prop('disabled', true);
+
+                var texte = '<i class="fe fe-x text-danger mr-2"></i>Le numéro de téléphone doit contenir 10 chiffre';
+                
+                $("#err").removeClass("alert alert-success").addClass("alert alert-danger").html(texte);
+
+                //                
+            }
+        }
+
+        else
+        {
+
+            $.ajax({
+                headers: 
+                {
+                    'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                },                    
+                type:"POST",
+                url:"/home/client/verif_tel/ajax",
+                data:{num_tel:num_tel},
+
+                success:function(data)
+                {
+                    
+                    if(data.length==0)
+                    {
+
+                        $(objet).removeClass("is-invalid").addClass("is-valid");
+
+                        $("#valider").show(100).prop('disabled', false);
+
+                        var texte = '<i class="fe fe-check text-success mr-2"></i>Le numéro de téléphone est valide';
+                        
+                        $("#err").removeClass("alert alert-danger").addClass("alert alert-success").html(texte);
+
+                        //
+                    }
+                    else
+                    {
+
+                        $(objet).removeClass("is-valid").addClass("is-invalid");
+
+                        //$("#valider").hide(100).prop('disabled', true);
+                        
+                        var texte = '<i class="fe fe-x text-danger mr-2"></i>Le numéro de téléphone appartient déja à : '+data[0].nom+' '+data[0].prenom+' | '+data[0].wilaya+' - '+data[0].commune;
+                        
+                        $("#err").removeClass("alert alert-success").addClass("text-center alert alert-danger").html(texte);
+
+
+                        //
+                    }
+                    //
+                }
+                //
             });
+
+
+
+            //
+        }          
+
+        // body...
+    }
+
+        
+    $('.wilaya_select').on('change', function (e) {
+        console.log('saz');
+        e.preventDefault();
+        var $communes = $('#commune_select');
+        var $communesLoader = $('#commune_select_loading');
+        var $iconLoader = $communes.parents('.input-group').find('.loader-spinner');
+        var $iconDefault = $communes.parents('.input-group').find('.material-icons');
+        $communes.hide().prop('disabled', 'disabled').find('option').not(':first').remove();
+        $communesLoader.show();
+        $iconDefault.hide();
+        $iconLoader.show();
+        $.ajax({
+            dataType: "json",
+            method: "GET",
+            url: "/api/static/communes/"+$(this).find('option:selected').attr('id')
+        })
+            .done(function (response) {
+                $.each(response, function (key, commune) {
+                    $communes.append($('<option>', {value: commune.id}).text(commune.name));
+                });
+                $communes.prop('disabled', '').show();
+                $communesLoader.hide();
+                $iconLoader.hide();
+                $iconDefault.show();
+            });
+    });
         
 
 </script>

@@ -132,7 +132,17 @@ class ClientController extends Controller
         return redirect()->route('client.index')->with('success', 'le Client a été supprimé ');        
     }
 
+    public function verif_tel(Request $request)
+    {
 
+        $num_tel = $request->num_tel;
+
+        $client = DB::select("select * from clients where telephone = '$num_tel'");
+
+        return response()->json($client);
+
+        // code...
+    }
 
 
 }

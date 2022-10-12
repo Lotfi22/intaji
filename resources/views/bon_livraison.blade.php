@@ -67,7 +67,7 @@
             <td style="background-color: #fff;"><strong>Suivi Par : </strong>Admin | </td>
             <td style="background-color: #fff;"><strong>BL Numéro : {!! $num_bl !!}</strong> | </td>
             <td style="background-color: #fff;"><strong>Le:</strong> {!! date("d-m-Y H:i:s ") !!} |</td>
-            <td style="background-color: #fff;"><strong>Livreur:</strong> {!! $livreur->name !!} {!! $livreur->prenom !!} - {!! $livreur->email !!} </td>
+            <td style="background-color: #fff;"><strong>Livreur:</strong> {!! $livreur->name ?? '' !!} {!! $livreur->prenom ?? '' !!} - {!! $livreur->email ?? '' !!} </td>
         </tr>
     
     </table>

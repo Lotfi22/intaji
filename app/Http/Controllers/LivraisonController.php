@@ -247,7 +247,7 @@ class LivraisonController extends Controller
 
         $id_livreur = ($livraison[0]->livreur);
 
-        $livreur = 
+        $livreur = Livreur::find($id_livreur);
 
         $j=0;
         
