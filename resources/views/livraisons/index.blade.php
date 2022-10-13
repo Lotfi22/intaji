@@ -181,20 +181,21 @@
             <div class="modal-content" id="details_livraison">
                 
                 <div class="modal-header">
-                    <h3 class="modal-title text-center" id="lineModalLabel">Détails sur la livraison </h3>
+                    <h3 class="modal-title text-center" id="lineModalLabel"> <span class="float-left" id="depot">Dépot : </span>  </h3>
 
                     <a type="button" class="close" data-dismiss="modal">&times; Fermer</a>
                 </div>
                 
+                <input style="display:none;" type="number" id="numm_livraison" value="">
+
                 {{ csrf_field() }}
                 
                 <div class="modal-body" id="modal-body">
                     
-                	<h3 class="float-left" id="livreur">Livreur : </h3>
+                	<h3 class="float-left" id="livreur">Livreur : </h3><br>
+                    
                 	<h3 class="float-right" id="client">Client : </h3>
                 	
-
-
                     <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
                     
                     	{{ csrf_field() }}
@@ -304,6 +305,9 @@
 
                         @include('encaissement.encaissement')
                      @else
+
+                        <h6 class="btn btn-outline-primary text-center col-md-12" style="cursor:pointer;" onclick="get_bl();">Voir BL</h6>
+
                         <h3 class="alert alert-danger text-center"> Vous n'étes pas Admin </h3>
                     @endif    
 

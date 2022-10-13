@@ -62,6 +62,8 @@ Route::post('/home/livraisons/filter','LivraisonController@filter');
 
 Route::post('/home/client/verif_tel/ajax','ClientController@verif_tel');
 
+Route::post('/home/livraisons/get_depot/ajax','LivraisonController@get_depot');
+
 //caisse : 
 
 Route::get('/home/caisse','CaisseController@index');

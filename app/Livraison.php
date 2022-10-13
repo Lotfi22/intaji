@@ -144,6 +144,22 @@ class Livraison extends Model
         // code...
     }
 
+
+    public static function get_depot($num_livraison)
+    {
+
+        $id_depot = DB::select("select id_depot from livraisons 
+            where num_livraison = $num_livraison");
+
+        $id_depot = $id_depot[0]->id_depot;
+
+        $depot = DB::select("select * from mes_depots where id = '$id_depot'");
+
+        return $depot[0]->nom ?? '';
+        // code...
+    }
+
+
     public static function get_livreur($num_livraison)
     {
 

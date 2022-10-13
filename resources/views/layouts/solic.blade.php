@@ -265,7 +265,7 @@
 
                                     @endif
 
-                                    @if(Check::CheckAuth(['admin']))
+                                    @if(Check::CheckAuth(['admin','depot']))
                                     
                                         <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="mdi mdi-forklift"></i>Livraisons</a></li>
 

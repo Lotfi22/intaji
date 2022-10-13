@@ -241,7 +241,7 @@ class Ticket extends Model
             where id_ticket = $id_ticket 
             order by id desc");
 
-        return $depot[0]->depot;
+        return $depot[0]->depot ?? '';
 
         // code...
     }

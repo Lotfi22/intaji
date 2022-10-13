@@ -19,73 +19,42 @@
 
                     @csrf
 
-                    <div class="row">
-
+                    <div class="row col-md-12">
                         <div class="col-md-4">
-
                             <div class="form-group">
-
-                                <label class="small mb-1" for="date_debut">date début : </label>
-
-                                <input class="form-control py-4" id="date_debut" name="date_debut"
-                                    value="{{ $date_debut }}" type="date" />
-
+                                <label class="small" for="date_debut">date début : </label>
+                                <input  class="form-control" id="date_debut"
+                                 name="date_debut" value="{{$date_debut}}"
+                                 type="date" />
                             </div>
-
-                        </div>
-
-
-
-                        <div class="col-md-4">
-
-                            <div class="form-group">
-
-                                <label class="small mb-1" for="date_fin">date fin: </label>
-
-                                <input class="form-control py-4" id="date_fin" name="date_fin" value="{{ $date_fin }}"
-                                    type="date" />
-
-                            </div>
-
                         </div>
 
                         <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="small " for="date_fin">date fin: </label>
+                                <input  class="form-control" id="date_fin"
+                                 name="date_fin" value="{{$date_fin}}"
+                                 type="date" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            
+                            <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
 
-                            <button type="submit" style="color: white; margin-top:9%;" class="form-control btn btn-primary">
-
-                                Filtrer
-
+                            <button type="submit" class="text-white form-control btn btn-primary">
+                                <span style="color:#fff;">Filtrer</span>
                             </button>
-
                         </div>
+                    </div> 
 
                 </form>
-
             </h4>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             <div class="card-body">
 
                 <div class="table-responsive">
 
-
-
-
-
-                    <table class="table table-bordered" id="datable-1" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="datatable-10" width="100%" cellspacing="0">
 
                         <thead>
 
