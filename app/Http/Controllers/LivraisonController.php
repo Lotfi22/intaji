@@ -391,7 +391,7 @@ class LivraisonController extends Controller
         $total_paye = DB::select("select sum(versement)+$val as total_paye 
         from versements where num_livraison = $num_livraison");
 
-        $total_payee = $total_paye[0]->total_paye ?? 0;
+        $total_payee = $total_paye[0]->total_paye ?? $val;
 
         return response()->json($total_payee<=$total_livraison);
 

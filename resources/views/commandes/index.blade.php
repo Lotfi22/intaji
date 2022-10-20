@@ -25,7 +25,7 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center" width="100%" cellspacing="0">
+                    <table class="table table-bordered text-center"  id="datatable-10" width="100%" cellspacing="0">
 
                         <thead>
                             <tr style="cursor: pointer;">
@@ -75,7 +75,15 @@
                                     	{!! number_format((App\Commande::get_total($commande->num_commande))); !!} DA
                                     </td>
                                     <td>
-                                    {{ App\Commande::get_status_client($commande->num_commande) ?? '' }}
+                                        @if (App\Commande::get_status_client($commande->num_commande) == "Renseignments")
+
+                                            <img width="60" src="{{ asset('/thinking.png') }}"> <p style="display: none;">{!! App\Commande::get_status_client($commande->num_commande) !!}</p>
+                                        @else
+
+                                            <img width="60" src="{{ asset('/smile.png') }}"> <p style="display: none;">{!! App\Commande::get_status_client($commande->num_commande) !!}</p>
+
+                                            {{-- expr --}}
+                                        @endif
                                     </td>
 
 

@@ -43,10 +43,10 @@
         <tr>
             <td align="left">
                 
-                <h3 style="background-color: #fff;">LION ROYAL</h3>
+                <h3 style="display: none; background-color: #fff;">LION ROYAL</h3>
 
                 <pre>
-                	<img src="lion.jpeg" width="200px" height="150px">
+                	<img src="lion.jpeg" width="200px" height="200px">
             	</pre>
             	
             </td>

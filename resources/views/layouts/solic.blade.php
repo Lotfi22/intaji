@@ -13,9 +13,9 @@
         <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
         <meta content="Solic – Bootstrap Responsive Modern Simple Dashboard Clean HTML Premium Admin Template" name="description">
         
-        <!--favicon -->
-        <link rel="icon" href="{{ asset('../../assets/images/brand/favicon.jpeg') }}" type="image/x-icon"/>
-        <link rel="shortcut icon" href="{{ asset('../../assets/images/brand/favicon.jpeg') }}" type="image/x-icon"/>
+        <!--favicon2 -->
+        <link rel="icon" href="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" type="image/x-icon"/>
+        <link rel="shortcut icon" href="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" type="image/x-icon"/>
 
         <!-- TITLE -->
         <title> INTAJI </title>
@@ -76,13 +76,13 @@
                             <a id="horizontal-navtoggle" class="animated-arrow hor-toggle"><span></span></a>
 
                             <a class="header-brand" href="/home">
-                                <img src="{{ asset('../../assets/images/brand/favicon.jpeg') }}" class="header-brand-img desktop-logo" alt="Solic logo">
-                                <img src="{{ asset('../../assets/images/brand/favicon.jpeg') }}" class="header-brand-img mobile-view-logo" alt="Solic logo">
+                                <img src="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" class="header-brand-img desktop-logo" alt="Solic logo">
+                                <img src="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" class="header-brand-img mobile-view-logo" alt="Solic logo">
                             </a><!-- LOGO -->
 
                             <a class="header-brand header-brand2" href="/home">
-                                <img src="{{ asset('../../assets/images/brand/favicon.jpeg') }}" class="header-brand-img desktop-logo" alt="Solic logo">
-                                <img src="{{ asset('../../assets/images/brand/favicon.jpeg') }}" class="header-brand-img mobile-view-logo" alt="Solic logo">
+                                <img src="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" class="header-brand-img desktop-logo" alt="Solic logo">
+                                <img src="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" class="header-brand-img mobile-view-logo" alt="Solic logo">
                             </a><!-- LOGO -->
                             <div class="d-flex order-lg-2 ml-auto header-right-icons header-search-icon">
                                 <div class="dropdown d-md-flex">
@@ -93,7 +93,7 @@
 
                                 <div class="dropdown d-md-flex header-settings">
                                     <a href="#" class="nav-link " data-toggle="dropdown">
-                                        <span><img src="{{ asset('../../assets/images/brand/favicon.jpeg') }}" alt="profile-user" class="avatar brround cover-image mb-0 ml-0"></span>
+                                        <span><img src="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" alt="profile-user" class="avatar brround cover-image mb-0 ml-0"></span>
                                     </a>
                                     
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
