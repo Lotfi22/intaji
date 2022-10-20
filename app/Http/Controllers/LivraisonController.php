@@ -33,10 +33,34 @@ class LivraisonController extends Controller
         $date_debut = date("Y-m-d",strtotime("-1 month"));
         $date_fin = date('Y-m-d');        
 
-        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise
-        from livraisons 
-        where date(updated_at) between date('$date_debut') and date('$date_fin')
-        order by num_livraison desc");
+        if(Check::CheckAuth(['depot']))
+        {
+
+            $depot = (Auth::guard('depot')->user()->depot);
+
+            $id_depot = DB::select("select * from mes_depots d where d.nom = '$depot'");
+
+            $id_depot = $id_depot[0]->id;
+            
+            $livraisons=DB::select("select distinct
+            num_livraison,livreur,updated_at,remise
+            from livraisons l
+            where (l.id_depot = '$id_depot') and (date(updated_at) between date('$date_debut') and date('$date_fin'))
+            order by num_livraison desc");
+
+            //
+        }
+        else
+        {
+
+            $livraisons=DB::select("select distinct 
+            num_livraison,livreur,updated_at,remise
+            from livraisons 
+            where date(updated_at) between date('$date_debut') and date('$date_fin')
+            order by num_livraison desc");
+
+            //
+        }
 
         $versements = DB::select("select num_livraison,versement 
         from versements
@@ -247,7 +271,7 @@ class LivraisonController extends Controller
 
         $id_livreur = ($livraison[0]->livreur);
 
-        $livreur = 
+        $livreur = Livreur::find($id_livreur);
 
         $j=0;
         
@@ -367,7 +391,7 @@ class LivraisonController extends Controller
         $total_paye = DB::select("select sum(versement)+$val as total_paye 
         from versements where num_livraison = $num_livraison");
 
-        $total_payee = $total_paye[0]->total_paye ?? 0;
+        $total_payee = $total_paye[0]->total_paye ?? $val;
 
         return response()->json($total_payee<=$total_livraison);
 
@@ -433,6 +457,18 @@ class LivraisonController extends Controller
         $livreur = $livreur[0]->email;
 
         return response()->json($livreur);
+
+        // code...
+    }
+
+    public function get_depot(Request $request)
+    {
+
+        $num_livraison = $request->num_livraison;
+
+        $depot = Livraison::get_depot($num_livraison);
+
+        return $depot;
 
         // code...
     }

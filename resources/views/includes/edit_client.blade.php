@@ -28,7 +28,7 @@
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Téléphone </label>
-                            <input type="text" value="{{ $client->telephone }}" name="telephone2" class="form-control"
+                            <input type="text" onkeyup="verif_number(this);" value="{{ $client->telephone }}" name="telephone2" class="form-control"
                                 id="exampleInputEmail1" placeholder="Entrer telephone ">
                         </div>
 

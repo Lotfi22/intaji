@@ -32,6 +32,37 @@ function get_client(num_livraison)
 }
 
 
+
+function get_depot(num_livraison)
+{
+
+
+	var depot = "";
+
+    $.ajax({
+		headers: 
+		{
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},                    
+		type:"POST",
+		url:"/home/livraisons/get_depot/ajax",
+		data:{num_livraison:num_livraison},
+
+		success:function(data) 
+		{
+			
+			$("#depot").html("Dépot : "+data);
+			//
+		}
+	    //
+    });
+
+
+	//
+}
+
+
+
 function get_livreur(num_livraison)
 {
 
@@ -65,6 +96,7 @@ function get_livraison(objet)
 	var num_livraison = $(objet).attr('num_livraison');
 
 	$("#num_livraison").val(num_livraison);
+	$("#numm_livraison").val(num_livraison);
 	$("#approuver").attr('num_livraison', num_livraison);
 	$("#rejeter").attr('num_livraison', num_livraison);
 
@@ -108,9 +140,9 @@ function get_livraison(objet)
 			
 			/*$("#livreur").html('Livreur : '+data.livraison[0].livreur);*/
 			get_livreur(num_livraison);
+			get_client(num_livraison);
+			get_depot(num_livraison);
 
-
-			/*$("#client").html();*/get_client(num_livraison);
 			$("#versement").attr('max', totale);
 
 			if (data.livraison[0].statut=="en attente")
@@ -510,10 +542,10 @@ function test_depassement(objet)
 
 function get_bl() 
 {
-
-	var num_livraison = $("#approuver").attr('num_livraison');
+	var num_livraison = $("#numm_livraison").val();/*$("#approuver").attr('num_livraison')*/;
 	
 	window.open("/home/livraisons/voir/"+num_livraison+"/BL", '_blank');
 
 	// body...
 }
+

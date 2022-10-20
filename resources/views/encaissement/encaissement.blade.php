@@ -1,8 +1,8 @@
 <div id="encaissements" total="" style="margin-top: 2%;">
 	
-	<h6 class="alert alert-success text-center" style="cursor:pointer;" onclick="get_bl();">Voir BL</h6>
+	<h6 class="btn btn-outline-primary text-center col-md-12" style="cursor:pointer;" onclick="get_bl();">Voir BL</h6>
 
-	<div class="form-group row"  action="/home/livraisons/encaisser1">
+	<div style="margin-top:4%;" class="form-group row" action="/home/livraisons/encaisser1">
 		
 		{{ @csrf_field() }}
 

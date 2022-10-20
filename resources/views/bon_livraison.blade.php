@@ -43,10 +43,10 @@
         <tr>
             <td align="left">
                 
-                <h3 style="background-color: #fff;">LION ROYAL</h3>
+                <h3 style="display: none; background-color: #fff;">LION ROYAL</h3>
 
                 <pre>
-                	<img src="lion.jpeg" width="200px" height="150px">
+                	<img src="lion.jpeg" width="200px" height="200px">
             	</pre>
             	
             </td>
@@ -67,7 +67,7 @@
             <td style="background-color: #fff;"><strong>Suivi Par : </strong>Admin | </td>
             <td style="background-color: #fff;"><strong>BL Numéro : {!! $num_bl !!}</strong> | </td>
             <td style="background-color: #fff;"><strong>Le:</strong> {!! date("d-m-Y H:i:s ") !!} |</td>
-            <td style="background-color: #fff;"><strong>Livreur:</strong> {!! $livreur->name !!} {!! $livreur->prenom !!} - {!! $livreur->email !!} </td>
+            <td style="background-color: #fff;"><strong>Livreur:</strong> {!! $livreur->name ?? '' !!} {!! $livreur->prenom ?? '' !!} - {!! $livreur->email ?? '' !!} </td>
         </tr>
     
     </table>
