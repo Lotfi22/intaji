@@ -107,12 +107,10 @@
             
             <div class="col-md-6">
               
-              <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+              
                 
-                <img style="margin:5% -10%;" width="80%" height="100%" src="{{asset('ui/img/curved-images/lion.jpeg')}}">
+                <img style="margin:auto;" width="100%" src="{{asset('intaji.jpeg')}}">
 
-
-              </div>
             </div>
           </div>
         </div>
