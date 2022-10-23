@@ -93,8 +93,9 @@ function get_livreur(num_livraison)
 
 function get_livraison(objet) 
 {
+ 
 	var num_livraison = $(objet).attr('num_livraison');
-
+    
 	$("#num_livraison").val(num_livraison);
 	$("#numm_livraison").val(num_livraison);
 	$("#approuver").attr('num_livraison', num_livraison);
@@ -111,22 +112,21 @@ function get_livraison(objet)
 
 		success:function(data) 
 		{
-
 			var to_append = '';
 
 			var totale = 0;
 			
 			for (var i = 0; i < data.livraison.length; i++) 
 			{
-				
+                /*alert(data.livraison[i].prix)*/
 				var prod = '<td>'+data.livraison[i].nom_produit+'</td>';
 				var qte = '<td>'+data.livraison[i].qte+'</td>';
-				var prix = '<td>'+formatMoney(data.livraison[i].prix)+' DA</td>';
+				var prix = '<td>'+formatMoney(data.livraison[i].prix*1)+' DA</td>';
 				var total = '<td>'+formatMoney(data.livraison[i].prix*data.livraison[i].qte)+' DA</td>';
 
 				to_append += '<tr>'+prod+''+qte+''+prix+''+total+'</tr>';
-
-				totale = totale + data.livraison[i].prix*data.livraison[i].qte;
+                
+				totale = parseFloat(totale) + parseFloat(data.livraison[i].prix*data.livraison[i].qte);
 
 				//
 			}
@@ -191,16 +191,16 @@ function get_livraison(objet)
 			{
 				
 
-				versements += '<tr> <td>'+data.versements[i].created_at+'</td> <td>'+formatMoney(data.versements[i].versement)+' DA</td> <td>'+data.versements[i].validateur+'</td> </tr>';
+				versements += '<tr> <td>'+data.versements[i].created_at+'</td> <td>'+formatMoney(data.versements[i].versement*1)+' DA</td> <td>'+data.versements[i].validateur+'</td> </tr>';
 
-				total_versements += data.versements[i].versement;
+				total_versements += parseFloat(data.versements[i].versement);
 
 				//
 			}
 
 			versements += '<tr class="alert alert-primary"><td style="font-weight:bold;" >Total Versement : </td><td>'+formatMoney(total_versements)+' DA</td></tr>';
 
-			var reste = totale*(1-(data.livraison[0].remise/100)) - total_versements;
+			var reste = parseFloat(totale)*parseFloat(1-(data.livraison[0].remise/100)) - total_versements;
 
 			if (reste!==0)
 			{
@@ -373,11 +373,11 @@ function valider_versement()
 
 	event.preventDefault();
 
-	var versement = $("#versement").val();
+	var versement = parseFloat($("#versement").val());
 
-	var max = $("#versement").attr('max');
+	var max = parseFloat($("#versement").attr('max'));
 
-	var totale = max;
+	var totale = parseFloat(max);
 
 	if (parseFloat(versement) > parseFloat(max)) 
 	{
@@ -421,16 +421,16 @@ function valider_versement()
 			for (var i = 0; i < data.versements.length; i++) 
 			{	
 
-				versements += '<tr><td>'+data.versements[i].created_at+'</td><td>'+formatMoney(data.versements[i].versement)+' DA</td> <td>'+data.versements[i].validateur+'</td> </tr>';
+				versements += '<tr><td>'+data.versements[i].created_at+'</td><td>'+formatMoney(data.versements[i].versement*1)+' DA</td> <td>'+data.versements[i].validateur+'</td> </tr>';
 
-				total_versements += data.versements[i].versement;
+				total_versements = parseFloat(total_versements) + parseFloat(data.versements[i].versement);
 
 				//
 			}
 
 			versements += '<tr class="alert alert-success" ><td style="font-weight:bold;" >Total versements: </td><td>'+formatMoney(total_versements)+' DA</td></tr>';
 
-			var reste = totale*(1-(data.livraison[0].remise/100)) - total_versements;
+			var reste = parseFloat(totale)*parseFloat(1-(data.livraison[0].remise/100)) - parseFloat(total_versements);
 
 			if (reste!==0)
 			{
@@ -444,7 +444,7 @@ function valider_versement()
 			}
 			else
 			{
-				versements += '<tr class="alert alert-success"><td style="font-weight:bold; color:green;">Payement Complet</td><td style="font-weight:bold; color:green;">'+formatMoney(total_versements)+' DA</td></tr>';
+				versements += '<tr class="alert alert-success"><td style="font-weight:bold; color:green;">Payement Complet</td><td style="font-weight:bold; color:green;">'+formatMoney(total_versements*1)+' DA</td></tr>';
 				
 				$("#versement").hide(100);
 				$("#label_versement").hide(100);
@@ -477,10 +477,8 @@ function formatMoney(number)
 {
 
 	var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-
-	ret = (ret.substr(1));
-
-  	return ret;
+	
+  	return ret.substr(1);
 }
 
 function test_depassement(objet)
@@ -548,4 +546,3 @@ function get_bl()
 
 	// body...
 }
-

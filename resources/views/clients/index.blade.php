@@ -48,9 +48,9 @@
 
                                     <td>{{ $client->telephone ?? '' }}</td>
 
-                                    <td>{{ $client->wilaya()['name'] ?? '' }}</td>
+                                    <td>{{ $client->wilaya ?? '' }}</td>
 
-                                    <td>{{ $client->commune()['name'] ?? '' }}</td>
+                                    <td>{{ $client->commune ?? '' }}</td>
 
 
 
