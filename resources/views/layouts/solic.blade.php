@@ -542,6 +542,27 @@
         </script>
 
         <script>
+
+            $.ajax({
+                url: "http://ip-api.com/json",
+                type: 'GET',
+                success: function(json)
+                {
+                    console.log(json);
+
+                    console.log("My country is: " + json.country+" city : " + json.city);
+                },
+                
+                error: function(err)
+                {
+                    console.log("Request failed, error= " + err);
+                }
+            });
+            //
+        </script>
+
+
+        <script>
             
             $("table").attr({
                 class: 'table card-table table-vcenter text-nowrap table-striped',

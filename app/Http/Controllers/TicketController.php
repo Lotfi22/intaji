@@ -720,7 +720,7 @@ class TicketController  extends Controller
         if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user());}
         if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user());}
 
-        $depot = ($acteur->depot);
+        ($request->depot==null) ? $depot = $acteur->depot : $depot = $request->depot;
 
         (DB::insert("insert into historiques (id_ticket,depot) 
                     values ($id_ticket,'$depot')"));

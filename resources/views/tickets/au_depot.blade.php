@@ -6,6 +6,8 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <input {{-- style="display:none;" --}} id="depot" type="text" name="">
+
     <div class="container-fluid">
 
         <div class="card mb-4">
@@ -171,41 +173,47 @@
 
     <script>
 
+        var depot = "";
+        
+        jQuery(document).ready(function($) 
+        {
+            
+            $.ajax({
+                url: "http://ip-api.com/json",
+                type: 'GET',
 
+                success: function(json)
+                {
+                    depot = json.region+"_"+json.regionName+"_"+json.city;
+
+                    $("#depot").attr('value',depot);
+                },
+                
+                error: function(err)
+                {
+                    console.log("Request failed, error= " + err);
+                }
+            });
+        });
+        
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-
-
         function SearchFunction() 
-
-        
-
         {
-
             var input, filter;
-
-         
 
             input = document.getElementById("search");
 
-         
-
             filter = input.value.toUpperCase();
 
-         
+            var depot = $("#depot").attr('value');
 
             $('#search').val('');
 
-         
-
             var trId = filter.substr(2);
 
-            
-
             var trFound = document.getElementById(trId);
-
-
 
             fetch('/ticket/au_depot/action', 
 
@@ -229,7 +237,9 @@
 
                     _token: CSRF_TOKEN,
 
-                    ticket:trId
+                    ticket:trId,
+
+                    depot:depot
 
                 })
 
@@ -245,7 +255,7 @@
 
                     $(".au_depot").click();
 
-                    $('#'+trId).addClass('alert alert-success')
+                    $('#'+trId).css({"color": "rgb(97,193,33)", "font-weight": "bold"}).addClass('alert alert-success')
 
                     trFound.getElementsByTagName("td")[4].innerHTML = "Au Dépot";
                     

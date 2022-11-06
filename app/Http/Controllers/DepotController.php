@@ -131,6 +131,8 @@ class DepotController extends Controller
 
         $mes_depots = DB::select("select * from mes_depots");
 
+        $mes_depots = DB::select("select distinct depot as nom from historiques order by depot desc");
+
         $tickets = (DB::select("select * from tickets 
                 where id_produit = $id_produit and satut = 'au_depot' "));
 
@@ -157,6 +159,8 @@ class DepotController extends Controller
 
                 //
             }
+
+            $depot->nom=="" ? $depot->nom="Sans Nom" : $depot->nom = $depot->nom; 
 
             $resultats[$i]=(object)["depot"=>$depot->nom,"qte"=>$cpt];
 
