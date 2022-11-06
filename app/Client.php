@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Client extends Model
 {
@@ -18,5 +19,13 @@ class Client extends Model
         return $commune;
 
     }
+
+    public static function get_wilaya($id_client)
+    {
+        $wilaya = DB::select("select wilaya from clients where id = '$id_client' ");
+        
+        return $wilaya[0]->wilaya ?? "";
+    }
+
 
 }

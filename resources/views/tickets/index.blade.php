@@ -54,9 +54,9 @@
 
                 <div class="table-responsive">
 
-                    <table class="table table-bordered" id="datatable-10" width="100%" cellspacing="0">
+                    <table class="table card-table table-vcenter text-nowrap table-striped" id="datatable-10" width="100%" cellspacing="0">
 
-                        <thead>
+                        <thead style="cursor:pointer;" class="bg-secondary text-white">
 
                             <tr>
 

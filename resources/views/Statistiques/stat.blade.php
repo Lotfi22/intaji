@@ -140,7 +140,45 @@
 
 <div class="card row col-md-12" style="margin-top: 2%;" >
 
-    <div class="card-header row col-md-12">
+    <h4 class="card-header col-md-12">
+
+        <form class="col-md-12" method="post" action="/statistiques/filter">
+
+            @csrf
+
+            <div class="row col-md-12">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="small" for="date_debut">date début : </label>
+                        <input  class="form-control" id="date_debut"
+                         name="date_debut" value="{{$date_debut}}"
+                         type="date" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="small " for="date_fin">date fin: </label>
+                        <input  class="form-control" id="date_fin"
+                         name="date_fin" value="{{$date_fin}}"
+                         type="date" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    
+                    <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
+
+                    <button type="submit" class="text-white form-control btn btn-primary">
+                        <span style="color:#fff;">Filtrer</span>
+                    </button>
+                </div>
+            </div> 
+
+        </form>
+    </h4>
+
+
+    {{-- <div class="card-header row col-md-12">
 
         <form class="row col-md-12" method="post" action="/statistiques/filter">
             @csrf
@@ -169,7 +207,7 @@
                 </div>
         </form>
     </div>
-
+ --}}
 
     <div class="card-body">
         

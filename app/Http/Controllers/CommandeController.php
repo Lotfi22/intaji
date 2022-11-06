@@ -211,6 +211,14 @@ class CommandeController extends Controller
     
     public function index()
     {
+
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false){
+
+            return redirect()->route('login.admin');     
+
+        }
+
+
         $date_debut = date("Y-m-d",strtotime("-1 month"));
         $date_fin = date('Y-m-d');        
 
@@ -238,10 +246,25 @@ class CommandeController extends Controller
 
 
     public function valider($id_commande){
+        
+        if(auth()->guard('admin')->check())
+        {
+
+            $acteur= (Auth::guard('admin')->user()->email);
+
+        }
+        else
+        {
+
+            $acteur='Unknown';
+
+        }
+
         $num_commande = $id_commande;
         $num_livraison = Livraison::get_next_num_livraison();
 
-        $commandes =  Commande::where('num_commande',$id_commande)->update(['statut'=>"validé","num_livraison"=>"$num_livraison"]);
+        $commandes =  Commande::where('num_commande',$id_commande)->update(['statut'=>"validé","num_livraison"=>"$num_livraison","validator"=>"$acteur"]);
+        
         $commandes =  Commande::where('num_commande',$id_commande)->get();
         foreach($commandes as $commande){
             $livraison = new Livraison();

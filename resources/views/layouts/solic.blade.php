@@ -6,7 +6,6 @@
     $livreurs = Livreur::orderBy("name","asc")->get();
     ?>
 
-
     <head>
         <!-- Meta data -->
         <meta charset="UTF-8">
@@ -16,6 +15,18 @@
         <!--favicon2 -->
         <link rel="icon" href="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" type="image/x-icon"/>
         <link rel="shortcut icon" href="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" type="image/x-icon"/>
+
+        <style type="text/css">
+            
+
+            .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th 
+            {
+                background-color: #f9f9f9;
+            }
+
+            /**/
+        </style>
+
 
         <!-- TITLE -->
         <title> INTAJI </title>
@@ -101,12 +112,6 @@
                                             <h5 class="text-dark mb-1">Intaji</h5>
                                             <small class="text-muted">Logiciel De Gestion de Production</small>
                                         </div>
-                                        <a class="dropdown-item" href="/home"><i class="mdi mdi-account-outline mr-2"></i> <span>My profile</span></a>
-
-                                        <a class="dropdown-item" href="/sync"><i class="mdi mdi-account-outline mr-2"></i> <span>Synchronisation</span></a>
-
-                                        {{-- <a class="dropdown-item" href="/lang/ar"><i class="mdi mdi-account-outline mr-2"></i> <span>Arabe</span></a> --}}
-                                        <a class="dropdown-item" href="/lang/en"><i class="mdi mdi-account-outline mr-2"></i> <span>Français</span></a>
 
                                         <a class="dropdown-item" onclick="event.preventDefault();
 
@@ -215,6 +220,10 @@
                                                     <a href="/livreur" >Livreurs</a>
                                                 </li>
 
+                                                <li aria-haspopup="true">
+                                                    <a href="/commercial" >Commercial</a>
+                                                </li>
+
                                             </ul>
                                         </li>                                    
                                     
@@ -250,14 +259,15 @@
                                             </a>
                                             
                                             <ul class="sub-menu">
+
+                                                <li aria-haspopup="true">
+                                                    <a href="{{route('client.index')}}">Clients</a>
+                                                </li>
                                                     
                                                 <li aria-haspopup="true">
                                                     <a href="{{route('commande.index')}}">Commandes</a>
                                                 </li>
 
-                                                <li aria-haspopup="true">
-                                                    <a href="{{route('client.index')}}">Clients</a>
-                                                </li>
 
 
                                             </ul>
@@ -528,8 +538,26 @@
             });
 
 
-//
+            //
         </script>
+
+        <script>
+            
+            $("table").attr({
+                class: 'table card-table table-vcenter text-nowrap table-striped',
+                id: 'datatable-10',
+                width: '100%',
+                cellspacing: '0'
+            });
+
+            $("thead").attr({
+                class: 'bg-secondary text-white',
+                style: 'cursor:pointer;'
+            });
+
+            //
+        </script>
+
         @yield('scripts')
     </body>
 </html>

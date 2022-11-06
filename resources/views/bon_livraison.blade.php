@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>BL</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BL</title>
 
-	<style type="text/css">		
+    <style type="text/css">     
         *{
             font-family: Verdana, Arial, sans-serif;
         }
         tfoot tr td{
             font-weight: bold;
         }
-        .table, .th, .td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            background-color: #fff;
-        }                
-        th, td {
-            padding:1%;
-        }
-		body {
-		 	background-image: url("lion.jpeg");
-	  		background-repeat: no-repeat;
-  			background-size: 40%;
-			background-position: 50% 100%;
-  					
-  		}
 
-	</style>
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        th, td {
+          text-align: center;
+          padding: 8px;
+        }
+
+        tbody tr:nth-child(even) {background-color: #f2f2f2;}
+
+        tfoot {
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+
+    </style>
 
 </head>
 
 
 <body style="color: black;">
 
-	<?php date_default_timezone_set("Africa/Algiers"); ?>
+    <?php date_default_timezone_set("Africa/Algiers"); ?>
 
-	{!! setlocale(LC_MONETARY,"en_US"); !!}
+    {!! setlocale(LC_MONETARY,"en_US"); !!}
 
     <table width="100%">
         <tr>
@@ -46,16 +49,16 @@
                 <h3 style="display: none; background-color: #fff;">LION ROYAL</h3>
 
                 <pre>
-                	<img src="lion.jpeg" width="200px" height="200px">
-            	</pre>
-            	
+                    <img src="lion.jpeg" width="200px" height="200px">
+                </pre>
+                
             </td>
             <td align="right">
                 <h3 style="background-color: #fff;">Client : {!! $client !!}</h3>
                 <pre style="background-color: #fff;">
-	                <strong>RC : </strong>  {!! $client !!} 
-	                <strong>Adresse : </strong> {!! $adresse !!}
-            	</pre>
+                    <strong>RC : </strong>  {!! $client !!} 
+                    <strong>Adresse : </strong> {!! $adresse !!}
+                </pre>
             </td>
 
         </tr>
@@ -75,38 +78,38 @@
     <br/>
     
     <table class="table" width="100%">
-        <thead>
-	        <tr>
-	            <th class="th">Nom Produit</th>
-	            <th class="th">Quantité </th>
-	            <th class="th">Prix Unitaire </th>
-	            <th class="th">Total </th>
-	        </tr>
+        <thead style="background-color:#ffa500;">
+            <tr>
+                <th class="th">Nom Produit</th>
+                <th class="th">Quantité </th>
+                <th class="th">Prix Unitaire </th>
+                <th class="th">Total </th>
+            </tr>
         </thead>
         
-        <tbody>
+        <tbody style="border-bottom: 1px solid black;">
 
-        	{!! $total = 0 !!}
+            {!! $total = 0 !!}
 
-        	@foreach ($elements as $element)
-        		
-        		<tr>
-        			
-        			<td class="td" style="text-align: center;" >{!! $element->produit !!}</td>
-        			<td class="td" style="text-align: center;" >{!! $element->qte !!}</td>
-        			<td class="td" style="text-align: center;" >{!! number_format($element->prix) !!} DA</td>
-        			<td class="td" style="text-align: center;" >{!! number_format($element->prix*$element->qte) !!} DA</td>
+            @foreach ($elements as $element)
+                
+                <tr>
+                    
+                    <td class="td" style="text-align: center;" >{!! $element->produit !!}</td>
+                    <td class="td" style="text-align: center;" >{!! $element->qte !!}</td>
+                    <td class="td" style="text-align: center;" >{!! number_format($element->prix) !!} DA</td>
+                    <td class="td" style="text-align: center;" >{!! number_format($element->prix*$element->qte) !!} DA</td>
 
-        		</tr>
+                </tr>
 
-        		{{ $total = $total + $element->prix*$element->qte }}
+                {{ $total = $total + $element->prix*$element->qte }}
 
-        		{{-- expr --}}
-        	@endforeach
+                
+            @endforeach
 
-		</tbody>
+        </tbody>
 
-        <tfoot>
+        <tfoot style="margin-top:10%;">
             <tr>
                 <td class="td" colspan="2"></td>
                 <td class="td" align="center">Total HT </td>
@@ -119,8 +122,8 @@
             </tr>
             <tr>
                 <td class="td" colspan="2"></td>
-                <td class="td" align="center">Net à payer</td>
-                <td class="td" align="right">{!! number_format($total*(1-($remise/100))) !!} DA</td>
+                <td class="td" align="center" style="background-color:#ffa500;">Net à payer</td>
+                <td class="td" align="right" style="background-color:#ffa500;">{!! number_format($total*(1-($remise/100))) !!} DA</td>
             </tr>
 
         </tfoot>
@@ -128,9 +131,9 @@
 
     </table>
 
-	
+    
 
-	 
+     
 
 </body>
 </html>

@@ -122,6 +122,9 @@ class Handler extends ExceptionHandler
         if ($request->is('depot') || $request->is('depot/*')) {
             return redirect()->guest('/login/depot');
         }
+        if ($request->is('commercial') || $request->is('depot/*')) {
+            return redirect()->guest('/login/depot');
+        }
 
         return redirect()->guest(route('login'));
     }

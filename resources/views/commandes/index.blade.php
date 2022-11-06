@@ -32,6 +32,7 @@
                                 <th>N°</th>
                                 <th>DATE</th>
                                 <th>Client</th>
+                                <th>Wilaya</th>
                                 {{-- <th>Produits</th> --}}
                                 <th>Total</th>
                                 <th>Statut Client</th>
@@ -55,17 +56,15 @@
                                     
                                     
                                     <td>
-                                    {{ App\Commande::get_client($commande->num_commande)[0]->nom ?? '' }}
-                                    {{ App\Commande::get_client($commande->num_commande)[0]->prenom ?? '' }}
+                                        {{ App\Commande::get_client($commande->num_commande)[0]->nom ?? '' }}
+                                        {{ App\Commande::get_client($commande->num_commande)[0]->prenom ?? '' }}
 
                                     </td>
-                                    {{-- <td class="text-left">
-                                        @foreach (App\Commande::get_products($commande->num_commande) as $produit)
-                                         	
-                                        	{!! $produit !!}<br>
 
-                                        @endforeach  
-                                    </td> --}}
+                                    <td class="text-left">
+                                        {!! App\Client::get_wilaya(App\Commande::get_client($commande->num_commande)[0]->id) !!}
+
+                                    </td>
                                     
                                     <td>
 
