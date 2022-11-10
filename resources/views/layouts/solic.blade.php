@@ -229,28 +229,31 @@
                                     
                                     @endif    
 
-                                    <li aria-haspopup="true">
-                                        
-                                        <a style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-cube-send"></i>Envoyer/Recevoir
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="/ticket/vers_depot">Envoyer vers dépot</a>
-                                            </li>
+                                    @if(!Check::CheckAuth(['commercial']))
 
-                                            <li aria-haspopup="true">
-                                                <a href="/ticket/au_depot">Recevoir au dépot</a>
-                                            </li>
+                                        <li aria-haspopup="true">
+                                            
+                                            <a style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-cube-send"></i>Envoyer/Recevoir
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                            <ul class="sub-menu">
+                                                    
+                                                <li aria-haspopup="true">
+                                                    <a href="/ticket/vers_depot">Envoyer vers dépot</a>
+                                                </li>
+
+                                                <li aria-haspopup="true">
+                                                    <a href="/ticket/au_depot">Recevoir au dépot</a>
+                                                </li>
 
 
-                                        </ul>
-                                    </li>  
+                                            </ul>
+                                        </li>  
+                                    @endif
 
-                                    @if(Check::CheckAuth(['admin']))
+                                    @if(Check::CheckAuth(['admin','commercial']))
 
                                         <li aria-haspopup="true">
                                             <a href="#" style="cursor: pointer;" class="sub-icon">
@@ -275,21 +278,23 @@
 
                                     @endif
 
-                                    @if(Check::CheckAuth(['admin','depot']))
+                                    @if(Check::CheckAuth(['admin','depot','commercial']))
                                     
                                         <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="mdi mdi-forklift"></i>Livraisons</a></li>
 
                                     @endif
 
-                                    <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
-                                        
-                                        <a style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-account-multiple"></i>Livreurs
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                    </li>
-                                
+                                    @if(!Check::CheckAuth(['commercial']))
+
+                                        <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
+                                            
+                                            <a style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-account-multiple"></i>Livreurs
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                        </li>
+                                    @endif
 
                                     @if(Check::CheckAuth(['admin']))
 

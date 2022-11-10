@@ -375,98 +375,106 @@ function valider_versement()
 
 	var versement = parseFloat($("#versement").val());
 
-	var max = parseFloat($("#versement").attr('max'));
-
-	var totale = parseFloat(max);
-
-	if (parseFloat(versement) > parseFloat(max)) 
+	if (!isNaN(versement)) 
 	{
 
-		var depassement = '<p id="depassement" class="alert alert-danger text-center"> Versement dépasse le total </p>';
+		var max = parseFloat($("#versement").attr('max'));
 
-		$("#valider_versement").after(depassement);
+		var totale = parseFloat(max);
 
-		return false;
-
-		//
-	}	
-
-	var num_livraison = $("#num_livraison").val();
-
-	$("#depassement").hide();
-
-    $.ajax({
-		headers: 
-		{
-			'X-CSRF-TOKEN': $('input[name="_token"]').val()
-		},                    
-		type:"POST",
-		url:"/home/livraisons/encaissements1",
-		data:{num_livraison:num_livraison,versement:versement},
-
-		success:function(data) 
+		if (parseFloat(versement) > parseFloat(max)) 
 		{
 
-			$("#"+data.livraison.num_livraison).addClass("alert alert-success");
-			$("#statut"+data.livraison.num_livraison).attr('class','text-center alert alert-success');
-			$("#statut"+data.livraison.num_livraison).text('terminé');
-			$("#modal_statut"+data.livraison.num_livraison).attr('class','text-center alert alert-success');
-			$("#modal_statut"+data.livraison.num_livraison).text('terminé');
-			
+			var depassement = '<p id="depassement" class="alert alert-danger text-center"> Versement dépasse le total </p>';
 
-			var versements = ''
+			$("#valider_versement").after(depassement);
 
-			var total_versements = 0;
+			return false;
 
-			for (var i = 0; i < data.versements.length; i++) 
-			{	
+			//
+		}	
 
-				versements += '<tr><td>'+data.versements[i].created_at+'</td><td>'+formatMoney(data.versements[i].versement*1)+' DA</td> <td>'+data.versements[i].validateur+'</td> </tr>';
+		var num_livraison = $("#num_livraison").val();
 
-				total_versements = parseFloat(total_versements) + parseFloat(data.versements[i].versement);
+		$("#depassement").hide();
+
+	    $.ajax({
+			headers: 
+			{
+				'X-CSRF-TOKEN': $('input[name="_token"]').val()
+			},                    
+			type:"POST",
+			url:"/home/livraisons/encaissements1",
+			data:{num_livraison:num_livraison,versement:versement},
+
+			success:function(data) 
+			{
+
+				$("#"+data.livraison.num_livraison).addClass("alert alert-success");
+				$("#statut"+data.livraison.num_livraison).attr('class','text-center alert alert-success');
+				$("#statut"+data.livraison.num_livraison).text('terminé');
+				$("#modal_statut"+data.livraison.num_livraison).attr('class','text-center alert alert-success');
+				$("#modal_statut"+data.livraison.num_livraison).text('terminé');
+				
+
+				var versements = ''
+
+				var total_versements = 0;
+
+				for (var i = 0; i < data.versements.length; i++) 
+				{	
+
+					versements += '<tr><td>'+data.versements[i].created_at+'</td><td>'+formatMoney(data.versements[i].versement*1)+' DA</td> <td>'+data.versements[i].validateur+'</td> </tr>';
+
+					total_versements = parseFloat(total_versements) + parseFloat(data.versements[i].versement);
+
+					//
+				}
+
+				versements += '<tr class="alert alert-success" ><td style="font-weight:bold;" >Total versements: </td><td>'+formatMoney(total_versements)+' DA</td></tr>';
+
+				var reste = parseFloat(totale)*parseFloat(1-(data.livraison[0].remise/100)) - parseFloat(total_versements);
+
+				if (reste!==0)
+				{
+					versements += '<tr><td style="font-weight:bold; color:red;">Reste : </td><td style="font-weight:bold; color:red;">'+formatMoney(reste)+' DA</td></tr>';
+
+					$("#versement").show(100);
+					$("#label_versement").show(100);
+					$("#valider_versement").show(100);
+					$("#versement_complet").hide(100);
+
+				}
+				else
+				{
+					versements += '<tr class="alert alert-success"><td style="font-weight:bold; color:green;">Payement Complet</td><td style="font-weight:bold; color:green;">'+formatMoney(total_versements*1)+' DA</td></tr>';
+					
+					$("#versement").hide(100);
+					$("#label_versement").hide(100);
+					$("#valider_versement").hide(100);
+					$("#versement_complet").show(100);
+
+					$("#statut"+num_livraison).text('terminé');
+				}
+
+				$("#past_versements").hide()
+				$("#past_versements").html(versements);
+				$("#past_versements").show(1000)
+
+
+				/*$(".close").click();*/
+
 
 				//
 			}
 
-			versements += '<tr class="alert alert-success" ><td style="font-weight:bold;" >Total versements: </td><td>'+formatMoney(total_versements)+' DA</td></tr>';
-
-			var reste = parseFloat(totale)*parseFloat(1-(data.livraison[0].remise/100)) - parseFloat(total_versements);
-
-			if (reste!==0)
-			{
-				versements += '<tr><td style="font-weight:bold; color:red;">Reste : </td><td style="font-weight:bold; color:red;">'+formatMoney(reste)+' DA</td></tr>';
-
-				$("#versement").show(100);
-				$("#label_versement").show(100);
-				$("#valider_versement").show(100);
-				$("#versement_complet").hide(100);
-
-			}
-			else
-			{
-				versements += '<tr class="alert alert-success"><td style="font-weight:bold; color:green;">Payement Complet</td><td style="font-weight:bold; color:green;">'+formatMoney(total_versements*1)+' DA</td></tr>';
-				
-				$("#versement").hide(100);
-				$("#label_versement").hide(100);
-				$("#valider_versement").hide(100);
-				$("#versement_complet").show(100);
-
-				$("#statut"+num_livraison).text('terminé');
-			}
-
-			$("#past_versements").hide()
-			$("#past_versements").html(versements);
-			$("#past_versements").show(1000)
+		    //
+	    });
 
 
-			/*$(".close").click();*/
+		//
+	}
 
-
-			//
-		}
-
-	    //
-    });
 
     $("#versement").val('');
 

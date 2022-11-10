@@ -24,7 +24,7 @@ class LivraisonController extends Controller
     public function index()
     {
 
-        if(Check::CheckAuth(['admin','production','depot'])==false){
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false){
 
             return redirect()->route('login.admin');     
 
@@ -79,7 +79,7 @@ class LivraisonController extends Controller
     public function filter(Request $request)
     {
 
-        if(Check::CheckAuth(['admin','production','depot'])==false){
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false){
 
             return redirect()->route('login.admin');     
 
@@ -110,7 +110,7 @@ class LivraisonController extends Controller
     public function ajout_livraison($id_livreur,Request $request)
     {
         
-        if(Check::CheckAuth(['admin','production','depot'])==false)
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false)
         {
             return redirect()->route('login.admin');     
         }
@@ -250,7 +250,7 @@ class LivraisonController extends Controller
 
         $depot = $request->depot;
 
-        if(Check::CheckAuth(['admin','production','depot'])==false)
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false)
         {
             return redirect()->route('login.admin');     
         }

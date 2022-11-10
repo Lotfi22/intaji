@@ -119,21 +119,45 @@
 
             </div>
 
+            @if ($commandes[0]->statut != "validé")
+                
+                <div class="card-footer text-center">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="col-md-12 btn btn-outline-primary "  id="btn_valider">  Valider</button>
+                        </div>
 
-            <div class="card-footer text-center">
-                <div class="row">
-                    <div class="col-md-6">
-                        <button class="col-md-12 btn btn-outline-primary "  id="btn_valider">  Valider</button>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-danger  col-md-12"  id="btn_rejeter">  Rejeter </button>                        
+                        </div>
+
+
                     </div>
-
-                    <div class="col-md-6">
-                        <button class="btn btn-outline-danger  col-md-12"  id="btn_rejeter">  Rejeter </button>                        
-                    </div>
-
-
+                        &nbsp;
                 </div>
-                    &nbsp;
-            </div>
+
+             @else
+
+                <div class="card-footer text-center">
+                    <div class="row">
+                        
+                        {{--<div class="col-md-6">
+                            <button class="col-md-12 btn btn-outline-primary "  id="btn_valider">  Valider</button>
+                        </div>--}}
+                        
+                        <div class="col-md-12">
+                            <button class="btn btn-outline-danger  col-md-12"  id="btn_rejeter">  Rejeter </button>                        
+                        </div>
+
+
+                    </div>
+                        &nbsp;
+                </div>
+
+
+                {{--  --}}
+            @endif
+
 
 
         </div>

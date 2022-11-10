@@ -44,6 +44,17 @@ class Livraison extends Model
         // code...
     }
 
+    public static function get_client_all($num_livraison)
+    {
+
+        $client = DB::select("select * from clients 
+        where id = (select id_client from livraisons where num_livraison = $num_livraison limit 1) ");
+
+        
+        return $client;
+        // code...
+    }
+
 
     public static function get_client($num_livraison)
     {

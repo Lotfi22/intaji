@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BL</title>
 
@@ -40,33 +41,34 @@
 
     <?php date_default_timezone_set("Africa/Algiers"); ?>
 
-    {!! setlocale(LC_MONETARY,"en_US"); !!}
-
     <table width="100%">
-        <tr>
+        <tr width="100%">
             <td align="left">
                 
-                <h3 style="display: none; background-color: #fff;">LION ROYAL</h3>
-
-                <pre>
-                    <img src="lion.jpeg" width="200px" height="200px">
-                </pre>
-                
+                <img src="lion.jpeg" width="150px" height="150px">
+                                
             </td>
-            <td align="right">
-                <h3 style="background-color: #fff;">Client : {!! $client !!}</h3>
-                <pre style="background-color: #fff;">
-                    <strong>RC : </strong>  {!! $client !!} 
-                    <strong>Adresse : </strong> {!! $adresse !!}
-                </pre>
+
+            <td style="visibility:hidden;">Lion </td>
+
+            <td style="visibility:hidden;">Lion </td>
+
+            <td style="margin-left:-10%;" align="right">
+
+                <strong>Client : </strong>  {!! substr($client,0,strlen($client)-13) !!}<br>
+                <strong>Tel : </strong>  {!! substr($client,strlen($client)-10) !!}<br>
+                <strong>Adresse : </strong> {!! $adresse !!}
+            
             </td>
 
         </tr>
 
     </table>
 
-    <table width="100%">
-        <tr style="font-size:0.8em;">
+    <table style="margin-top: 4%;" width="100%">
+        
+        <tr style="font-size:0.7em;">
+        
             <td style="background-color: #fff;"><strong>Suivi Par : </strong>Admin | </td>
             <td style="background-color: #fff;"><strong>BL Numéro : {!! $num_bl !!}</strong> | </td>
             <td style="background-color: #fff;"><strong>Le:</strong> {!! date("d-m-Y H:i:s ") !!} |</td>
@@ -78,7 +80,7 @@
     <br/>
     
     <table class="table" width="100%">
-        <thead style="background-color:#ffa500;">
+        <thead style="background-color:#bb77cc;">
             <tr>
                 <th class="th">Nom Produit</th>
                 <th class="th">Quantité </th>
@@ -122,8 +124,8 @@
             </tr>
             <tr>
                 <td class="td" colspan="2"></td>
-                <td class="td" align="center" style="background-color:#ffa500;">Net à payer</td>
-                <td class="td" align="right" style="background-color:#ffa500;">{!! number_format($total*(1-($remise/100))) !!} DA</td>
+                <td class="td" align="center" style="background-color:#bb77cc;">Net à payer</td>
+                <td class="td" align="right" style="background-color:#bb77cc;">{!! number_format($total*(1-($remise/100))) !!} DA</td>
             </tr>
 
         </tfoot>
@@ -131,9 +133,60 @@
 
     </table>
 
-    
 
-     
+    <div width="100%" style="background: url('lion_opac_2.png') repeat; background-size: 50%;">
+
+
+        <h3 style="width:100%;"> Conditions de garantie </h3>
+
+        <ul>
+            
+            <li>Ce produit est garanti contre tout vice industriel</li>
+            <li>Les réparations sous garantie sont gratuites</li>
+            <li>Indemnisation gratuite des pièces de rechange défectueuses</li>
+            <li>La main-d'œuvre nécessaire à cette compensation sera gratuite</li>
+            <li>Les réparations garanties sont sous la garantie du vendeur du produit</li>
+            <li>Cette garantie ne couvre pas la corruption causée par le transport</li>
+            <li>Cette garantie ne couvre pas la corruption causée par le transport Et l'installation et le fonctionnement d'une manière qui ne correspond pas à l'utilisation spécifié dans le fichier d'utilisation</li>
+            
+            <li>Cette garantie ne couvre pas la nomination d'un agent autorisé Pour les interventions effectuées par un professionnel non qualifié</li>
+        </ul> 
+
+
+        <h4> <strong style="color:red;" > Important : </strong> Le vendeur doit remplir correctement le certificat de garantie Cette attestation précise les conditions minimales de la garantie et professionnel peut accorder d'autres avantages </h4>
+        
+        {{--  --}}
+    </div>
+
+    <footer> <strong >Numéro Sérvice Après Vente : </strong> 0770585139 , 0770585129 , 0770585167 </footer>
 
 </body>
+
+<style type="text/css">
+
+            
+    ul li {
+      list-style-type: none;
+      font-family:cursive; 
+    }
+
+    ul li:before {
+      content: counter(item, disc) " ";
+      color: pink;
+    }
+
+    footer 
+    {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #bb77cc;
+        color: white;
+        text-align: center;
+    }
+            
+
+</style>
+
 </html>

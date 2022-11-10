@@ -14,6 +14,7 @@ use App\Produit;
 use App\Fournisseur;
 use App\Livraison;
 use Auth;
+use App\Check;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
@@ -230,9 +231,11 @@ class CommandeController extends Controller
         return view('commandes.index',compact('commandes'));
     }
 
-    public function show($id_commande){
+    public function show($id_commande)
+    {
         $num_commande = $id_commande;
         $commandes =  Commande::where('num_commande',$id_commande)->get();
+        
         return view('commandes.view',compact('commandes','num_commande'));
     }
 
@@ -565,8 +568,9 @@ class CommandeController extends Controller
         return redirect()->back()->with('success', 'la commande a été retiré ');           
     }
 
-    public function create()
-    {
+    public function create(Request $request)
+    {   
+
         $clients = Client::all();
         $produits = Produit::all();
         return view('commandes.create',compact('clients','produits'));

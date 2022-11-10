@@ -6,15 +6,15 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <input {{-- style="display:none;" --}} id="depot" type="text" name="">
-
     <div class="container-fluid">
+
+        <input style="display:none;" class="form-control col-md-2" readonly id="depot" type="text">
 
         <div class="card mb-4">
 
             <h4 class="card-header">
 
-                Scanner <span> {!! count($tickets) !!} </span> Tickets pour réceptionner au depot  :
+                Scanner {{-- <span> {!! count($tickets) !!} </span> --}} Tickets pour réceptionner au depot (<span id="ql_depot"></span>)
 
             </h4>
 
@@ -187,6 +187,8 @@
                     depot = json.region+"_"+json.regionName+"_"+json.city;
 
                     $("#depot").attr('value',depot);
+
+                    $("#ql_depot").text(depot);
                 },
                 
                 error: function(err)
@@ -255,7 +257,7 @@
 
                     $(".au_depot").click();
 
-                    $('#'+trId).css({"color": "rgb(97,193,33)", "font-weight": "bold"}).addClass('alert alert-success')
+                    $('#'+trId).css({"color": "rgb(97,193,33)", "font-weight": "bold","background-color": "#316170"}).addClass('alert alert-success')
 
                     trFound.getElementsByTagName("td")[4].innerHTML = "Au Dépot";
                     

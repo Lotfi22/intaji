@@ -48,15 +48,15 @@ class Template extends Model
     {
         $codebar = asset($codebar);
         $html='
-            <div style="position:absolute;left:50%;margin-left:-40px;top:-35px;width:283px;height:283px;overflow:hidden">
+            <div style="position:absolute;left:23%;margin-left:-40px;top:-35px;width:283px;height:283px;overflow:hidden">
                 <div style="position:absolute;left:20.89px;top:10px" class="cls_002">
                     <span class="cls_002">
-                        <img src="'.$codebar.'" width="50px" height="60px">
+                        <img src="'.$codebar.'" width="90px" height="65px">
                     </span>
-                    <div style="position:absolute;left:1.89px;top:50px;font-size:3px;" class="cls_006">
-                        '.$number.'
+                    <div style="position:absolute;left:1.89px;top:55px;font-size:5px;" class="cls_006">
+                        '.substr($number,10).'
                     </div>
-                    <div style="position:absolute;left:0.5px;top:54px;font-size:12px;" class="cls_006"> Lot N° '.$num_lot.' </div>
+                    <div style="position:absolute;left:0.5px;top:59px;font-size:12px;" class="cls_006"> Lot N° '.$num_lot.' </div>
                 </div>
                 
             </div>
@@ -465,6 +465,29 @@ class Template extends Model
         ';
         return $html;   
     }
+
+
+    public static function ancien_templateBon($commande,$margin,$codebar,$number,$num_lot) 
+    {
+        $codebar = asset($codebar);
+        $html='
+            <div style="position:absolute;left:50%;margin-left:-40px;top:-35px;width:283px;height:283px;overflow:hidden">
+                <div style="position:absolute;left:20.89px;top:10px" class="cls_002">
+                    <span class="cls_002">
+                        <img src="'.$codebar.'" width="50px" height="60px">
+                    </span>
+                    <div style="position:absolute;left:1.89px;top:50px;font-size:3px;" class="cls_006">
+                        '.$number.'
+                    </div>
+                    <div style="position:absolute;left:0.5px;top:54px;font-size:12px;" class="cls_006"> Lot N° '.$num_lot.' </div>
+                </div>
+                
+            </div>
+                ';
+        return $html;
+
+    }
+
 
 
 }
