@@ -20,6 +20,7 @@ class LoginController extends Controller
         $this->middleware('guest:admin')->except('logout');
         $this->middleware('guest:livreur')->except('logout');
         $this->middleware('guest:production')->except('logout');
+        $this->middleware('guest:commercial')->except('logout');
         $this->middleware('guest:depot')->except('logout');
     }
 
@@ -59,7 +60,13 @@ class LoginController extends Controller
     }
 
 
-
+    public function showcommercialLoginForm()
+    {
+        return view('auth.auth', [
+            'url' => 'commercial'
+        ]);
+    }
+    
     public function showFreelancerLoginForm()
     {
         return view('auth.auth', [
@@ -77,7 +84,10 @@ class LoginController extends Controller
     }
 
     protected function guardLogin(Request $request, $guard)
-    {
+    {  
+
+        ($guard==null) ? $guard = 'commercial':$guard==$guard;
+        
         $this->validator($request);
         return Auth::guard($guard)->attempt(
             [
@@ -105,6 +115,16 @@ class LoginController extends Controller
         return back()->withInput($request->only('email', 'remember'));
     }
 
+    public function CommercialLogin(Request $request)
+    {
+        
+        if ($this->guardLogin($request, Config::get('constants.guards.commercial'))) 
+        {
+
+            return redirect()->intended('/commande');
+        }
+        return back()->withInput($request->only('email', 'remember'));
+    }
 
     public function productionLogin(Request $request)
     {
@@ -113,7 +133,6 @@ class LoginController extends Controller
         }
         return back()->withInput($request->only('email', 'remember'));
     }
-
 
     public function livreurLogin(Request $request)
     {

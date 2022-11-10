@@ -52,11 +52,18 @@ class ClientController extends Controller
     
     public function store(Request $request)
     {
+        
+        $id_commune = ($request->commune_id);
+        
+        $commune = DB::select("select * from communes where id = $id_commune ");
+        
+        $commune = $commune[0]->name;
+        
         $client = new Client();  
         $client->nom = $request['nom'];
         $client->prenom = $request['prenom'];
         $client->wilaya = $request['wilaya_id'];
-        $client->commune = $request['commune_id'];
+        $client->commune = $commune;
         $client->telephone = $request['telephone'];
         $client->facebook = $request['facebook'];
 

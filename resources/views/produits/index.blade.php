@@ -15,9 +15,9 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="datable-1" width="100%" cellspacing="0">
+                    <table class="table card-table table-vcenter text-nowrap table-striped" id="datable-1" width="100%" cellspacing="0">
 
-                        <thead>
+                        <thead class="bg-secondary text-white">
                             <tr style="cursor: pointer;">
                                 <th>ID produit</th>
                                 <th>Photo</th>
@@ -47,14 +47,14 @@
 
                                         <div class="table-action">
                                             <a href="{{ route('produit.destroy', ['produit' => $produit->id]) }}"
-                                                class="btn btn-danger"
+                                                class="btn btn-sm btn-danger"
                                                 onclick="return confirm('etes vous sure ?')">
                                                 <i class="fa fa-trash"></i>
                                                 Delete
                                             </a>
 
                                             <button data-toggle="modal" data-target="#squarespaceModal{{ $produit->id }}"
-                                                class="btn btn-outline-link text-dark">
+                                                class="btn btn-sm btn-outline-link text-dark">
                                                 Modifer
                                             </button>
                                             @include('includes.edit_produit', [

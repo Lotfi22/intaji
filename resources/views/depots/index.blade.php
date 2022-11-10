@@ -16,8 +16,10 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="datable-1" width="100%" cellspacing="0">
-                        <thead>
+
+                    <table class="table card-table table-vcenter text-nowrap table-striped" id="datable-1" width="100%" cellspacing="0">
+
+                        <thead style="cursor:pointer;" class="bg-secondary text-white">
                             <tr>
                                 <th>ID depot</th>
                                 <th>Login</th>

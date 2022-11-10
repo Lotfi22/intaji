@@ -17,8 +17,9 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="datable-1">
-                        <thead class=" text-primary">
+                    <table class="table card-table table-vcenter text-nowrap table-striped" id="datable-1" width="100%" cellspacing="0">
+
+                        <thead style="cursor:pointer;" class="bg-secondary text-white">
                             <tr>
                                 <th>ID categorie</th>
                                 <th>label</th>
@@ -32,15 +33,15 @@
                                     <td>{{ $categorie->nom ?? '' }}</td>
                                     <td>
                                         <div class="table-action">
-                                            <a class="btn btn-outline btn-danger"
+                                            <a class="btn btn-sm btn-outline btn-danger"
                                                 href="{{ route('categorie.destroy', ['categorie' => $categorie->id]) }}"
                                                 onclick="return confirm('etes vous sure  ?')">
                                                 <i class="fa fa-trash"></i>
                                                 Delete
                                             </a>
                                             <button data-toggle="modal" data-target="#exampleModaledit{{ $categorie->id }}"
-                                                class="btn btn-outline btn-outlinez text-dark px-3 mb-0">
-                                                Modifer
+                                                class="btn btn-sm btn-outline btn-outlinez text-dark px-3 mb-0">
+                                                Modifier
                                             </button>
 
                                             <div class="modal fade" id="exampleModaledit{{ $categorie->id }}"

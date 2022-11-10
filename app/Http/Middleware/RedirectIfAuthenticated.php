@@ -36,6 +36,10 @@ class RedirectIfAuthenticated
         if ($guard === 'depot' && Auth::guard($guard)->check()) {
             return redirect('/ticket');
         }
+        if ($guard === 'commercial' && Auth::guard($guard)->check()) {
+            return redirect('/commande');
+        }
+
 
         if (Auth::guard($guard)->check()) {
             return redirect('/ticket');

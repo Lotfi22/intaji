@@ -250,22 +250,31 @@ class Ticket extends Model
     {
 
         $ticket = DB::select("select * from historiques h
-            where (id_ticket = '$id_ticket') order by h.id desc");
+        where (id_ticket = '$id_ticket') order by h.id desc");
 
-        if ($ticket[0]->depot == $depot) 
+        if (count($ticket)>0) 
         {
 
-            return true;
+            if ($ticket[0]->depot == $depot) 
+            {
 
-            // code...
-        }
-        else
-        {
+                return true;
 
-            return false;
+                // code...
+            }
+            else
+            {
 
+                return false;
+
+                //
+            }
+            
             //
         }
+
+        return false;
+
 
         // code...
     }

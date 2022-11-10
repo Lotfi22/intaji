@@ -85,6 +85,12 @@ Route::get('/sms', 'HomeController@sms')->name('sms');
 
 
 
+Route::get('/login/commercial', 'Auth\CommercialLoginController@showLoginForm')->name('commercial.login');
+
+Route::get('/commercial', 'CommercialController@index')->name('commercial.home');
+
+
+
 Route::get('/', 'Auth\LoginController@showAdminLoginForm');
 
 Auth::routes();
@@ -100,6 +106,8 @@ Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 Route::post('/login/livreur', 'Auth\LoginController@livreurLogin');
 Route::post('/login/production', 'Auth\LoginController@productionLogin');
 Route::post('/login/depot', 'Auth\LoginController@depotLogin');
+Route::post('/login/commercial', 'Auth\LoginController@commerciallogin');
+
 Route::post('/register/admin', 'Auth\RegisterController@createAdmin')->name('register.admin');
 Route::post('/register/livreur', 'Auth\RegisterController@createLivreur')->name('register.Livreur');
 

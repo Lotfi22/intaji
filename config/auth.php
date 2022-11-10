@@ -102,6 +102,12 @@ return [
             'driver' => 'session',
             'provider' => 'productions',
         ],
+
+        'commercial' => [
+            'driver' => 'session',
+            'provider' => 'commercials',
+        ],
+
         'depot' => [
             'driver' => 'session',
             'provider' => 'depots',
@@ -151,6 +157,17 @@ return [
             'model' => App\Production::class,
 
         ],
+
+
+        'commercials' => [
+
+            'driver' => 'eloquent',
+
+            'model' => App\Commercial::class,
+
+        ],
+
+
 
         'livreurs' => [
 
@@ -213,6 +230,15 @@ return [
             'expire' => 60,
 
         ],
+
+        'commercials' => [
+            'provider' => 'commercials',
+            'table' => 'password_resets',
+            'expire' => 60,
+
+        ],
+
+
 
         'depots' => [
             'provider' => 'depots',

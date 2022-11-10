@@ -66,7 +66,7 @@
                                 <th>DATE</th>
                                 <th>Livreur</th>
                                 <th>Client</th>
-                                <th>Produits</th>
+                                <!--<th>Produits</th>-->
                                 <th>Total</th>
                                 <th>Statut</th>
                                 <th>Demandeur</th>
@@ -89,48 +89,48 @@
                                     </td>
                                     
                                     <td>{{ App\Livraison::get_client($livraison->num_livraison) ?? '' }} </td>
-                                    <td class="text-left">
+                                    <!--<td class="text-left">
                                         @foreach (App\Livraison::get_products($livraison->num_livraison) as $produit)
-                                         	
-                                        	{!! $produit !!}<br>
+                                            
+                                            {!! $produit !!}<br>
 
-                                         	{{-- expr --}}
+                                            {{-- expr --}}
                                         @endforeach  
-                                    </td>
+                                    </td>-->
                                     
                                     <td>
 
-                                        {!! setlocale(LC_MONETARY,"en_US"); !!}
+                                        <!--{!! setlocale(LC_MONETARY,"en_US"); !!}-->
 
-                                    	{!! number_format((App\Livraison::get_total($livraison->num_livraison)*(1-($livraison->remise)/100))); !!} DA
+                                        {!! number_format((App\Livraison::get_total($livraison->num_livraison)*(1-($livraison->remise)/100))); !!} DA
                                     </td>
 
                                     @if (App\Livraison::get_statut($livraison->num_livraison) == "en attente")
-                                    	
-                                    	<td id="statut{{ $livraison->num_livraison }}" class="alert alert-warning blink">
+                                        
+                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-warning blink">
                                         <i class="fa fa-spinner" aria-hidden="true"></i>    
-										
-									 @elseif(App\Livraison::get_statut($livraison->num_livraison) == "rejeté")					   
+                                        
+                                     @elseif(App\Livraison::get_statut($livraison->num_livraison) == "rejeté")                     
 
-									 	<td id="statut{{ $livraison->num_livraison }}" class="alert alert-danger">
+                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-danger">
                                         <i class="fa fa-ban" aria-hidden="true"></i>
-									 
-									 @elseif(App\Livraison::get_statut($livraison->num_livraison) == "validé")
+                                     
+                                     @elseif(App\Livraison::get_statut($livraison->num_livraison) == "validé")
 
-									 	<td id="statut{{ $livraison->num_livraison }}" class="alert alert-info">
+                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-info">
                                         <i class="fa fa-check" aria-hidden="true"></i>
 
-									 @elseif(App\Livraison::get_statut($livraison->num_livraison) == "BL")
-									 	<td id="statut{{ $livraison->num_livraison }}" class="alert alert-primary">
+                                     @elseif(App\Livraison::get_statut($livraison->num_livraison) == "BL")
+                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-primary">
                                         
                                         <i class="fa fa-truck" aria-hidden="true"></i>
 
-									 @elseif(App\Livraison::get_statut($livraison->num_livraison) == "terminé")
-									 	
+                                     @elseif(App\Livraison::get_statut($livraison->num_livraison) == "terminé")
+                                        
                                         <td id="statut{{ $livraison->num_livraison }}" class="alert alert-success">
                                             
-                                        <img src="/payment-complet.png" height="30" width="30">
-                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        <img src="/img/termine.png" height="30" width="30">
+                                        
 
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "encaissement")
                                         
@@ -142,15 +142,15 @@
                                     @endif
 
                                     
-                                    	{!! App\Livraison::get_statut($livraison->num_livraison) ?? ''!!} 
+                                        {!! App\Livraison::get_statut($livraison->num_livraison) ?? ''!!} 
                                     </td>
 
                                     <td>
-                                    	{!! App\Livraison::get_demandeur($livraison->num_livraison) ?? ''!!}
+                                        {!! App\Livraison::get_demandeur($livraison->num_livraison) ?? ''!!}
                                     </td>
 
                                     <td id="validateur{{$livraison->num_livraison}}">
-                                    	{!! App\Livraison::get_validator($livraison->num_livraison) ?? ''!!}
+                                        {!! App\Livraison::get_validator($livraison->num_livraison) ?? ''!!}
                                     </td>
 
                                 </tr>
@@ -192,44 +192,44 @@
                 
                 <div class="modal-body" id="modal-body">
                     
-                	<h3 class="float-left" id="livreur">Livreur : </h3><br>
+                    <h3 class="float-left" id="livreur">Livreur : </h3><br>
                     
-                	<h3 class="float-right" id="client">Client : </h3>
-                	
+                    <h3 class="float-right" id="client">Client : </h3>
+                    
                     <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
                     
-                    	{{ csrf_field() }}
+                        {{ csrf_field() }}
 
                         <thead>
-                        	<tr>
-                        		
-	                        	<th>Produit</th>
-	                        	<th>Qte</th>
-	                        	<th>Prix.U</th>
-	                        	<th>Total</th>
+                            <tr>
+                                
+                                <th>Produit</th>
+                                <th>Qte</th>
+                                <th>Prix.U</th>
+                                <th>Total</th>
 
-                        	</tr>
+                            </tr>
                         </thead>
 
                         <tbody id="prods_livraison">
-                        	
+                            
                         </tbody>
                     </table>
 
                     @if (auth()->guard('admin')->check())
-	
-	                    <button id="approuver" num_livraison="" onclick="approuver(this);" style="margin: 0% 8%;" type="submit" class="col-md-4 btn btn-primary btn_ajouter">Approuver</button>
-	                    
-	                    <button id="rejeter" num_livraison="" onclick="rejeter(this);" style="margin: 0% 8%;" type="button" class="btn btn-danger col-md-4" data-dismiss="modal" role="button">Rejeter</button>
     
-                    	{{-- expr --}}
+                        <button id="approuver" num_livraison="" onclick="approuver(this);" style="margin: 0% 8%;" type="submit" class="col-md-4 btn btn-primary btn_ajouter">Approuver</button>
+                        
+                        <button id="rejeter" num_livraison="" onclick="rejeter(this);" style="margin: 0% 8%;" type="button" class="btn btn-danger col-md-4" data-dismiss="modal" role="button">Rejeter</button>
+    
+                        {{-- expr --}}
                     
 
                         <form method="post" target="_blank" action="/home/livraisons/last_approbation/BL" id="la_remise" style="margin-top:2%;" class="form-group">
                             
-                        	{{ csrf_field() }}
+                            {{ csrf_field() }}
 
-                        	<input style="display:none;" type="number" id="num_livraison" name="num_livraison" value="">
+                            <input style="display:none;" type="number" id="num_livraison" name="num_livraison" value="">
 
 
                             <div class="row col-md-12">
@@ -311,7 +311,7 @@
                         <h3 class="alert alert-danger text-center"> Vous n'étes pas Admin </h3>
                     @endif    
 
-					{{--  --}}                    
+                    {{--  --}}                    
             
                     <button style="margin-top:5%;" class="btn btn-primary col-md-12" onclick="imprimer_details();">Imprimer détails de la livraison </button>
 
@@ -324,7 +324,7 @@
     <script src="{{ asset('/js/gerer_livraison.js') }}" type="text/javascript"></script>
 
     <script>
-    	
+        
         function imprimer_details() 
         {   
 

@@ -15,8 +15,9 @@
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="datable-1" width="100%" cellspacing="0">
-                        <thead>
+                    <table class="table card-table table-vcenter text-nowrap table-striped" id="datable-1" width="100%" cellspacing="0">
+
+                        <thead style="cursor:pointer;" class="bg-secondary text-white">
                             <tr>
                                 <th>ID dépot</th>
 
@@ -48,14 +49,14 @@
 
                                             <a href="{{ route('depot.destroy', ['id_depot' => $depot->id]) }}"
                                                 onclick="return confirm('etes vous sure  ?')"
-                                                class="text-white btn btn-danger">
+                                                class="text-white btn btn-sm btn-danger">
 
                                                 <i class="fa fa-trash"></i>
 
                                             </a>
 
                                             <button data-toggle="modal" data-target="#modifier{{$depot->id}}"
-                                                class="btn btn-primary center-block">Modifier depot</button>
+                                                class="btn btn-sm btn-primary center-block">Modifier depot</button>
 
                                             <div class="modal fade " id="modifier{{$depot->id}}" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
                                                 aria-hidden="true">

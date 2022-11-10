@@ -32,7 +32,8 @@
                                 <th>N°</th>
                                 <th>DATE</th>
                                 <th>Client</th>
-                                <th>Produits</th>
+                                <th>Wilaya</th>
+                                {{-- <th>Produits</th> --}}
                                 <th>Total</th>
                                 <th>Statut Client</th>
                                 <th>Statut Commande</th>
@@ -55,32 +56,29 @@
                                     
                                     
                                     <td>
-                                    {{ App\Commande::get_client($commande->num_commande)[0]->nom ?? '' }}
-                                    {{ App\Commande::get_client($commande->num_commande)[0]->prenom ?? '' }}
+                                        {{ App\Commande::get_client($commande->num_commande)[0]->nom ?? '' }}
+                                        {{ App\Commande::get_client($commande->num_commande)[0]->prenom ?? '' }}
 
                                     </td>
-                                    <td class="text-left">
-                                        @foreach (App\Commande::get_products($commande->num_commande) as $produit)
-                                         	
-                                        	{!! $produit !!}<br>
 
-                                         	{{-- expr --}}
-                                        @endforeach  
+                                    <td class="text-left">
+                                        {!! App\Client::get_wilaya(App\Commande::get_client($commande->num_commande)[0]->id) !!}
+
                                     </td>
                                     
                                     <td>
 
-                                        {!! setlocale(LC_MONETARY,"en_US"); !!}
+                                        {{-- {!! setlocale(LC_MONETARY,"en_US"); !!} --}}
 
                                     	{!! number_format((App\Commande::get_total($commande->num_commande))); !!} DA
                                     </td>
                                     <td>
                                         @if (App\Commande::get_status_client($commande->num_commande) == "Renseignments")
 
-                                            <img width="60" src="{{ asset('/thinking.png') }}"> <p style="display: none;">{!! App\Commande::get_status_client($commande->num_commande) !!}</p>
+                                            <img width="40" src="{{ asset('/thinking.png') }}"> <p style="display: none;">{!! App\Commande::get_status_client($commande->num_commande) !!}</p>
                                         @else
 
-                                            <img width="60" src="{{ asset('/smile.png') }}"> <p style="display: none;">{!! App\Commande::get_status_client($commande->num_commande) !!}</p>
+                                            <img width="40" src="{{ asset('/smile.png') }}"> <p style="display: none;">{!! App\Commande::get_status_client($commande->num_commande) !!}</p>
 
                                             {{-- expr --}}
                                         @endif

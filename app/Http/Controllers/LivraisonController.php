@@ -325,7 +325,7 @@ class LivraisonController extends Controller
             $acteur='No One';            
         }        
         
-        $versement = ($request->versement);
+        $versement = (float)($request->versement);
         $num_livraison = ($request->num_livraison);
 
         $livraison = DB::select("select  * from livraisons where num_livraison = $num_livraison");
@@ -364,7 +364,7 @@ class LivraisonController extends Controller
 
         $versements = DB::select("select * from versements where num_livraison = $num_livraison order by id asc");
 
-        $ret = (object)["livraison"=>$livraison ,"versements"=>$versements];
+        $ret = (object)["livraison"=>$livraison ,"versements"=>$versements, "total_payee"=>$total_payee];
 
 
         return response()->json($ret);
