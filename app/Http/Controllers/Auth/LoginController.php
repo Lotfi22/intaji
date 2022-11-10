@@ -86,7 +86,7 @@ class LoginController extends Controller
     protected function guardLogin(Request $request, $guard)
     {  
 
-        ($guard==null) ? $guard = 'commercial':$guard==$guard;
+        // ($guard==null) ? $guard = 'commercial':$guard==$guard;
         
         $this->validator($request);
         return Auth::guard($guard)->attempt(
