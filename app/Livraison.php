@@ -81,10 +81,14 @@ class Livraison extends Model
     public static function get_total($num_livraison)
     {
 
+        $remise = DB::select("select remise from livraisons where num_livraison = $num_livraison");
+
+        $remise=$remise[0]->remise;
+
         $total = DB::select("select sum(prix*qte) as total from livraisons 
             where num_livraison = $num_livraison");
 
-        return $total[0]->total;
+        return $total[0]->total*(1-($remise/100));
         // code...
     }
 

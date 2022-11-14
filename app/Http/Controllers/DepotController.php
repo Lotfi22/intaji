@@ -174,5 +174,22 @@ class DepotController extends Controller
         // code...
     }
 
+    
+    //hadi f mes dépots : 
+
+    public function get_qte_depot(Request $request)
+    {
+
+        $nom_depot = ($request->nom_depot);
+
+        $produits = DB::select("select * from produits");
+
+        $produits_qte_depot = Depot::depot_all_produits_qte($nom_depot,$produits);
+        
+        return response()->json($produits_qte_depot);
+
+        // code...
+    }    
+
     //
 }

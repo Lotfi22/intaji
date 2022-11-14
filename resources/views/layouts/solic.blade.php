@@ -208,12 +208,12 @@
                                             
                                             <ul class="sub-menu">
                                                     
-                                                <li aria-haspopup="true">
+                                                {{-- <li aria-haspopup="true">
                                                     <a href="/production">Agents Production</a>
-                                                </li>
+                                                </li> --}}
 
                                                 <li aria-haspopup="true">
-                                                    <a href="/depot">Agents Dépots</a>
+                                                    <a href="/depot">Dépots</a>
                                                 </li>
 
                                                 <li aria-haspopup="true">
@@ -255,7 +255,13 @@
 
                                     @if(Check::CheckAuth(['admin','commercial']))
 
-                                        <li aria-haspopup="true">
+                                        <li aria-haspopup="true"><a href="{{route('client.index')}}" class=""><i class="mdi mdi-account-plus "></i>Clients</a></li>
+
+
+                                        <li aria-haspopup="true"><a href="{{route('commande.index')}}" class=""><i class="mdi mdi-truck-fast"></i>Commandes</a></li>
+
+
+                                        {{--<li aria-haspopup="true">
                                             <a href="#" style="cursor: pointer;" class="sub-icon">
                                                 <i class="mdi mdi-package-variant"></i>Commandes
                                                 <i class="fa fa-angle-down horizontal-icon"></i>
@@ -274,7 +280,7 @@
 
 
                                             </ul>
-                                        </li>
+                                        </li> --}}
 
                                     @endif
 

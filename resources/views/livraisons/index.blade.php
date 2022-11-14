@@ -100,9 +100,8 @@
                                     
                                     <td>
 
-                                        <!--{!! setlocale(LC_MONETARY,"en_US"); !!}-->
 
-                                        {!! number_format((App\Livraison::get_total($livraison->num_livraison)*(1-($livraison->remise)/100))); !!} DA
+                                        {!! number_format((App\Livraison::get_total($livraison->num_livraison))); !!} DA
                                     </td>
 
                                     @if (App\Livraison::get_statut($livraison->num_livraison) == "en attente")

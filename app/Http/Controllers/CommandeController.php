@@ -714,7 +714,20 @@ class CommandeController extends Controller
             $commande->nom_produit = $array['produit'];
             $commande->qte = $array['quantite'];
             $commande->prix = $array['prix_unitaire'];
-            $commande->user = Auth::guard('admin')->user()->id;
+            
+            if(Auth::guard('admin')->user() != null)
+            {
+                $commande->user = "admin_".Auth::guard('admin')->user()->id;
+            }
+            elseif(Auth::guard('commercial')->user() != null)
+            {
+
+                $commande->user = "commercial_".Auth::guard('commercial')->user()->id;
+            }
+            else
+            {
+                $commande->user = "no one";   
+            }
             $commande->commentaire = $request['commentaire'] ?? 'sans commentaire';
             $commande->freelancer = $request['freelancer'];
             $commande->status_client = $request['status_client'];

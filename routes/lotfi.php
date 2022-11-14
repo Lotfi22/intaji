@@ -31,6 +31,7 @@ Route::get('/home/mes_depot','DepotController@index1');
 Route::post('/home/mes_depot/ajouter','DepotController@ajouter');
 Route::post('/home/mes_depot/modifier','DepotController@modifier');
 Route::post('/rapport/get_qte_depots','DepotController@get_qte_produit');
+Route::post('/home/mes_depot/get_qte_depots','DepotController@get_qte_depot');
 
 
 
@@ -49,6 +50,7 @@ Route::post('/home/livraisons/test_depassement/ajax','LivraisonController@test_d
 Route::post('/home/livraisons/filter','LivraisonController@filter');
 Route::post('/home/client/verif_tel/ajax','ClientController@verif_tel');
 Route::post('/home/livraisons/get_depot/ajax','LivraisonController@get_depot');
+Route::post('/livreur/get_work_livreur','LivraisonController@get_work_livreur');
 
 
 //caisse : 
@@ -60,4 +62,5 @@ Route::post('/home/caisse/filter','CaisseController@filter');
 Route::get('/commercial', 'CommercialController@index');
 Route::get('/login/commercial', 'Auth\LoginController@showcommercialLoginForm')->name('login.commercial');
 Route::post('/commercial/ajouter','CommercialController@store');
+Route::post('/commercial/get_work_commercial','CommercialController@get_work_commercial');
 

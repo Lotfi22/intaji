@@ -386,7 +386,7 @@ class LivraisonController extends Controller
 
         $remise = $livraison->remise;
 
-        $total_livraison = Livraison::get_total($num_livraison)*(1-($remise/100));
+        $total_livraison = Livraison::get_total($num_livraison);
 
         $total_paye = DB::select("select sum(versement)+$val as total_paye 
         from versements where num_livraison = $num_livraison");
@@ -472,6 +472,33 @@ class LivraisonController extends Controller
 
         // code...
     }
+
+    public function get_work_livreur(Request $request)
+    {
+
+        $id_livreur = ($request->id_livreur);
+
+        $livreur = DB::select("select * from livreurs where id=$id_livreur");
+
+        $livreur = $livreur[0];
+
+        $livraison = DB::select("select l.statut,count(*) as nb_livraison from livraisons l
+        where livreur = $id_livreur
+        group by l.statut
+        order by l.statut");
+
+        $what_is_he_doing=DB::select("select * from livraisons l
+        where l.livreur = $id_livreur and (l.statut = 'BL') ");
+
+        $what_is_he_doing = $what_is_he_doing[0] ?? [];
+
+        $ret = array('livreur' => $livreur , 'livraisons' => $livraison,"what_is_he_doing" => $what_is_he_doing);
+
+        return response()->json($ret);
+
+        // code...
+    }
+
 
     //
 }

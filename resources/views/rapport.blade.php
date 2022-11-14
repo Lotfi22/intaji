@@ -124,7 +124,7 @@
 
                         
 
-                        <div style=" cursor:pointer;" onclick="rediriger('0',{{ $produit->id }})" class="card col-md-3 " style="margin-top: 2%;">
+                        <div style=" cursor:pointer;" {{-- onclick="rediriger('0',{{ $produit->id }})" --}} class="card col-md-3 " style="margin-top: 2%;">
 
                             <div class="card-body">
 
@@ -138,7 +138,7 @@
 
                        
 
-                        <div style=" cursor:pointer;" onclick="rediriger('vers_depot',{{ $produit->id }})" class="card col-md-3 " style="margin-top: 2%;">
+                        <div style=" cursor:pointer;" {{-- onclick="rediriger('vers_depot',{{ $produit->id }})" --}} class="card col-md-3 " style="margin-top: 2%;">
 
                             <div class="card-body">
 
@@ -166,7 +166,7 @@
 
                         
 
-                        <div style=" cursor:pointer;" onclick="rediriger('sortie',{{ $produit->id }})" class="card col-md-3 " style="margin-top: 2%;">
+                        <div style=" cursor:pointer;" {{-- onclick="rediriger('sortie',{{ $produit->id }})" --}} class="card col-md-3 " style="margin-top: 2%;">
 
                             <div class="card-body">
 

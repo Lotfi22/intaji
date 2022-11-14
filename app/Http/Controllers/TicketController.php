@@ -578,6 +578,8 @@ class TicketController  extends Controller
             return redirect()->route('login.admin');     
         }
 
+        $livreurs = DB::select("select * from livreurs");
+
         $tickets = Ticket::whereIn('satut', ['0','annulé'])
             /*->whereDate('created_at', Carbon::today())->OrwhereDate('created_at', Carbon::yesterday())*/
             ->orderBy('created_at','desc')
@@ -585,7 +587,7 @@ class TicketController  extends Controller
         
         $produit_qte = DB::select("select p.id,p.nom,count(*) as qte from produits p, tickets t where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot') group by p.id,p.nom order by p.nom");
         
-        return view('tickets.vers_depot',compact('tickets','produit_qte'));
+        return view('tickets.vers_depot',compact('tickets','produit_qte','livreurs'));
 
     }
 

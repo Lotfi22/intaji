@@ -72,7 +72,7 @@
 
                                     	{!! number_format((App\Commande::get_total($commande->num_commande))); !!} DA
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if (App\Commande::get_status_client($commande->num_commande) == "Renseignments")
 
                                             <img width="40" src="{{ asset('/thinking.png') }}"> <p style="display: none;">{!! App\Commande::get_status_client($commande->num_commande) !!}</p>
@@ -87,8 +87,8 @@
 
                                     @if (App\Commande::get_statut($commande->num_commande) == "en attente")
                                     	
-                                    	<td id="statut{{ $commande->num_commande }}" class="alert alert-warning blink">
-                                           <i class="fa fa-spinner" aria-hidden="true"></i>    
+                                    	<td id="statut{{ $commande->num_commande }}" class="alert alert-warning">
+                                        <img src="{{ asset('/spin.gif') }}" width="20%">
 										
 									 @elseif(App\Commande::get_statut($commande->num_commande) == "rejeté")					   
 

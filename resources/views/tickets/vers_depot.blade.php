@@ -14,23 +14,41 @@
 
             </h4>
 
+
+
             <div class="row card-header">
 
-                <div class="col-md-12" style="margin:2% 0%;">
+                <div class="col-md-12 row" style="margin:2% 0%;">
 
-                    <div class="col-md-12">
+                    <div class="col-md-12 row" style="margin-bottom: 3%;">
 
-                        <input onblur="this.focus();" autofocus onchange="SearchFunction();" 
+                        <select class="is-invalid form-control js-example-basic-single1" 
+                            name="livreur" id="livreur">
+                        
+                            <option  value="">{{ __('Séléctionner Livreur...') }}</option>
+                        
+                            @foreach ($livreurs as $livreur)
+                                <option value="{{ $livreur->id }}">
+                                    {{ $livreur->name ?? '' }} {{ $livreur->prenom ?? '' }} | {{ $livreur->email ?? '' }}
+                                </option>
+                            @endforeach
 
-                        class="col-md-12 form-control" id="search"  placeholder="filter avec Code Bar" />
+                        </select>
 
                     </div>
 
-                </div>    
+                    <div class="col-md-10">
 
-{{--                     <div class="col-md-2">
+                        <input {{-- onblur="this.focus();" --}} autofocus onchange="SearchFunction();" 
 
-                        <a class="float-right btn btn-primary btn-sm"
+                        class="col-md-12 is-valid form-control" id="search"  placeholder="filter avec Code Bar" />
+
+                    </div>
+
+
+                    <div class="col-md-2">
+
+                        <a class="float-right btn btn-primary"
 
                             href="/ticket/vers_depot/annuler">
 
@@ -39,7 +57,9 @@
                         </a>
 
                     </div>
- --}}
+
+
+                </div>    
 
 
                 <table class="col-md-12 table table-bordered" width="100%" cellspacing="0">
@@ -231,9 +251,16 @@
 
 
 
-
+@section('scripts')
 
     <script>
+
+
+        $('#livreur').on('change', function(e) {
+            var optionSelected = $("option:selected", this);
+            var id_livreur = this.value;
+        });
+
 
 
 
@@ -252,12 +279,14 @@
 
             filter = input.value.toUpperCase();
 
+            $('#search').val('');
+            
             var trId = filter.substr(2);
 
             var trFound = document.getElementById(trId);
 
-            $('#search').val('');
-
+            var id_livreur = $("#livreur").find(":selected").attr('value');
+            
             fetch('/ticket/vers_depot/action', 
 
             {

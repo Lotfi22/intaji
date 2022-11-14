@@ -17,8 +17,11 @@
             <div class="card-body">
 
                 <div class="table-responsive">
+                    
                     <table class="table table-bordered" id="datable-1" width="100%" cellspacing="0">
+                        
                         <thead>
+                        
                             <tr>
                                 <th>ID Livreur</th>
 
@@ -39,20 +42,18 @@
                         <tbody>
 
                             @foreach ($livreurs as $livreur)
+                                
                                 <tr>
 
-                                    <td>{{ $livreur->id ?? '' }}</td>
+                                    <td style="cursor:pointer;" data-toggle="modal" data-target="#livreur_works" onclick="get_work_livreur('{{ $livreur->id }}');" >{{ $livreur->id ?? '' }}</td>
 
-                                    <td>{{ $livreur->name ?? '' }} {{ $livreur->prenom ?? '' }}</td>
+                                    <td style="cursor:pointer;" data-toggle="modal" data-target="#livreur_works" onclick="get_work_livreur('{{ $livreur->id }}');" >{{ $livreur->name ?? '' }} {{ $livreur->prenom ?? '' }}</td>
 
-                                    <td>{{ $livreur->telephone ?? '' }}</td>
+                                    <td style="cursor:pointer;" data-toggle="modal" data-target="#livreur_works" onclick="get_work_livreur('{{ $livreur->id }}');" >{{ $livreur->telephone ?? '' }}</td>
 
-                                    <td>{{ $livreur->password_text ?? '' }}</td>
+                                    <td style="cursor:pointer;" data-toggle="modal" data-target="#livreur_works" onclick="get_work_livreur('{{ $livreur->id }}');" >{{ $livreur->password_text ?? '' }}</td>
 
-                                    <td>{{ $livreur->adress ?? '' }}</td>
-
-
-
+                                    <td style="cursor:pointer;" data-toggle="modal" data-target="#livreur_works" onclick="get_work_livreur('{{ $livreur->id }}');" >{{ $livreur->adress ?? '' }}</td>
 
                                     <td>
 
@@ -181,6 +182,46 @@
         </div>
 
     </div>
+
+
+    <div class="modal fade " id="livreur_works" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                
+                <div class="modal-header col-md-12" id="llivreur">
+                    <h3 class="modal-title text-center" id="lineModalLabel">Travail du livreur : <span id="assem_livreur"></span> </h3>
+                </div>
+                
+                <div class="modal-header col-md-12" id="mission">
+                    <h3 class="modal-title text-center" id="lineModalLabel">Travail du livreur : <span id="assem_livreur"></span> </h3>
+                </div>
+
+
+                <div class="modal-body">
+
+                    <table class=" table table-bordered text-center" id="datable-1" width="100%" cellspacing="0">
+                        
+                        <thead>
+                            <tr class="text-center">
+                                <th>Livreur</th>
+                                <th>Nombre de Livraisons</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="works" class="text-center">
+
+                        </tbody>
+
+                    </table>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
@@ -189,4 +230,103 @@
 
 
 @section('scripts')
+
+
+    <script type="text/javascript">
+        
+        function get_work_livreur(id_livreur)
+        {
+
+            $.ajax({
+                headers: 
+                {
+                    'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                },                    
+                type:"POST",
+                url:"/livreur/get_work_livreur",
+                data:{id_livreur:id_livreur},
+
+                success:function(data) 
+                {
+
+                    var livreur = data.livreur;   
+
+                    $("#assem_livreur").text(livreur.name+' '+livreur.prenom+' | '+livreur.email+' | Tél : '+livreur.telephone)
+
+                    var works = "";
+
+                    var nb_livraison = 0;
+
+                    var ths='<th> Livreur </th>'
+   
+                    ths += '<th> Mission Actuel </th>';
+
+                    var tds = '<td>'+livreur.name+' '+livreur.prenom +'</td>';
+
+                    if (data.what_is_he_doing.num_livraison===undefined) 
+                    {
+                        
+                        tds += '<td style="color:green;" > Aucune Mission </td>'
+                    }
+                    else
+                    {
+
+                        tds += '<td style="color:green;font-weight:bold;" > En cours livraison Numéro : Num'+data.what_is_he_doing.num_livraison+' | Le : '+data.what_is_he_doing.updated_at +'</td>'
+
+                    }                        
+
+
+                    var table = '<table class="col-md-12 table card-table table-vcenter text-nowrap table-striped" width="100%" cellspacing="0"> <thead> <tr class="text-center">'+ ths +'</tr></thead> <tbody> <tr class="text-center" >'+tds+' </tr> </tbody> </table> '
+
+                    $("#mission").html(table);
+
+                    for (var i = 0; i < data.livraisons.length; i++) 
+                    {
+                        
+                        if (data.livraisons[i].statut=='encaissement') 
+                        {
+                            var img = '<img src="/exclamation.png" width="30">'
+                        }
+                        if (data.livraisons[i].statut=='terminé') 
+                        {
+                            var img = '<img src="/img/termine.png" height="30" width="30">'   
+                        }
+                        if (data.livraisons[i].statut=='BL') 
+                        {
+                            var img = '<i class="fa fa-truck" aria-hidden="true"></i>'
+                        }
+                        if (data.livraisons[i].statut=='rejeté') 
+                        {
+                            var img = '<i class="fa fa-truck" aria-hidden="true"></i>'
+                        }
+
+
+                        works+='<tr> <td>'+data.livreur.name+' '+data.livreur.prenom+' '+data.livreur.email+'</td> <td>'+data.livraisons[i].nb_livraison+'</td> <td> '+img+' '+data.livraisons[i].statut+'</td></tr>';
+                        
+                        nb_livraison+=data.livraisons[i].nb_livraison;
+                    }
+
+                    works+='<tr> <td>-</td> <td style="background:#52b2c7;">Total livraison</td><td style="background:#52b2c7;"> '+nb_livraison+'</td></tr>';
+
+
+                    $("#works").html(works);
+
+
+                    
+                    //
+                }
+
+                //
+            });
+
+
+            //
+        }
+
+
+        //        
+    </script>
+    
+
+
 @endsection
