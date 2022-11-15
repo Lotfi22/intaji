@@ -26,15 +26,47 @@
 
                         <input onblur="this.focus();" autofocus onchange="SearchFunction();" 
 
-                        class="col-md-12 form-control" id="search"  placeholder="filter avec Code Bar" />
+                        class="is-valid col-md-12 form-control" id="search"  placeholder="filter avec Code Bar" />
 
                     </div>
 
-                </div>    
+                </div>                    
 
             </div>
 
+            <div class="table-responsive col-md-8">
 
+                <table class="col-md-12 table table-bordered" width="95%" cellspacing="0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th class="text-center" >Produit</th>
+
+                            <th class="text-center" >Quantité</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="produit_qte">
+
+                        @foreach($produit_qte as $prod)
+
+                            <tr>
+
+                                <td class="text-center" > {{ $prod->nom }} </td>
+
+                                <td class="text-center" > {{ $prod->qte }} </td>
+                                
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+            </div>
 
             <div class="card-body">
 
@@ -253,9 +285,23 @@
 
                 {
 
-                    console.log(res);
+                    console.log(res);                    
 
                     $(".au_depot").click();
+
+                    $("#produit_qte").html("");
+
+                    for(i=0;i<res.produit_qte.length;i++)
+
+                    {       
+
+                        trAppended = '<tr><td class="text-center">'+res.produit_qte[i].nom+'</td><td class="text-center">'+res.produit_qte[i].qte+'</td></tr>'
+
+                        $("#produit_qte").append(trAppended)
+
+                    }
+
+
 
                     $('#'+trId).css({"color": "rgb(97,193,33)", "font-weight": "bold","background-color": "#316170"}).addClass('alert alert-success')
 

@@ -274,9 +274,20 @@ class Ticket extends Model
         }
 
         return false;
+        // code...
+    }
 
+    public static function get_livreur_vers_depot($id_ticket)
+    {
+
+        $livreur = DB::select("select * from tickets t,livreurs l 
+        where (t.id = $id_ticket) and (t.satut = 'vers_depot') and (l.id=t.id_livreur)");
+
+        return $livreur[0]->email ?? '';
 
         // code...
     }
+
+
 
 }

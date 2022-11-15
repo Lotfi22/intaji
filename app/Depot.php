@@ -99,5 +99,28 @@ class Depot extends Authenticatable
         //
     }
 
+    public static function get_qte_each_depot()
+    {
+
+        $depots = DB::select("select * from mes_depots");
+
+        $depots_qte = [];
+        $i=0;
+
+        foreach ($depots as $depot) 
+        {
+            
+            $depots_qte[$i] = ["depot"=>$depot->nom , "qte"=>Depot::depot_all_qte($depot->nom)];
+
+            $i++;
+            // code...
+        }
+
+        return $depots_qte;
+
+        //
+    }
+
+
 
 }

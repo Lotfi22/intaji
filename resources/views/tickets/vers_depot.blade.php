@@ -10,7 +10,7 @@
 
             <h4 class="card-header">
 
-                Scanner <span id="nb_tickets"> {{ count($tickets) }} </span>  Tickets vers depot :
+                Scanner {{-- <span id="nb_tickets"> {{ count($tickets) }} </span> --}}  Tickets vers depot :
 
             </h4>
 
@@ -24,40 +24,40 @@
 
                         <select class="is-invalid form-control js-example-basic-single1" 
                             name="livreur" id="livreur">
-                        
-                            <option  value="">{{ __('Séléctionner Livreur...') }}</option>
-                        
-                            @foreach ($livreurs as $livreur)
-                                <option value="{{ $livreur->id }}">
-                                    {{ $livreur->name ?? '' }} {{ $livreur->prenom ?? '' }} | {{ $livreur->email ?? '' }}
-                                </option>
-                            @endforeach
+                            
+                            @if (count($livreurs)>0)
 
+                                <option value="{{ $livreurs[0]->id }}">
+                                    {{ $livreurs[0]->name ?? '' }} {{ $livreurs[0]->prenom ?? '' }} | {{ $livreurs[0]->email ?? '' }}
+                                </option>
+
+                                @for ($i=1; $i<count($livreurs) ; $i++)
+                                    
+                                    <option value="{{ $livreurs[$i]->id }}">
+                                        {{ $livreurs[$i]->name ?? '' }} {{ $livreurs[$i]->prenom ?? '' }} | {{ $livreurs[$i]->email ?? '' }}
+                                    </option>
+
+                                @endfor
+
+
+
+                            @else
+
+                                {{-- expr --}}
+                            @endif
+
+                        
                         </select>
 
                     </div>
 
-                    <div class="col-md-10">
+                    <div class="col-md-11">
 
                         <input {{-- onblur="this.focus();" --}} autofocus onchange="SearchFunction();" 
 
                         class="col-md-12 is-valid form-control" id="search"  placeholder="filter avec Code Bar" />
 
                     </div>
-
-
-                    <div class="col-md-2">
-
-                        <a class="float-right btn btn-primary"
-
-                            href="/ticket/vers_depot/annuler">
-
-                            Annuler Ticket
-
-                        </a>
-
-                    </div>
-
 
                 </div>    
 
@@ -69,6 +69,8 @@
                         <tr>
 
                             <th class="text-center" >Produit</th>
+
+                            <th class="text-center" >Livreur</th>
 
                             <th class="text-center" >Quantité</th>
 
@@ -88,7 +90,7 @@
 
                                 <td class="text-center" > {{ $prod->nom }} </td>
 
-                                
+                                <td class="text-center" > {{ $prod->livreur }} </td>
 
                                 <td class="text-center" > {{ $prod->qte }} </td>
 
@@ -286,7 +288,7 @@
             var trFound = document.getElementById(trId);
 
             var id_livreur = $("#livreur").find(":selected").attr('value');
-            
+
             fetch('/ticket/vers_depot/action', 
 
             {
@@ -305,7 +307,9 @@
 
                     _token: CSRF_TOKEN,
 
-                    ticket:trId
+                    ticket:trId,
+
+                    id_livreur:id_livreur
 
                 })
 
@@ -333,7 +337,7 @@
 
                     {       
 
-                        trAppended = '<tr><td class="text-center">'+res.produit_qte[i].nom+'</td><td class="text-center">'+res.produit_qte[i].qte+'</td></tr>'
+                        trAppended = '<tr><td class="text-center">'+res.produit_qte[i].nom+'</td><td class="text-center">'+res.produit_qte[i].livreur+'</td><td class="text-center">'+res.produit_qte[i].qte+'</td></tr>'
 
                         $("#produit_qte").append(trAppended)
 

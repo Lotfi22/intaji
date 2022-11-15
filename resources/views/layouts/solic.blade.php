@@ -189,6 +189,10 @@
                                                         <a href="/impression">Impression</a>
                                                     </li>
 
+                                                    <li aria-haspopup="true">
+                                                        <a href="/ticket/vers_depot/annuler">Annuler Tickets</a>
+                                                    </li>
+
                                                 @endif
 
                                                 <li aria-haspopup="true">

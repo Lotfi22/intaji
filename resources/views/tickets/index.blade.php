@@ -58,7 +58,7 @@
 
                         <thead style="cursor:pointer;" class="bg-secondary text-white">
 
-                            <tr>
+                            <tr class="text-center">
 
                                 <th style="cursor:pointer;">ID</th>
 
@@ -121,7 +121,7 @@
 
                                     {!! $ticket->satut == '0' ? 'Vient d\'étre créé' : $ticket->satut !!}
 
-                                    {!! $ticket->satut == 'vers_depot' ? 'Confirmé' : '' !!}
+                                    {!! $ticket->satut == 'vers_depot' ? '('.App\Ticket::get_livreur_vers_depot($ticket->id).')' : '' !!}
 
                                     @if ($ticket->satut == 'au_depot')
                                         ({{ App\Ticket::get_depo($ticket->id) ?? '' }})
