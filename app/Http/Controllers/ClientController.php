@@ -52,10 +52,11 @@ class ClientController extends Controller
     
     public function store(Request $request)
     {
-        
+
         $id_commune = ($request->commune_id);
         
-        $commune = DB::select("select * from communes where id = $id_commune ");
+        $commune = DB::select("select * from communes 
+        where id = '$id_commune'");
         
         $commune = $commune[0]->name;
         
@@ -66,11 +67,21 @@ class ClientController extends Controller
         $client->commune = $commune;
         $client->telephone = $request['telephone'];
         $client->facebook = $request['facebook'];
-
-
-       
-
         $client->save();
+
+        if ($request->comment == "freelancer") 
+        {
+            
+            $freelancer_nom = $request->freelancer_nom;
+            $freelancer_prenom = $request->freelancer_prenom;
+            $freelancer_tel = $request->freelancer_tel;
+
+            DB::insert("insert into freelancers(nom,prenom,telephone)
+            values ('$freelancer_nom','$freelancer_prenom','$freelancer_tel')");
+
+            //
+        }
+
         return redirect()->route('client.index')->with('success', 'Inséré avec succés ');         
     }
 
@@ -151,5 +162,28 @@ class ClientController extends Controller
         // code...
     }
 
+    public function get_client_interactions(Request $request)
+    {
 
+        $id_client = $request->id_client;
+
+        $commande = DB::select("select num_commande,statut,sum(prix) as total 
+        from commandes 
+        where id_client = $id_client
+        group by num_commande,statut
+        order by statut,num_commande");
+
+        $livraisons = DB::select("select num_livraison,remise,statut,sum(prix*(1-(remise/100))) as total 
+        from livraisons 
+        where id_client = $id_client
+        group by num_livraison,remise,statut
+        order by statut,num_livraison");
+
+        return response()->json(["commandes"=>$commande,"livraisons"=>$livraisons]);
+
+        // code...
+    }
+
+
+    //
 }

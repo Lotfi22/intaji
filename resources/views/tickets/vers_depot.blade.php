@@ -22,7 +22,7 @@
 
                     <div class="col-md-12 row" style="margin-bottom: 3%;">
 
-                        <select class="is-invalid form-control js-example-basic-single1" 
+                        <select class="form-control js-example-basic-single1" 
                             name="livreur" id="livreur">
                             
                             @if (count($livreurs)>0)

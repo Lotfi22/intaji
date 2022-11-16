@@ -273,6 +273,40 @@ class TicketController  extends Controller
 
     }
 
+    public function affecter_livraison($num_livraison,$livreur)
+    {
+
+        if(Check::CheckAuth(['admin','production','depot'])==false)
+        {
+            return redirect()->route('login.admin');     
+        }
+
+        
+        $_livreur = $livreur;
+        
+        $le_livreur = DB::select("select * from livreurs where id ='$_livreur' ");
+        
+        $le_livreur = $le_livreur[0];
+        
+        $id_livreur = $le_livreur->id;
+        
+        $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+        from produits p, sorties s,tickets t 
+        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie') 
+        group by p.id,p.nom order by p.nom");
+                
+        $tickets = DB::select("select * from tickets where (satut <> 'sortie' and satut <> 'annulé' ) order by updated_at desc");
+        
+        $num_livraison=0;
+
+        $ids = Ticket::extract_ids($tickets);
+        
+        $ids = json_encode($ids);
+        
+        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids','num_livraison'));
+    }
+
+
 
     public function affecter($livreur)
     {
@@ -314,22 +348,18 @@ class TicketController  extends Controller
                 
         $tickets = DB::select("select * from tickets where (satut <> 'sortie' /*and satut <> '0'*/ and satut <> 'annulé' ) and ( Date(updated_at) >= '$today' or Date(updated_at) = '$yesterday' or Date(updated_at) = '$yesterday2' or Date(updated_at) = '$yesterday3' or Date(updated_at) = '$yesterday4' or Date(updated_at) = '$yesterday5' or Date(updated_at) = '$yesterday6' or Date(updated_at) = '$yesterday7' or Date(updated_at) = '$yesterday8' or Date(updated_at) = '$yesterday9' or Date(updated_at) = '$yesterday10' or Date(updated_at) = '$yesterday11' or Date(updated_at) = '$yesterday12' or Date(updated_at) = '$yesterday13' or Date(updated_at) = '$yesterday14' or Date(updated_at) = '$yesterday15')  order by updated_at desc");
         
+        $num_livraison=0;
+
         $ids = Ticket::extract_ids($tickets);
         
         $ids = json_encode($ids);
         
-        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids'));
+        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids','num_livraison'));
     }
     
 
     public function assigner(Request $request)
     {
-
-        //if(Check::CheckAuth(['admin','production','depot'])==false)
-        //{
-          //  return redirect()->route('login.admin');     
-        //}
-
         
         if(auth()->guard('admin')->check()){$acteur= (Auth::guard('admin')->user()->email);} 
         if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user()->email);}

@@ -30,6 +30,9 @@
 
                                 <th>Commune</th>
 
+                                <th>Total Versement</th>
+
+                                <th>Crédits</th>
 
                                 <th>actions</th>
 
@@ -40,20 +43,29 @@
                         <tbody>
 
                             @foreach ($clients as $client)
+                                
                                 <tr>
 
-                                    <td>{{ $client->id ?? '' }}</td>
+                                    <td style="cursor:pointer;" onclick="get_client_interactions({{ $client->id }});" data-toggle="modal" data-target="#client_interactions">{{ $client->id ?? '' }}</td>
 
-                                    <td>{{ $client->nom ?? '' }} {{ $client->prenom ?? '' }}</td>
+                                    <td style="cursor:pointer;" onclick="get_client_interactions({{ $client->id }});" data-toggle="modal" data-target="#client_interactions">{{ $client->nom ?? '' }} {{ $client->prenom ?? '' }}</td>
 
-                                    <td>{{ $client->telephone ?? '' }}</td>
+                                    <td style="cursor:pointer;" onclick="get_client_interactions({{ $client->id }});" data-toggle="modal" data-target="#client_interactions">{{ $client->telephone ?? '' }}</td>
 
-                                    <td>{{ $client->wilaya ?? '' }}</td>
+                                    <td style="cursor:pointer;" onclick="get_client_interactions({{ $client->id }});" data-toggle="modal" data-target="#client_interactions">{{ $client->wilaya ?? '' }}</td>
 
-                                    <td>{{ $client->commune ?? '' }}</td>
+                                    <td style="cursor:pointer;" onclick="get_client_interactions({{ $client->id }});" data-toggle="modal" data-target="#client_interactions">{{ $client->commune ?? '' }}</td>
 
 
+                                    <td style="cursor:pointer;" onclick="get_client_interactions({{ $client->id }});" data-toggle="modal" data-target="#client_interactions">
+                                        {{number_format(App\Client::get_total_versement($client->id)) ?? '' }} DA
 
+                                    </td>
+
+                                    <td style="cursor:pointer; {{ App\Client::get_credits($client->id)==0 ? "color:green;" : "color:red;" }}" onclick="get_client_interactions({{ $client->id }});" data-toggle="modal" data-target="#client_interactions">
+                                        {{ number_format(App\Client::get_credits($client->id)) ?? '' }} DA
+
+                                    </td>
 
 
                                     <td>
@@ -132,79 +144,127 @@
                         </div>
 
 
-                            <div class="form-group">
+                        <div class="form-group">
 
-                                <label class="control-label">{{ __('Wilaya') }}: </label>
+                            <label class="control-label">{{ __('Wilaya') }}: </label>
 
-                                <select class="form-control wilaya_select " id="16" name="wilaya_id">
+                            <select class="form-control wilaya_select " required id="16" name="wilaya_id">
 
-                                    <option value="">{{ __('Please choose...') }}</option>
+                                <option value="">{{ __('Please choose...') }}</option>
 
-                                    @foreach ($wilayas as $wilaya)
+                                @foreach ($wilayas as $wilaya)
 
-                                        <option id="{{$wilaya->id}}" value="{{$wilaya->name}}" {{$wilaya->id == (old('wilaya_id') ?? ($member->wilaya_id ?? '')) ? 'selected' : ''}}>
-                                            {{$wilaya->id}}
-                                                - 
-                                            {{$wilaya->name}}
+                                    <option id="{{$wilaya->id}}" value="{{$wilaya->name}}" {{$wilaya->id == (old('wilaya_id') ?? ($member->wilaya_id ?? '')) ? 'selected' : ''}}>
+                                        {{$wilaya->id}}
+                                            - 
+                                        {{$wilaya->name}}
 
-                                        </option>
+                                    </option>
 
-                                    @endforeach
+                                @endforeach
 
-                                </select>
+                            </select>
 
-                                @if ($errors->has('wilaya_id'))
+                            @if ($errors->has('wilaya_id'))
 
-                                    <p class="help-block">{{ $errors->first('wilaya_id') }}</p>
+                                <p class="help-block">{{ $errors->first('wilaya_id') }}</p>
 
-                                @endif
+                            @endif
 
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label">{{ __('Commune') }}: </label>
+
+                            <select class="form-control" required name="commune_id" id="commune_select">
+
+                                <option value="">{{ __('Please choose...') }}</option>
+
+                                @foreach ($communes as $commune)
+
+                                    <option value="{{$commune->name}}" {{$commune->id == (old('commune_id') ?? ($member->commune_id ?? '')) ? 'selected' : ''}}>
+
+                                        {{$commune->name}}
+
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+                            <input class="form-control valid" id="commune_select_loading" value="{{ __('Loading...') }}"
+
+                                readonly style="display: none;"/>
+
+                            @if ($errors->has('commune_id'))
+
+                                <p class="help-block">{{ $errors->first('commune_id') }}</p>
+
+                            @endif
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Comment vous nous avez contacter : </label>
+                            
+                            <select onchange="hide_or_show_freelancer(this);" class="form-control" name="comment" id="comment">
+
+                                <option value="facebook">Facebook</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="youtube">Youtube</option>
+                                <option value="google">Google</option>
+                                <option value="freelancer">Freelancer</option>
+
+                                {{--  --}}
+                            </select>
+
+                        </div>
+
+                        <div class="row" id="info_freelancer">
+
+                            <div class="form-group col-md-4">
+                                
+                                <label class="control-label" for="freelancer_nom">Nom </label>
+                                
+                                <input class="form-control" type="text" name="freelancer_nom" id="freelancer_nom">
                             </div>
 
-                            <div class="form-group">
-
-                                <label class="control-label">{{ __('Commune') }}: </label>
-
-                                <select class="form-control " name="commune_id" id="commune_select">
-
-                                    <option value="">{{ __('Please choose...') }}</option>
-
-                                    @foreach ($communes as $commune)
-
-                                        <option value="{{$commune->name}}" {{$commune->id == (old('commune_id') ?? ($member->commune_id ?? '')) ? 'selected' : ''}}>
-
-                                            {{$commune->name}}
-
-                                        </option>
-
-                                    @endforeach
-
-                                </select>
-
-                                <input class="form-control valid" id="commune_select_loading" value="{{ __('Loading...') }}"
-
-                                    readonly style="display: none;"/>
-
-                                @if ($errors->has('commune_id'))
-
-                                    <p class="help-block">{{ $errors->first('commune_id') }}</p>
-
-                                @endif
-
-                            </div>
-
-
-                        <div class="form-group row">
-
-                            <div class="btn-group col-md-5" role="group">
-
-                                <button id="valider" type="submit" class="btn btn-outline-primary col-md-12">Save</button>
-
+                            <div class="form-group col-md-4">
+                                <label class="control-label" for="freelancer_prenom">Prénom </label>
+                                
+                                <input class="form-control" type="text" name="freelancer_prenom" id="freelancer_prenom">
                             </div>
                             
-                            <div class="btn-group col-md-5" role="group">
-                                <button type="button" class="btn btn-outline-danger col-md-12" data-dismiss="modal" role="button">Fermer</button>
+                            <div class="form-group col-md-4">
+                                <label class="control-label" for="freelancer_tel">Tél </label>
+                                
+                                <input class="form-control" type="tel" name="freelancer_tel" id="freelancer_tel">                                                        
                             </div>
+                        </div>
+
+
+
+                        <div class="row" style="margin-top:10%;">
+                            
+                            <div class="form-group col-md-6">
+
+                                <div class="btn-group col-md-12" role="group">
+                                    <button type="button" class="btn btn-outline-danger col-md-12" data-dismiss="modal" role="button">Fermer</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+
+                                <div class="btn-group col-md-12" role="group">
+
+                                    <button id="valider" type="submit" class="btn btn-outline-primary col-md-12">Save</button>
+
+                                </div>
+                            </div>    
+
+                            
+                            {{--  --}}
                         </div>
                     </form>
 
@@ -218,6 +278,62 @@
         </div>
 
     </div>
+
+
+    <div class="modal fade " id="client_interactions" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-center" id="lineModalLabel">Détails du client <span id="client"></span> </h3>
+                </div>
+                
+                <div class="modal-body">
+
+                    <table class="table table-bordered text-center" id="datablee-1" width="100%" cellspacing="0">
+                        
+                        <thead>
+                            <tr class="text-center">
+                                <th>Num Commande</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-center" id="commandes">
+
+                        </tbody>
+
+                    </table>
+
+                    <hr>
+
+                    <table class="table table-bordered text-center" id="datablee-1" width="100%" cellspacing="0">
+                        
+                        <thead>
+                            <tr class="text-center">
+                                <th class="col-md-3">Num Livraison</th>
+                                <th class="col-md-3">Remise</th>
+                                <th class="col-md-3">Total</th>
+                                <th class="col-md-3">Statut</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-center" id="livraisons">
+
+
+
+                        </tbody>
+                    </table>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 @endsection
 
 
@@ -226,6 +342,172 @@
 @section('scripts')
 
 <script>
+
+
+    function get_client_interactions(id_client) 
+    {
+
+        $.ajax({
+            headers: 
+            {
+                'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            },                    
+            type:"POST",
+            url:"/client/get_client_interactions",
+            data:{id_client:id_client},
+
+            success:function(data) 
+            {
+
+                console.log(data.commandes);
+                console.log(data.livraisons);
+
+                var commandes = "";
+
+                for (var i = 0; i < data.commandes.length; i++)
+                {
+
+                    if (data.commandes[i].statut=='en attente') 
+                    {
+                        var img = '<img src="/spin.gif" width="10%">';
+    
+                        commandes+='<tr style="color:orange;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+data.commandes[i].total+' DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
+
+                        //
+                    }
+
+                    if (data.commandes[i].statut=='validé') 
+                    {
+                        var img = '<i class="fa fa-check" aria-hidden="true"></i>';
+
+                        commandes+='<tr style="color:green;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+data.commandes[i].total+' DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
+
+                        //
+                    }
+
+                    if (data.commandes[i].statut=='rejeté') 
+                    {
+                        var img = '<i class="fa fa-ban" aria-hidden="true"></i>';
+
+                        commandes+='<tr style="color:red;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+data.commandes[i].total+' DA DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
+
+                        //
+                    }
+
+                }
+
+                if (data.commandes.length==0) 
+                {
+                    commandes+='<tr><td> Aucune </td><td> Commande</td><td>Pour ce client</td></tr>';                    
+                }
+
+                $("#commandes").html(commandes);
+                
+
+
+                //Livraisons : ----------------------------------------------------------
+
+                var livraisons = "";
+
+                for (var i = 0; i < data.livraisons.length; i++)
+                {
+
+
+
+                    if (data.livraisons[i].statut=='en attente') 
+                    {
+                        var img = '<img src="/spin.gif" width="10%">';
+                        //
+                    }
+
+                    if (data.livraisons[i].statut=='validé') 
+                    {
+                        var img = '<i class="fa fa-check" aria-hidden="true"></i>';
+                        //
+                    }
+
+                    if (data.livraisons[i].statut=='rejeté') 
+                    {
+                        var img = '<i class="fa fa-ban" aria-hidden="true"></i>';
+                        //
+                    }
+
+                    if (data.livraisons[i].statut=='terminé') 
+                    {
+                        var img = '<img src="/img/termine.png" width="5%">';
+                        //
+                    }
+
+                    if (data.livraisons[i].statut=='BL') 
+                    {
+                        var img = '<i class="fa fa-truck" aria-hidden="true"></i>';
+                        //
+                    }
+
+                    if (data.livraisons[i].statut=='encaissement') 
+                    {
+                        var img = '<img src="/exclamation.png" width="5%">';
+                        //
+                    }
+
+
+                    livraisons+='<tr><td>Num_livraison_'+data.livraisons[i].num_livraison+'</td><td>'+data.livraisons[i].remise+' % </td><td>'+data.livraisons[i].total+' DA </td><td> '+img+' '+data.livraisons[i].statut+'</td></tr>';
+
+
+                    //
+                }
+
+                if (data.livraisons.length==0) 
+                {
+                    livraisons+='<tr><td> Aucune </td><td> livraison</td><td>Pour ce client</td><td>-</td></tr>';                    
+                }
+
+                $("#livraisons").html(livraisons);
+
+
+                
+                //
+            }
+        });
+
+        // body...
+    } 
+
+
+    $("#info_freelancer").hide();
+
+    function hide_or_show_freelancer(objet) 
+    {
+        
+        var option = $(objet).find(':selected').attr('value');
+
+        if (option=="freelancer") 
+        {
+
+            $("#info_freelancer").show(300);
+
+            $("#freelancer_prenom").prop('required',true);
+            $("#freelancer_nom").prop('required',true);
+            $("#freelancer_tel").prop('required',false);
+
+            //
+        }
+        else
+        {
+
+            $("#info_freelancer").hide(300);
+
+            $("#freelancer_prenom").prop('required',false);
+            $("#freelancer_nom").prop('required',false);
+            $("#freelancer_tel").prop('required',false);
+
+
+            //
+        }
+
+        // body...
+    }
+
 
 
     function verif_number(objet) 

@@ -78,7 +78,7 @@ function get_livreur(num_livraison)
 		success:function(data) 
 		{
 			
-			$("#livreur").html("Livreur : "+data);
+			$("#livreur").html("Livreur : "+data.name+" "+data.prenom+" | "+data.email+" tel: "+data.telephone+" ");
 
 			//
 		}
@@ -112,10 +112,20 @@ function get_livraison(objet)
 
 		success:function(data) 
 		{
+
 			var to_append = '';
 
 			var totale = 0;
 			
+			if(data.livreur.id!==undefined) 
+			{
+				$("#affecter").attr('href', '/ticket/affecter/num_livraison/'+num_livraison+'/livreur/'+data.livreur.id);
+			}
+			else
+			{
+				$("#affecter").attr('href', '/ticket/affecter/num_livraison/'+num_livraison+'/livreur/');
+			}
+
 			for (var i = 0; i < data.livraison.length; i++) 
 			{
                 /*alert(data.livraison[i].prix)*/
@@ -250,7 +260,7 @@ function approuver(objet)
 
 		success:function(data) 
 		{
-			
+
 			$("#"+num_livraison).addClass("alert alert-success");
 			$("#statut"+num_livraison).attr('class','text-center alert alert-success');
 			$("#statut"+num_livraison).text('validé');
@@ -258,7 +268,7 @@ function approuver(objet)
 			$("#modal_statut"+num_livraison).text('validé');
 			$("#validateur"+num_livraison).text(data);
 
-			$("#approuver").hide();
+			$("#approuver").prop("disabled",true);
 
 			$("#la_remise").show(1000);			
 
@@ -358,6 +368,7 @@ function final_confirmation()
 		success:function(data) 
 		{
 
+			console.log(data);
 
 			//
 		}
@@ -551,6 +562,18 @@ function get_bl()
 	var num_livraison = $("#numm_livraison").val();/*$("#approuver").attr('num_livraison')*/;
 	
 	window.open("/home/livraisons/voir/"+num_livraison+"/BL", '_blank');
+
+	// body...
+}
+
+function fit_livreur_href() 
+{
+
+	id_livreur = $('select[name="livreur"]').find(":selected").val();
+
+	var href = $("#affecter").attr('href')+id_livreur;
+
+	$("#affecter").attr('href',href);
 
 	// body...
 }

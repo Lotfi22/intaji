@@ -183,7 +183,9 @@ class LivraisonController extends Controller
 
         $versements = DB::select("select * from versements where num_livraison = $num_livraison order by id asc");
 
-        $ret = (object)["livraison"=>$livraison ,"versements"=>$versements];
+        $livreur = livraison::get_livreur_ajax($num_livraison);
+
+        $ret = (object)["livreur"=>$livreur,"livraison"=>$livraison ,"versements"=>$versements];
 
         return response()->json($ret);
 
@@ -451,10 +453,10 @@ class LivraisonController extends Controller
 
         $num_livraison = $request->num_livraison;
 
-        $livreur = DB::select("select email from livreurs 
+        $livreur = DB::select("select * from livreurs 
         where id = (select livreur from livraisons where num_livraison = $num_livraison limit 1) ");
 
-        $livreur = $livreur[0]->email;
+        $livreur = $livreur[0];
 
         return response()->json($livreur);
 

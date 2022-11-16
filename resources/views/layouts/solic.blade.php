@@ -188,16 +188,20 @@
                                                     <li aria-haspopup="true">
                                                         <a href="/impression">Impression</a>
                                                     </li>
-
-                                                    <li aria-haspopup="true">
-                                                        <a href="/ticket/vers_depot/annuler">Annuler Tickets</a>
-                                                    </li>
-
                                                 @endif
 
                                                 <li aria-haspopup="true">
                                                     <a href="/ticket">Mes Tickets</a>
                                                 </li>
+
+                                                @if(Check::CheckAuth(['admin','production']))
+
+                                                    <li aria-haspopup="true">
+                                                        <a href="/ticket/vers_depot/annuler">Annuler Tickets</a>
+                                                    </li>
+                                                @endif
+
+                                                
                                             </ul>
                                         </li>
                                     @endif
@@ -563,9 +567,9 @@
                 type: 'GET',
                 success: function(json)
                 {
-                    console.log(json);
+                    
 
-                    console.log("My country is: " + json.country+" city : " + json.city);
+                    /*console.log("My country is: " + json.country+" city : " + json.city);*/
                 },
                 
                 error: function(err)

@@ -23,7 +23,7 @@
         <div class="card row col-md-12">
             <div class="card-header row col-md-12">
                 
-                <h1 style="cursor:pointer;" onclick="redirect_manuel();" class="col-md-12 alert alert-info text-center blink" >Livreur : {{ $le_livreur->prenom ?? '' }} / {{ $le_livreur->email ?? '' }} </h1>
+                <h1 style="cursor:pointer;" class="col-md-12 alert alert-info text-center blink" >Livreur : {{ $le_livreur->prenom ?? '' }} / {{ $le_livreur->email ?? '' }} </h1>
                 <h4 class="col-md-12">
                     Affecter Ticket {{ count($tickets) }} 
                 </h4>
@@ -62,7 +62,7 @@
                             id="search" placeholder="Cliquez ici pour filter avec Code Bar" />
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <a class=" col-md-12 float-right btn btn-primary btn-sm"
                             href="{{ route('ticket.detacher', ['livreur' => $_livreur]) }}">
                             Détacher Colis
@@ -71,18 +71,18 @@
 
 
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <a class=" col-md-12  btn btn-primary btn-sm" href="{{ route('ticket.retour', ['livreur' => $_livreur]) }}">
                             Colis Retour
                         </a>
                     </div>
 
                     
-                    <div class="col-md-4">
+                    {{-- <div class="col-md-4">
                         <button onclick="fit_produits();" data-toggle="modal" data-target="#Bon_livraison" class="col-md-12 btn btn-primary btn-sm"> 
                             <i class="fa fa-arrow-right"></i> Envoyer la demande de livraison 
                         </button>
-                    </div>
+                    </div> --}}
 
                     <div class="modal fade " id="Bon_livraison" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
                         aria-hidden="true">

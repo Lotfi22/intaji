@@ -31,6 +31,7 @@
                             <tr style="cursor: pointer;">
                                 <th>N°</th>
                                 <th>DATE</th>
+                                <th>mise à jour le : </th>
                                 <th>Client</th>
                                 <th>Wilaya</th>
                                 {{-- <th>Produits</th> --}}
@@ -52,8 +53,9 @@
 
                                     <td>Num{!! $commande->num_commande !!}</td>
                                     
-                                    <td>{!! date_format(date_create($commande->updated_at),"d/m/Y H:i:s") !!}</td>
+                                    <td>{!! date_format(date_create($commande->created_at),"d/m/Y H:i:s") !!}</td>
                                     
+                                    <td>{!! date_format(date_create($commande->updated_at),"d/m/Y H:i:s") !!}</td>
                                     
                                     <td>
                                         {{ App\Commande::get_client($commande->num_commande)[0]->nom ?? '' }}
@@ -131,14 +133,15 @@
 
 
                                     <td>
-                                    	{!! App\Commande::get_demandeur($commande->num_commande) ?? ''!!}
+
+                                    	{!! App\Commande::get_vrai_demandeur(App\Commande::get_demandeur($commande->num_commande)) ?? ''!!}
                                     </td>
 
                                     <td id="validateur{{$commande->num_commande}}">
                                     	{!! App\Commande::get_validator($commande->num_commande) ?? ''!!}
                                     </td>
 
-                                    <td id="">
+                                    <td class="text-center" id="">
                                     {!! App\Commande::get_num_livraison($commande->num_commande) ?? ''!!}
                                     </td>
 

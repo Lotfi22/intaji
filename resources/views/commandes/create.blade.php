@@ -35,7 +35,7 @@
                         'label'=>'freelance',
                         'name'=>'freelance',
                         'type'=>'select',
-                        'options'=>[],
+                        'options'=>$freelancers,
                         'col'=>4
                         ]
 
@@ -54,7 +54,15 @@
                                     </option>
                                     @endforeach
 
-                                @else
+                                @elseif($input['name']=="client")
+                                    @foreach($input['options'] as $option)
+                                    <option value="{{$option->id}}">
+                                        {{$option->nom ?? ''}} {{$option->prenom ?? ''}}
+                                    </option>
+                                    @endforeach
+
+                                 @elseif($input['name']=="freelance")
+
                                     @foreach($input['options'] as $option)
                                     <option value="{{$option->id}}">
                                         {{$option->nom ?? ''}} {{$option->prenom ?? ''}}

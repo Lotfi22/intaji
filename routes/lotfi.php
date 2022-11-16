@@ -51,6 +51,7 @@ Route::post('/home/livraisons/filter','LivraisonController@filter');
 Route::post('/home/client/verif_tel/ajax','ClientController@verif_tel');
 Route::post('/home/livraisons/get_depot/ajax','LivraisonController@get_depot');
 Route::post('/livreur/get_work_livreur','LivraisonController@get_work_livreur');
+Route::get('/ticket/affecter/num_livraison/{num_livraison}/livreur/{livreur}', 'TicketController@affecter_livraison');
 
 
 //caisse : 
@@ -63,4 +64,7 @@ Route::get('/commercial', 'CommercialController@index');
 Route::get('/login/commercial', 'Auth\LoginController@showcommercialLoginForm')->name('login.commercial');
 Route::post('/commercial/ajouter','CommercialController@store');
 Route::post('/commercial/get_work_commercial','CommercialController@get_work_commercial');
+
+//clients 
+Route::post('/client/get_client_interactions','ClientController@get_client_interactions');
 

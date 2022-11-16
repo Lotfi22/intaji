@@ -185,6 +185,17 @@ class Livraison extends Model
         // code...
     }
 
+    public static function get_livreur_ajax($num_livraison)
+    {
+
+        $livreur = DB::select("select * from livreurs where 
+        id=(select livreur from livraisons where num_livraison = $num_livraison limit 1)");
+
+        return $livreur[0] ?? "";
+        // code...
+    }
+
+
 
     public static function get_validator($num_livraison)
     {
