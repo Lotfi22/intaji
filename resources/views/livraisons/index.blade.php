@@ -66,7 +66,7 @@
                                 <th>DATE</th>
                                 <th>Livreur</th>
                                 <th>Client</th>
-                                <!--<th>Produits</th>-->
+                                <th>Wilaya</th>
                                 <th>Total</th>
                                 <th>Statut</th>
                                 <th>Demandeur</th>
@@ -89,20 +89,19 @@
                                     </td>
                                     
                                     <td>{{ App\Livraison::get_client($livraison->num_livraison) ?? '' }} </td>
-                                    <!--<td class="text-left">
-                                        @foreach (App\Livraison::get_products($livraison->num_livraison) as $produit)
-                                            
-                                            {!! $produit !!}<br>
 
-                                            {{-- expr --}}
-                                        @endforeach  
-                                    </td>-->
+                                    <td class="text-left">
+                                        
+                                        {!! App\Client::get_wilaya(App\Livraison::get_client_all($livraison->num_livraison)[0]->id) !!}
+
+                                    </td>
+
+
                                     
                                     <td>
 
-                                        <!--{!! setlocale(LC_MONETARY,"en_US"); !!}-->
 
-                                        {!! number_format((App\Livraison::get_total($livraison->num_livraison)*(1-($livraison->remise)/100))); !!} DA
+                                        {!! number_format((App\Livraison::get_total($livraison->num_livraison))); !!} DA
                                     </td>
 
                                     @if (App\Livraison::get_statut($livraison->num_livraison) == "en attente")
@@ -134,9 +133,9 @@
 
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "encaissement")
                                         
-                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-info">
+                                        <td style="background-color:;" id="statut{{ $livraison->num_livraison }}" class="alert alert-info">
                                         
-                                        <img src="/hand-pay.jpg" width="30">
+                                        <img src="/exclamation.png" width="30">
 
 
                                     @endif
@@ -238,7 +237,7 @@
                                     <div class="form-group">
                                         <label class="small" for="livreur">Livreur </label>
             
-                                        <select name="livreur" class="form-control col-md-12">                                
+                                        <select name="livreur" onchange="fit_livreur_href();" class="form-control col-md-12">                                
                                             <option value="0" class="form-control">Sélectionner livreur</option>
 
                                             @foreach ($livreurs as $livreur)
@@ -295,24 +294,31 @@
 
                                     <span id="confirmer_approbation">
                                         
-                                        <button id="final_confirmation" type="submit" class="btn btn-sm btn-primary col-md-5">Oui, Confirmer</button>
+                                        <button id="final_confirmation" type="submit" class="btn btn-sm btn-primary col-md-4">Oui, Confirmer</button>
 
-                                        <button onclick="retour();" class="btn btn-sm btn-warning col-md-5">Retour</button>
+                                        <button onclick="retour();" class="btn btn-sm btn-warning col-md-4">Retour</button>
                                     </span>
                                 </div>
                             </div> 
                         </form>
-
+                    @endif    
+                     
+                    @if(auth()->guard('admin')->check() || auth()->guard('depot')->check())
                         @include('encaissement.encaissement')
+
+                        <a id="affecter" style="margin-top:5%; color: Blue;" class="btn btn-outline-info col-md-12" href="/ticket/affecter/num_livraison/" >Cliquez pour Affecter les Produits Au Livreur</a>
+                                             
                      @else
 
                         <h6 class="btn btn-outline-primary text-center col-md-12" style="cursor:pointer;" onclick="get_bl();">Voir BL</h6>
 
-                        <h3 class="alert alert-danger text-center"> Vous n'étes pas Admin </h3>
-                    @endif    
+                        <h3 class="alert alert-warning text-center"> Vous n'étes ni Admin ni Agent de dépot </h3>
 
+                    @endif
                     {{--  --}}                    
-            
+    
+
+
                     <button style="margin-top:5%;" class="btn btn-primary col-md-12" onclick="imprimer_details();">Imprimer détails de la livraison </button>
 
                 </div>

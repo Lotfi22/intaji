@@ -24,7 +24,7 @@ class LivraisonController extends Controller
     public function index()
     {
 
-        if(Check::CheckAuth(['admin','production','depot'])==false){
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false){
 
             return redirect()->route('login.admin');     
 
@@ -79,7 +79,7 @@ class LivraisonController extends Controller
     public function filter(Request $request)
     {
 
-        if(Check::CheckAuth(['admin','production','depot'])==false){
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false){
 
             return redirect()->route('login.admin');     
 
@@ -110,7 +110,7 @@ class LivraisonController extends Controller
     public function ajout_livraison($id_livreur,Request $request)
     {
         
-        if(Check::CheckAuth(['admin','production','depot'])==false)
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false)
         {
             return redirect()->route('login.admin');     
         }
@@ -183,7 +183,9 @@ class LivraisonController extends Controller
 
         $versements = DB::select("select * from versements where num_livraison = $num_livraison order by id asc");
 
-        $ret = (object)["livraison"=>$livraison ,"versements"=>$versements];
+        $livreur = livraison::get_livreur_ajax($num_livraison);
+
+        $ret = (object)["livreur"=>$livreur,"livraison"=>$livraison ,"versements"=>$versements];
 
         return response()->json($ret);
 
@@ -250,7 +252,7 @@ class LivraisonController extends Controller
 
         $depot = $request->depot;
 
-        if(Check::CheckAuth(['admin','production','depot'])==false)
+        if(Check::CheckAuth(['admin','production','depot','commercial'])==false)
         {
             return redirect()->route('login.admin');     
         }
@@ -322,7 +324,21 @@ class LivraisonController extends Controller
         }
         else
         {
-            $acteur='No One';            
+
+            if (auth()->guard('depot')->check()) 
+            {
+
+                $acteur= (Auth::guard('depot')->user()->email);                
+
+                // code...
+            }
+            else
+            {
+
+                $acteur='No One';            
+                
+                //
+            }
         }        
         
         $versement = (float)($request->versement);
@@ -334,7 +350,7 @@ class LivraisonController extends Controller
 
         $remise = $livraison->remise;
 
-        if($livraison->statut != "rejeté") 
+        if($livraison->statut != "rejeté")
         {
             
             DB::update("update livraisons set versement = $versement,statut = 'encaissement',updated_at=now() where num_livraison = $num_livraison");
@@ -351,6 +367,8 @@ class LivraisonController extends Controller
             {
                 
                 DB::update("update livraisons set statut = 'terminé',updated_at=now() where num_livraison = $num_livraison");
+
+                Livraison::mise_a_jour_tickets_to_vendue($num_livraison);
 
                 // code...
             }
@@ -386,7 +404,7 @@ class LivraisonController extends Controller
 
         $remise = $livraison->remise;
 
-        $total_livraison = Livraison::get_total($num_livraison)*(1-($remise/100));
+        $total_livraison = Livraison::get_total($num_livraison);
 
         $total_paye = DB::select("select sum(versement)+$val as total_paye 
         from versements where num_livraison = $num_livraison");
@@ -451,10 +469,10 @@ class LivraisonController extends Controller
 
         $num_livraison = $request->num_livraison;
 
-        $livreur = DB::select("select email from livreurs 
+        $livreur = DB::select("select * from livreurs 
         where id = (select livreur from livraisons where num_livraison = $num_livraison limit 1) ");
 
-        $livreur = $livreur[0]->email;
+        $livreur = $livreur[0];
 
         return response()->json($livreur);
 
@@ -472,6 +490,33 @@ class LivraisonController extends Controller
 
         // code...
     }
+
+    public function get_work_livreur(Request $request)
+    {
+
+        $id_livreur = ($request->id_livreur);
+
+        $livreur = DB::select("select * from livreurs where id=$id_livreur");
+
+        $livreur = $livreur[0];
+
+        $livraison = DB::select("select l.statut,count(*) as nb_livraison from livraisons l
+        where livreur = $id_livreur
+        group by l.statut
+        order by l.statut");
+
+        $what_is_he_doing=DB::select("select * from livraisons l
+        where l.livreur = $id_livreur and (l.statut = 'BL') ");
+
+        $what_is_he_doing = $what_is_he_doing[0] ?? [];
+
+        $ret = array('livreur' => $livreur , 'livraisons' => $livraison,"what_is_he_doing" => $what_is_he_doing);
+
+        return response()->json($ret);
+
+        // code...
+    }
+
 
     //
 }

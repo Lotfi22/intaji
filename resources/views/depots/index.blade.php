@@ -23,6 +23,7 @@
                             <tr>
                                 <th>ID depot</th>
                                 <th>Login</th>
+                                <th>Nom</th>
                                 <th>dépot</th>
                                 <th>Password</th>
                                 <th>actions</th>
@@ -35,6 +36,7 @@
                             @foreach ($depots as $depot)
                                 <tr>
                                     <td>{{ $depot->id }}</td>
+                                    <td>{{ $depot->email ?? '' }}</td>
                                     <td>{{ $depot->name ?? '' }}</td>
                                     <td>{{ $depot->depot ?? 'dépot' }}</td>
                                     <td>{{ $depot->password_text ?? '' }}</td>

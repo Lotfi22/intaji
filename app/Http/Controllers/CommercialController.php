@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Hash;
 use App\Commune;
 use App\Commercial;
+use DB;
 
 
 
@@ -85,5 +86,29 @@ class CommercialController extends Controller
         $commercial->delete();    
         return redirect()->route('commercial.index')->with('success', 'le  commercial a été supprimé ');
     }
+
+    public function get_work_commercial(Request $request)
+    {
+
+        $id_commercial = ($request->id_commercial);
+
+        $commercial = "commercial_".$id_commercial;
+
+        $commandes = DB::select("select c.statut,count(*) as nb_commande 
+        from commandes c 
+        where c.user = '$commercial'
+        group by c.statut");
+
+        $commercial = DB::select("select * from commercials");
+
+        $commercial = $commercial[0];
+
+        $ret = (object)array("commercial"=>$commercial,"commandes"=>$commandes);
+
+        return response()->json($ret);
+
+        // code...
+    }
+
 
 }

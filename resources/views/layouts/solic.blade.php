@@ -188,12 +188,20 @@
                                                     <li aria-haspopup="true">
                                                         <a href="/impression">Impression</a>
                                                     </li>
-
                                                 @endif
 
                                                 <li aria-haspopup="true">
                                                     <a href="/ticket">Mes Tickets</a>
                                                 </li>
+
+                                                @if(Check::CheckAuth(['admin','production']))
+
+                                                    <li aria-haspopup="true">
+                                                        <a href="/ticket/vers_depot/annuler">Annuler Tickets</a>
+                                                    </li>
+                                                @endif
+
+                                                
                                             </ul>
                                         </li>
                                     @endif
@@ -208,12 +216,12 @@
                                             
                                             <ul class="sub-menu">
                                                     
-                                                <li aria-haspopup="true">
+                                                {{-- <li aria-haspopup="true">
                                                     <a href="/production">Agents Production</a>
-                                                </li>
+                                                </li> --}}
 
                                                 <li aria-haspopup="true">
-                                                    <a href="/depot">Agents Dépots</a>
+                                                    <a href="/depot">Dépots</a>
                                                 </li>
 
                                                 <li aria-haspopup="true">
@@ -229,30 +237,39 @@
                                     
                                     @endif    
 
-                                    <li aria-haspopup="true">
-                                        
-                                        <a style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-cube-send"></i>Envoyer/Recevoir
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                        <ul class="sub-menu">
-                                                
-                                            <li aria-haspopup="true">
-                                                <a href="/ticket/vers_depot">Envoyer vers dépot</a>
-                                            </li>
-
-                                            <li aria-haspopup="true">
-                                                <a href="/ticket/au_depot">Recevoir au dépot</a>
-                                            </li>
-
-
-                                        </ul>
-                                    </li>  
-
-                                    @if(Check::CheckAuth(['admin']))
+                                    @if(!Check::CheckAuth(['commercial']))
 
                                         <li aria-haspopup="true">
+                                            
+                                            <a style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-cube-send"></i>Envoyer/Recevoir
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                            <ul class="sub-menu">
+                                                    
+                                                <li aria-haspopup="true">
+                                                    <a href="/ticket/vers_depot">Envoyer vers dépot</a>
+                                                </li>
+
+                                                <li aria-haspopup="true">
+                                                    <a href="/ticket/au_depot">Recevoir au dépot</a>
+                                                </li>
+
+
+                                            </ul>
+                                        </li>  
+                                    @endif
+
+                                    @if(Check::CheckAuth(['admin','commercial']))
+
+                                        <li aria-haspopup="true"><a href="{{route('client.index')}}" class=""><i class="mdi mdi-account-plus "></i>Clients</a></li>
+
+
+                                        <li aria-haspopup="true"><a href="{{route('commande.index')}}" class=""><i class="mdi mdi-truck-fast"></i>Commandes</a></li>
+
+
+                                        {{--<li aria-haspopup="true">
                                             <a href="#" style="cursor: pointer;" class="sub-icon">
                                                 <i class="mdi mdi-package-variant"></i>Commandes
                                                 <i class="fa fa-angle-down horizontal-icon"></i>
@@ -271,25 +288,27 @@
 
 
                                             </ul>
-                                        </li>
+                                        </li> --}}
 
                                     @endif
 
-                                    @if(Check::CheckAuth(['admin','depot']))
+                                    @if(Check::CheckAuth(['admin','depot','commercial']))
                                     
                                         <li aria-haspopup="true"><a href="/home/livraisons" class=""><i class="mdi mdi-forklift"></i>Livraisons</a></li>
 
                                     @endif
 
-                                    <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
-                                        
-                                        <a style="cursor: pointer;" class="sub-icon">
-                                            <i class="mdi mdi-account-multiple"></i>Livreurs
-                                            <i class="fa fa-angle-down horizontal-icon"></i>
-                                        </a>
-                                        
-                                    </li>
-                                
+                                    @if(!Check::CheckAuth(['commercial']))
+
+                                        <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
+                                            
+                                            <a style="cursor: pointer;" class="sub-icon">
+                                                <i class="mdi mdi-account-multiple"></i>Livreurs
+                                                <i class="fa fa-angle-down horizontal-icon"></i>
+                                            </a>
+                                            
+                                        </li>
+                                    @endif
 
                                     @if(Check::CheckAuth(['admin']))
 
@@ -548,9 +567,9 @@
                 type: 'GET',
                 success: function(json)
                 {
-                    console.log(json);
+                    
 
-                    console.log("My country is: " + json.country+" city : " + json.city);
+                    /*console.log("My country is: " + json.country+" city : " + json.city);*/
                 },
                 
                 error: function(err)

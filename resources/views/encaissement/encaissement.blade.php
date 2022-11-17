@@ -25,14 +25,16 @@
 		</table>
 
 
-		<label id="label_versement" class="label label-default text-center" for="versement"> Versement DA</label>
+		<label id="label_versement" class="label label-default text-center" for="versement"> Versement DA <span class="text-danger">(Ne pas écrire le nombre avec virgule ',' ni point '.')</span> </label>
 		
 		<input id="versement" onkeyup="test_depassement(this);" autofocus name="versement" class="form-control col-md-12" type="number">
 
-		<input id="valider_versement" onclick="valider_versement();" style="margin:2% 25%;" class="btn btn-outline-primary col-md-6" type="submit" value="valider">
+		<input id="valider_versement" onclick="valider_versement();" style="margin:2% 25%;" class="btn btn-outline-primary col-md-6" type="submit" value="valider versement">
 
 		<p id="versement_complet" class="alert alert-success text-center"> 
 		<i class="fa fa-usd" aria-hidden="true"></i> Versement Copmlet </p>
+
+
 
 		{{--  --}}
 	</div>

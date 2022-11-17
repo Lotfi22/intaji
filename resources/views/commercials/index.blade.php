@@ -34,7 +34,9 @@
                         <tbody>
 
                             @foreach ($commercials as $commercial)
-                                <tr>
+                                
+                                <tr  data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');">
+
                                     <td>{{ $commercial->id }}</td>
                                     <td>{{ $commercial->nom ?? '' }}</td>
                                     <td>{{ $commercial->prenom ?? '' }}</td>
@@ -180,4 +182,129 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade " id="commercial_works" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                
+                <div class="modal-header col-md-12" id="lcommercial">
+                    <h3 class="modal-title text-center" id="lineModalLabel">Travail du commercial : <span id="assem_commercial"></span> </h3>
+
+                    <a type="button" class="close" data-dismiss="modal">× Fermer</a>
+                </div>
+                
+                <div class="modal-body">
+
+                    <table class=" table table-bordered text-center" id="datable-1" width="100%" cellspacing="0">
+                        
+                        <thead>
+                            <tr class="text-center">
+                                <th>commercial</th>
+                                <th>Nombre de commandes</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="works" class="text-center">
+
+                        </tbody>
+
+                    </table>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
+
+
+@section('scripts')
+
+
+    <script type="text/javascript">
+        
+        function get_work_commercial(id_commercial)
+        {
+
+            $.ajax({
+                headers: 
+                {
+                    'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                },                    
+                type:"POST",
+                url:"/commercial/get_work_commercial",
+                data:{id_commercial:id_commercial},
+
+                success:function(data) 
+                {
+
+                     var commercial = data.commercial;   
+
+                    $("#assem_commercial").text(commercial.nom+' '+commercial.prenom+' | '+commercial.email+' | Tél : '+commercial.telephone)
+
+                    var works = "";
+
+                    var nb_commande=0;
+
+                    console.log(data.commandes);
+
+                    for (var i = 0; i < data.commandes.length; i++) 
+                    {
+                        
+                        if (data.commandes[i].statut=='validé') 
+                        {
+                            var img = '<i class="fa fa-check" aria-hidden="true"></i>';
+
+                            works+='<tr style="font-weight:bold; color:green;" > <td>'+data.commercial.nom+' '+data.commercial.prenom+' '+data.commercial.email+'</td> <td>'+data.commandes[i].nb_commande+'</td> <td> '+img+' '+data.commandes[i].statut+'</td></tr>';                            
+                        }
+                        
+                        if (data.commandes[i].statut=='rejeté') 
+                        {
+
+                            var img = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
+
+                            works+='<tr style="font-weight:bold; color:red;" > <td>'+data.commercial.nom+' '+data.commercial.prenom+' '+data.commercial.email+'</td> <td>'+data.commandes[i].nb_commande+'</td> <td> '+img+' '+data.commandes[i].statut+'</td></tr>';                               
+                        }
+                        
+                        if (data.commandes[i].statut=='en attente') 
+                        {
+
+                            var img = '<i class="fa fa-circle-o-notch" aria-hidden="true"></i>';
+
+                            works+='<tr style="font-weight:bold; color:orange;" > <td>'+data.commercial.nom+' '+data.commercial.prenom+' '+data.commercial.email+'</td> <td>'+data.commandes[i].nb_commande+'</td> <td> '+img+' '+data.commandes[i].statut+'</td></tr>';                            
+                        }
+
+                        
+                        nb_commande+=data.commandes[i].nb_commande;
+                    }
+
+                    works+='<tr> <td>-</td> <td style="background:#52b2c7;">Total commandes</td><td style="background:#52b2c7;"> '+nb_commande+'</td></tr>';
+
+
+                    $("#works").html(works);
+
+
+                    
+                    //
+                }
+
+                //
+            });
+
+
+            //
+        }
+
+
+        //        
+    </script>
+    
+
+
+@endsection
+

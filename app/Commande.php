@@ -118,10 +118,17 @@ class Commande extends Model
     }
     public static function get_freelancer($num_commande)
     {
-        // $freelancer = DB::select("select nom,prenom from freelancers 
-        // where id = (select freelancer from commandes where num_commande = $num_commande limit 1) ");
-        
-        return "freelancer";
+        $freelancer = DB::select("select nom,prenom from freelancers 
+        where id = (select freelancer from commandes where num_commande = $num_commande limit 1) ");
+
+        if (count($freelancer)==0) 
+        { 
+            return "Aucun";
+        }
+        else
+        {
+            return $freelancer[0]->nom . " ".$freelancer[0]->prenom ?? "";  
+        } 
 
     }
     
@@ -192,6 +199,22 @@ class Commande extends Model
     {
 
         return Livraison::get_balance()-Livraison::get_versements();
+        // code...
+    }
+
+    public static function get_vrai_demandeur($chaine)
+    {
+
+        $type=(explode("_",$chaine)[0])."s";
+
+        $id_demandeur=(explode("_",$chaine)[1]);
+
+
+        $demmandeur = DB::select("select * from $type 
+        where id = $id_demandeur");
+
+        return $demmandeur[0]->email ?? "";
+
         // code...
     }
 

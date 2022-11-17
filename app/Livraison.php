@@ -44,6 +44,17 @@ class Livraison extends Model
         // code...
     }
 
+    public static function get_client_all($num_livraison)
+    {
+
+        $client = DB::select("select * from clients 
+        where id = (select id_client from livraisons where num_livraison = $num_livraison limit 1) ");
+
+        
+        return $client;
+        // code...
+    }
+
 
     public static function get_client($num_livraison)
     {
@@ -70,10 +81,14 @@ class Livraison extends Model
     public static function get_total($num_livraison)
     {
 
+        $remise = DB::select("select remise from livraisons where num_livraison = $num_livraison");
+
+        $remise=$remise[0]->remise;
+
         $total = DB::select("select sum(prix*qte) as total from livraisons 
             where num_livraison = $num_livraison");
 
-        return $total[0]->total;
+        return $total[0]->total*(1-($remise/100));
         // code...
     }
 
@@ -170,6 +185,17 @@ class Livraison extends Model
         // code...
     }
 
+    public static function get_livreur_ajax($num_livraison)
+    {
+
+        $livreur = DB::select("select * from livreurs where 
+        id=(select livreur from livraisons where num_livraison = $num_livraison limit 1)");
+
+        return $livreur[0] ?? "";
+        // code...
+    }
+
+
 
     public static function get_validator($num_livraison)
     {
@@ -250,6 +276,15 @@ class Livraison extends Model
 
         return Livraison::get_balance_interval($date_debut,$date_fin)-Livraison::get_versements_interval($date_debut,$date_fin);
         // code...
+    }
+
+    public static function mise_a_jour_tickets_to_vendue($num_livraison)
+    {
+
+        DB::update("update tickets t set t.satut = 'vendue' 
+        where t.id in (select s.id_ticket from sorties s where s.num_livraison = $num_livraison) ");
+
+        //
     }
 
 

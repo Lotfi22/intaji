@@ -16,6 +16,7 @@ use App\Retour;
 use App\Ticket;
 use App\Check;
 use App\Livraison;
+use App\Depot;
 use DB;
 use Auth;
 use Dompdf\Dompdf;
@@ -272,6 +273,38 @@ class TicketController  extends Controller
 
     }
 
+    public function affecter_livraison($num_livraison,$livreur)
+    {
+
+        if(Check::CheckAuth(['admin','production','depot'])==false)
+        {
+            return redirect()->route('login.admin');     
+        }
+
+        
+        $_livreur = $livreur;
+        
+        $le_livreur = DB::select("select * from livreurs where id ='$_livreur' ");
+        
+        $le_livreur = $le_livreur[0];
+        
+        $id_livreur = $le_livreur->id;
+        
+        $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+        from produits p, sorties s,tickets t 
+        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie') 
+        group by p.id,p.nom order by p.nom");
+                
+        $tickets = DB::select("select * from tickets where (satut <> 'sortie' and satut <> 'annulé' ) order by updated_at desc");
+
+        $ids = Ticket::extract_ids($tickets);
+        
+        $ids = json_encode($ids);
+        
+        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids','num_livraison'));
+    }
+
+
 
     public function affecter($livreur)
     {
@@ -313,6 +346,7 @@ class TicketController  extends Controller
                 
         $tickets = DB::select("select * from tickets where (satut <> 'sortie' /*and satut <> '0'*/ and satut <> 'annulé' ) and ( Date(updated_at) >= '$today' or Date(updated_at) = '$yesterday' or Date(updated_at) = '$yesterday2' or Date(updated_at) = '$yesterday3' or Date(updated_at) = '$yesterday4' or Date(updated_at) = '$yesterday5' or Date(updated_at) = '$yesterday6' or Date(updated_at) = '$yesterday7' or Date(updated_at) = '$yesterday8' or Date(updated_at) = '$yesterday9' or Date(updated_at) = '$yesterday10' or Date(updated_at) = '$yesterday11' or Date(updated_at) = '$yesterday12' or Date(updated_at) = '$yesterday13' or Date(updated_at) = '$yesterday14' or Date(updated_at) = '$yesterday15')  order by updated_at desc");
         
+
         $ids = Ticket::extract_ids($tickets);
         
         $ids = json_encode($ids);
@@ -323,12 +357,6 @@ class TicketController  extends Controller
 
     public function assigner(Request $request)
     {
-
-        //if(Check::CheckAuth(['admin','production','depot'])==false)
-        //{
-          //  return redirect()->route('login.admin');     
-        //}
-
         
         if(auth()->guard('admin')->check()){$acteur= (Auth::guard('admin')->user()->email);} 
         if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user()->email);}
@@ -344,11 +372,13 @@ class TicketController  extends Controller
         DB::delete("delete from sorties where id_ticket = '$id_ticket' ");
         $nbticket = DB::select("select statut_livraison as nbticket from sorties where id_ticket=$id_ticket and date(updated_at)=CURDATE()");
         
-        if(count($nbticket)==0){
+        if(count($nbticket)==0)
+        {
             $sortie  = new Sortie();
             $sortie->id_ticket = $request['ticket'];
             $sortie->id_livreur = $request['livreur'];
             $sortie->id_client = 1;
+            $sortie->num_livraison = $request['num_livraison'];
             $sortie->prix_vente = 100;        
             $sortie->save();    
         }
@@ -555,6 +585,7 @@ class TicketController  extends Controller
         // date($request['date_fin'],'Y-m-d');  
         $tickets = DB::select("select * from tickets t where ( DATE(t.updated_at)>=DATE('$date_debut') and DATE(t.updated_at)<=DATE('$date_fin') ) and (t.satut<>'retour' and t.satut='sortie') and  t.id in (select id_ticket from sorties s where id_livreur=$id_livreur)");
         $livreur=Livreur::find($id_livreur);
+        
         $produits_qte = DB::select("select l.id,l.name,l.prenom,p.nom,p.id as id_produit,count(distinct(t.id)) as nb_ticket from livreurs l,tickets t,sorties s,produits p where (l.id=s.id_livreur) and(l.id = '$id_livreur') and (t.id=s.id_ticket) and (t.id_produit=p.id) and (satut='sortie') and (DATE(t.updated_at) between '$date_debut' and '$date_fin' ) and  t.satut<>'retour' group by l.id,l.name,l.prenom,p.nom,p.id ");
         
         return view('livreurs.filter',compact(
@@ -578,14 +609,20 @@ class TicketController  extends Controller
             return redirect()->route('login.admin');     
         }
 
+        $livreurs = DB::select("select * from livreurs");
+
         $tickets = Ticket::whereIn('satut', ['0','annulé'])
             /*->whereDate('created_at', Carbon::today())->OrwhereDate('created_at', Carbon::yesterday())*/
             ->orderBy('created_at','desc')
             ->get();
         
-        $produit_qte = DB::select("select p.id,p.nom,count(*) as qte from produits p, tickets t where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot') group by p.id,p.nom order by p.nom");
+        $produit_qte = DB::select("select p.id,p.nom,l.email as livreur,count(*) as qte 
+        from produits p, tickets t,livreurs l
+        where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot' and t.id_livreur = l.id) 
+        group by p.id,p.nom,l.email 
+        order by p.nom");
         
-        return view('tickets.vers_depot',compact('tickets','produit_qte'));
+        return view('tickets.vers_depot',compact('tickets','produit_qte','livreurs'));
 
     }
 
@@ -596,11 +633,8 @@ class TicketController  extends Controller
         {
             return redirect()->route('login.admin');     
         }
-
         
-        $yesterday = (date('Y-m-d',strtotime("-1 days")));        
-        
-        $tickets = DB::select("select * from tickets t where ((t.satut='vers_depot' or t.satut='0') and (date(created_at) = date(now()) or date(created_at) = date('$yesterday') ) )");
+        $tickets = DB::select("select * from tickets t where (t.satut='vers_depot' or t.satut='0')");
         
         return view('tickets.annuler',compact('tickets'));
 
@@ -650,14 +684,21 @@ class TicketController  extends Controller
         if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user()->email);}
         
         $ticket = Ticket::find($request['ticket']);
+
+        $id_livreur=($request->id_livreur);
         
         if($ticket!=null)
         {
             $ticket->satut= "vers_depot";
             $ticket->maj = $acteur;
+            if($id_livreur!="aucun"){$ticket->id_livreur = $id_livreur;}
             $ticket->save();
             
-            $produit_qte = DB::select("select p.id,p.nom,count(*) as qte from produits p, tickets t where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot') group by p.id,p.nom order by p.nom");
+            $produit_qte = DB::select("select p.id,p.nom,l.email as livreur,count(*) as qte 
+            from produits p, tickets t,livreurs l
+            where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot' and t.id_livreur = l.id) 
+            group by p.id,p.nom,l.email 
+            order by p.nom");
             
             $reste = DB::select("select * from tickets t where (date(t.updated_at) = date( now() ) and t.satut='0') ");
             
@@ -672,7 +713,11 @@ class TicketController  extends Controller
         else
         {
             
-            $produit_qte = DB::select("select p.id,p.nom,count(*) as qte from produits p, tickets t where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot') group by p.id,p.nom order by p.nom");
+            $produit_qte = DB::select("select p.id,p.nom,l.email as livreur,count(*) as qte 
+            from produits p, tickets t,livreurs l
+            where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot' and t.id_livreur = l.id) 
+            group by p.id,p.nom,l.email 
+            order by p.nom");
             
             $reste = DB::select("select * from tickets t where (date(t.updated_at) = date( now() ) and t.satut='0') ");
             
@@ -701,7 +746,15 @@ class TicketController  extends Controller
             ->orWhere('satut', '=', '0')
             ->orderBy('created_at','desc')
             ->get();
-        return view('tickets.au_depot',compact('tickets'));
+
+
+        $produit_qte = DB::select("select p.id,p.nom,count(*) as qte 
+        from produits p, tickets t
+        where (p.id = t.id_produit and satut='au_depot') 
+        group by p.id,p.nom 
+        order by p.nom");
+
+        return view('tickets.au_depot',compact('tickets','produit_qte'));
 
     }
 
@@ -729,8 +782,16 @@ class TicketController  extends Controller
         $ticket->satut= "au_depot";
         $ticket->maj= $acteur->email;
         $ticket->save();
+        
+        $produit_qte = DB::select("select p.id,p.nom,count(*) as qte 
+        from produits p, tickets t
+        where (p.id = t.id_produit and satut='au_depot') 
+        group by p.id,p.nom 
+        order by p.nom");
+
         return response()->json([
-            'ticket'=>$request['ticket']
+            'ticket'=>$request['ticket'],
+            'produit_qte'=>$produit_qte
         ]);
     }
 

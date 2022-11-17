@@ -10,36 +10,56 @@
 
             <h4 class="card-header">
 
-                Scanner <span id="nb_tickets"> {{ count($tickets) }} </span>  Tickets vers depot :
+                Scanner {{-- <span id="nb_tickets"> {{ count($tickets) }} </span> --}}  Tickets vers depot :
 
             </h4>
 
+
+
             <div class="row card-header">
 
-                <div class="col-md-12" style="margin:2% 0%;">
+                <div class="col-md-12 row" style="margin:2% 0%;">
 
-                    <div class="col-md-12">
+                    <div class="col-md-12 row" style="margin-bottom: 3%;">
 
-                        <input onblur="this.focus();" autofocus onchange="SearchFunction();" 
+                        <select class="form-control js-example-basic-single1" 
+                            name="livreur" id="livreur">
+                            
+                            @if (count($livreurs)>0)
 
-                        class="col-md-12 form-control" id="search"  placeholder="filter avec Code Bar" />
+                                <option value="{{ $livreurs[0]->id }}">
+                                    {{ $livreurs[0]->name ?? '' }} {{ $livreurs[0]->prenom ?? '' }} | {{ $livreurs[0]->email ?? '' }}
+                                </option>
+
+                                @for ($i=1; $i<count($livreurs) ; $i++)
+                                    
+                                    <option value="{{ $livreurs[$i]->id }}">
+                                        {{ $livreurs[$i]->name ?? '' }} {{ $livreurs[$i]->prenom ?? '' }} | {{ $livreurs[$i]->email ?? '' }}
+                                    </option>
+
+                                @endfor
+
+
+
+                            @else
+
+                                {{-- expr --}}
+                            @endif
+
+                        
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-11">
+
+                        <input {{-- onblur="this.focus();" --}} autofocus onchange="SearchFunction();" 
+
+                        class="col-md-12 is-valid form-control" id="search"  placeholder="filter avec Code Bar" />
 
                     </div>
 
                 </div>    
-
-{{--                     <div class="col-md-2">
-
-                        <a class="float-right btn btn-primary btn-sm"
-
-                            href="/ticket/vers_depot/annuler">
-
-                            Annuler Ticket
-
-                        </a>
-
-                    </div>
- --}}
 
 
                 <table class="col-md-12 table table-bordered" width="100%" cellspacing="0">
@@ -49,6 +69,8 @@
                         <tr>
 
                             <th class="text-center" >Produit</th>
+
+                            <th class="text-center" >Livreur</th>
 
                             <th class="text-center" >Quantité</th>
 
@@ -68,7 +90,7 @@
 
                                 <td class="text-center" > {{ $prod->nom }} </td>
 
-                                
+                                <td class="text-center" > {{ $prod->livreur }} </td>
 
                                 <td class="text-center" > {{ $prod->qte }} </td>
 
@@ -231,9 +253,16 @@
 
 
 
-
+@section('scripts')
 
     <script>
+
+
+        $('#livreur').on('change', function(e) {
+            var optionSelected = $("option:selected", this);
+            var id_livreur = this.value;
+        });
+
 
 
 
@@ -252,11 +281,13 @@
 
             filter = input.value.toUpperCase();
 
+            $('#search').val('');
+            
             var trId = filter.substr(2);
 
             var trFound = document.getElementById(trId);
 
-            $('#search').val('');
+            var id_livreur = $("#livreur").find(":selected").attr('value');
 
             fetch('/ticket/vers_depot/action', 
 
@@ -276,7 +307,9 @@
 
                     _token: CSRF_TOKEN,
 
-                    ticket:trId
+                    ticket:trId,
+
+                    id_livreur:id_livreur
 
                 })
 
@@ -304,7 +337,7 @@
 
                     {       
 
-                        trAppended = '<tr><td class="text-center">'+res.produit_qte[i].nom+'</td><td class="text-center">'+res.produit_qte[i].qte+'</td></tr>'
+                        trAppended = '<tr><td class="text-center">'+res.produit_qte[i].nom+'</td><td class="text-center">'+res.produit_qte[i].livreur+'</td><td class="text-center">'+res.produit_qte[i].qte+'</td></tr>'
 
                         $("#produit_qte").append(trAppended)
 

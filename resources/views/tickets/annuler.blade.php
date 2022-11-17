@@ -1,36 +1,37 @@
-@extends('layouts.ui')
+@extends('layouts.solic')
 
 @section('content')
-
-<style>
     
-    .blink{
-        color : #fff;
-        animation:blink 700ms infinite alternate;
-    }
-    
-    @keyframes blink {
-        from { opacity:1; }
-        to { opacity:0; }
-    };            
-    
-</style>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <div class="container-fluid">
 
-        <div class="card mb-4">
+        <style>
+            
+            .blink{
+                color : #fff;
+                animation:blink 2000ms infinite alternate;
+            }
+            
+            @keyframes blink {
+                from { opacity:1; }
+                to { opacity:0; }
+            };            
+            
+        </style>
 
-            <div class="card-header">
-                
-                <h2 class="text-center alert alert-warning blink" > Scanner pour annuler le ticket </h2>
+        <div class="card row col-md-12">
+
+            <div class="card-header row col-md-12">
+
+                <h2 class="col-md-12 text-center alert alert-warning" > Scanner pour annuler le ticket </h2>
                 <hr>
                 
-                <h5> Scanner {{ count($tickets) }} Tickets </h5>
+                <h5> Scanner Tickets </h5>
                 
-                <div class="row">
-                    <div class="col-md-4">
-                        <input onblur="this.focus()" autofocus onchange="SearchFunction();" class="col-md-2 form-control"
+                <div class="row col-md-12">
+                    <div class="col-md-12">
+                        <input onblur="this.focus()" autofocus onchange="SearchFunction();" class="is-valid col-md-12 form-control"
                             id="search" placeholder="filter avec Code Bar" />
                     </div>
                 </div>
@@ -119,137 +120,59 @@
 
 
     <script type="text/javascript">
-        /*if( (event.getModifierState("CapsLock"))===true)
-            {
-
-                swal.stopLoading();
-                swal.close();
-
-                //
-            }
-            else
-            {
-
-                $(obj).val("");
-
-                swal("Attention", "Veuillez Allumer Ver Maj", "warning");
-
-                //
-            }*/
-
-
-
-        /**/
-    </script>
-
-    <script>
+        
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-
-        function SearchFunction() {
-            var input, filter, table, tr, td, i, txtValue;
+        
+        function SearchFunction() 
+        {
+            var input, filter;
+         
             input = document.getElementById("search");
+         
             filter = input.value.toUpperCase();
-            $('#search').val('')
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            var trId = 0;
-            var trFound;
-            var hrefAttacher = "1";
-            console.log(hrefAttacher)
+         
+            $('#search').val('');
+         
+            var trId = filter.substr(2);
             
-            if (filter.length == 0) 
-            {
-                for (i = 1; i < tr.length; i++) 
-                {
-                    tr[i].classList.remove("tr-code");
-                    $('#hrefAttacher').attr('href', "#")
-                }
-            } 
+            var trFound = document.getElementById(trId);
             
-            else 
+            
+            fetch('/ticket/vers_depot/annuler/annulation',
             {
-                for (i = 0; i < tr.length; i++) 
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    _token: CSRF_TOKEN,
+                    ticket: trId
+                })
+            })
+            .then(res => res.json())
+            .then(res => 
+            {
                 
-                {
-                    td = tr[i].getElementsByTagName("td")[3];
-                    
-                    if (td) 
-                    
-                    {
-                        txtValue = td.textContent || td.innerText;
-                        
-                        if (txtValue.toUpperCase()==(filter).toUpperCase()) 
-                        {
-                            // .style.display="inline";
-                            tr[i].classList.remove("tr-code");
-                            hrefAttacher = hrefAttacher + tr[i].id + ",";
-                            trId = tr[i].id;
-                            trFound = tr[i];
+                /*toastr.success('Ticket Annulé')                */
 
-                        } 
-                        
-                        else 
-                        
-                        {
-                            tr[i].classList.add("tr-code");
-                        }
-                    }
-                    // $('#hrefAttacher').attr('href',hrefAttacher)
-                }
-                
-                if (trId != 0) 
-                {
-                    
-                    fetch('/ticket/vers_depot/annuler/annulation', {
-                        method: 'post',
-                        headers: {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            _token: CSRF_TOKEN,
-                            ticket: trId
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(res => 
-                    {
-                        //$('#search').val('')
-                        toastr.success('Ticket Annulé')
-                        for (i = 1; i < tr.length; i++) 
-                        {
-                            tr[i].classList.remove("tr-code");
-                        }
-                        
-                        trFound.getElementsByTagName("td")[4].innerHTML = "Annulé";
-                        $('#' + trId).addClass('alert alert-warning')
+                trFound.getElementsByTagName("td")[4].innerHTML = "Annulé";
+                $('#' + trId).addClass('alert alert-warning')
 
-                        console.log(res);
-                    })
-                    .catch(err => function(err) 
-                    {
-                        toastr.danger('Error')
-                        console.log("err.message")
-                    });
-                    
-                } 
                 
-                else 
+            })
+            .catch(err => function(err) {
+                toastr.danger('Error')
                 
-                {
-                    toastr.error('Probelm : Ticket peut etre déja Annulé')
-                    
-                    //$('#search').val('')
-                    
-                    for (i = 1; i < tr.length; i++) 
-                    {
-                        tr[i].classList.remove("tr-code");
-                    }
-                }
-            }
+            });
+
+            /**/            
         }
     </script>
+
+    {{--  --}}
 @endsection
+
 @section('styles')
     <style>
         .tr-code {

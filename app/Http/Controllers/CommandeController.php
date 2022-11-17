@@ -13,7 +13,9 @@ use App\Stock;
 use App\Produit;
 use App\Fournisseur;
 use App\Livraison;
+use App\Freelancer;
 use Auth;
+use App\Check;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
@@ -222,7 +224,7 @@ class CommandeController extends Controller
         $date_debut = date("Y-m-d",strtotime("-1 month"));
         $date_fin = date('Y-m-d');        
 
-        $commandes=DB::select("select distinct num_commande,updated_at
+        $commandes=DB::select("select distinct num_commande,updated_at,created_at
                 from commandes
                 where date(updated_at) between date('$date_debut') and date('$date_fin')
             order by num_commande desc");        
@@ -230,9 +232,11 @@ class CommandeController extends Controller
         return view('commandes.index',compact('commandes'));
     }
 
-    public function show($id_commande){
+    public function show($id_commande)
+    {
         $num_commande = $id_commande;
         $commandes =  Commande::where('num_commande',$id_commande)->get();
+        
         return view('commandes.view',compact('commandes','num_commande'));
     }
 
@@ -565,11 +569,14 @@ class CommandeController extends Controller
         return redirect()->back()->with('success', 'la commande a été retiré ');           
     }
 
-    public function create()
-    {
+    public function create(Request $request)
+    {   
+
         $clients = Client::all();
         $produits = Produit::all();
-        return view('commandes.create',compact('clients','produits'));
+        $freelancers = Freelancer::orderBy('id','desc')->get();;
+        
+        return view('commandes.create',compact('clients','produits','freelancers'));
     }
 
     public function search(Request $request)
@@ -696,6 +703,7 @@ class CommandeController extends Controller
     }
     public function store(Request $request)
     {
+
         $num_commande = Commande::orderBy('created_at', 'desc')->first();//dernier kamel  +1 
         foreach ($request['dynamic_form2']['dynamic_form2'] as $array) {
 
@@ -710,10 +718,24 @@ class CommandeController extends Controller
             $commande->nom_produit = $array['produit'];
             $commande->qte = $array['quantite'];
             $commande->prix = $array['prix_unitaire'];
-            $commande->user = Auth::guard('admin')->user()->id;
+            
+            if(Auth::guard('admin')->user() != null)
+            {
+                $commande->user = "admin_".Auth::guard('admin')->user()->id;
+            }
+            elseif(Auth::guard('commercial')->user() != null)
+            {
+
+                $commande->user = "commercial_".Auth::guard('commercial')->user()->id;
+            }
+            else
+            {
+                $commande->user = "no one";   
+            }
             $commande->commentaire = $request['commentaire'] ?? 'sans commentaire';
-            $commande->freelancer = $request['freelancer'];
+            $commande->freelancer = $request['freelance'];
             $commande->status_client = $request['status_client'];
+            $commande->updated_at = date("Y-m-d H:i:s");;
             $commande->save();
             // $commande->num_livraison = "";            
 
