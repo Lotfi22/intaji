@@ -171,12 +171,28 @@ function get_livraison(objet)
 
 				//
 			}
+			
 			if (data.livraison[0].statut=="rejeté")
 			{
 
 				$("#rejeter").hide();
 				$("#approuver").hide();
 				$("#encaissements").hide();
+
+				//
+			}
+
+			if (data.livraison[0].statut=="BL" || data.livraison[0].statut=="validé") 
+			{
+
+				$("#affecter").show();
+
+				//
+			}
+			else
+			{
+
+				$("#affecter").hide();
 
 				//
 			}

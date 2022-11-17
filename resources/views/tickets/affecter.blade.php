@@ -58,7 +58,7 @@
                 <div class="row col-md-12">
                     
                     <div class="col-md-12" style="margin-bottom: 4%;">
-                        <input onblur="this.focus()" autofocus="true" onchange="SearchFunction();" class="col-md-12 form-control"
+                        <input onblur="this.focus()" autofocus="true" onchange="SearchFunction();" class="col-md-12 form-control is-valid"
                             id="search" placeholder="Cliquez ici pour filter avec Code Bar" />
                     </div>
 
@@ -303,6 +303,8 @@
         ids = JSON.parse(ids);*/
         
         var livreur = <?php echo json_encode($_livreur); ?>;
+
+        var num_livraison = <?php echo json_encode($num_livraison ?? "0"); ?>;
         
         function redirect_manuel()
         {
@@ -334,7 +336,8 @@
                 body: JSON.stringify({
                     _token: CSRF_TOKEN,
                     livreur: livreur,
-                    ticket: trId
+                    ticket: trId,
+                    num_livraison: num_livraison
                 })
             })
             .then(res => res.json())

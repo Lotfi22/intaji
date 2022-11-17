@@ -296,8 +296,6 @@ class TicketController  extends Controller
         group by p.id,p.nom order by p.nom");
                 
         $tickets = DB::select("select * from tickets where (satut <> 'sortie' and satut <> 'annulé' ) order by updated_at desc");
-        
-        $num_livraison=0;
 
         $ids = Ticket::extract_ids($tickets);
         
@@ -348,13 +346,12 @@ class TicketController  extends Controller
                 
         $tickets = DB::select("select * from tickets where (satut <> 'sortie' /*and satut <> '0'*/ and satut <> 'annulé' ) and ( Date(updated_at) >= '$today' or Date(updated_at) = '$yesterday' or Date(updated_at) = '$yesterday2' or Date(updated_at) = '$yesterday3' or Date(updated_at) = '$yesterday4' or Date(updated_at) = '$yesterday5' or Date(updated_at) = '$yesterday6' or Date(updated_at) = '$yesterday7' or Date(updated_at) = '$yesterday8' or Date(updated_at) = '$yesterday9' or Date(updated_at) = '$yesterday10' or Date(updated_at) = '$yesterday11' or Date(updated_at) = '$yesterday12' or Date(updated_at) = '$yesterday13' or Date(updated_at) = '$yesterday14' or Date(updated_at) = '$yesterday15')  order by updated_at desc");
         
-        $num_livraison=0;
 
         $ids = Ticket::extract_ids($tickets);
         
         $ids = json_encode($ids);
         
-        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids','num_livraison'));
+        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids'));
     }
     
 
@@ -375,11 +372,13 @@ class TicketController  extends Controller
         DB::delete("delete from sorties where id_ticket = '$id_ticket' ");
         $nbticket = DB::select("select statut_livraison as nbticket from sorties where id_ticket=$id_ticket and date(updated_at)=CURDATE()");
         
-        if(count($nbticket)==0){
+        if(count($nbticket)==0)
+        {
             $sortie  = new Sortie();
             $sortie->id_ticket = $request['ticket'];
             $sortie->id_livreur = $request['livreur'];
             $sortie->id_client = 1;
+            $sortie->num_livraison = $request['num_livraison'];
             $sortie->prix_vente = 100;        
             $sortie->save();    
         }
@@ -634,11 +633,8 @@ class TicketController  extends Controller
         {
             return redirect()->route('login.admin');     
         }
-
         
-        $yesterday = (date('Y-m-d',strtotime("-1 days")));        
-        
-        $tickets = DB::select("select * from tickets t where ((t.satut='vers_depot' or t.satut='0') and (date(created_at) = date(now()) or date(created_at) = date('$yesterday') ) )");
+        $tickets = DB::select("select * from tickets t where (t.satut='vers_depot' or t.satut='0')");
         
         return view('tickets.annuler',compact('tickets'));
 

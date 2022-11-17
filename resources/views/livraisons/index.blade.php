@@ -305,7 +305,9 @@
                      
                     @if(auth()->guard('admin')->check() || auth()->guard('depot')->check())
                         @include('encaissement.encaissement')
-                     
+
+                        <a id="affecter" style="margin-top:5%; color: Blue;" class="btn btn-outline-info col-md-12" href="/ticket/affecter/num_livraison/" >Cliquez pour Affecter les Produits Au Livreur</a>
+                                             
                      @else
 
                         <h6 class="btn btn-outline-primary text-center col-md-12" style="cursor:pointer;" onclick="get_bl();">Voir BL</h6>
@@ -315,7 +317,6 @@
                     @endif
                     {{--  --}}                    
     
-                    <a id="affecter" style="margin-top:5%; color: Blue;" class="btn btn-outline-info col-md-12" href="/ticket/affecter/num_livraison/" >Cliquez pour Affecter les Produits Au Livreur</a>
 
 
                     <button style="margin-top:5%;" class="btn btn-primary col-md-12" onclick="imprimer_details();">Imprimer détails de la livraison </button>

@@ -98,6 +98,24 @@ class Ticket extends Model
         
     }
 
+    public static function get_num_livraison($id_ticket)
+    {
+        //dd($id_ticket);
+        
+        $num_livraison = (DB::select("select num_livraison from sorties s where id_ticket = '$id_ticket' "));
+        
+        if(count($num_livraison)>0 && $num_livraison[0]->num_livraison !=0)
+        {
+            return "(Livraison Num_".$num_livraison[0]->num_livraison.')';    
+        }
+        else
+        {
+            return '';
+        }
+        
+    }
+
+
     public static function get_id_livreur($id_ticket)
     {
         

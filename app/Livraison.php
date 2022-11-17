@@ -278,6 +278,15 @@ class Livraison extends Model
         // code...
     }
 
+    public static function mise_a_jour_tickets_to_vendue($num_livraison)
+    {
+
+        DB::update("update tickets t set t.satut = 'vendue' 
+        where t.id in (select s.id_ticket from sorties s where s.num_livraison = $num_livraison) ");
+
+        //
+    }
+
 
     //
 }

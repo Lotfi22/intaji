@@ -324,7 +324,21 @@ class LivraisonController extends Controller
         }
         else
         {
-            $acteur='No One';            
+
+            if (auth()->guard('depot')->check()) 
+            {
+
+                $acteur= (Auth::guard('depot')->user()->email);                
+
+                // code...
+            }
+            else
+            {
+
+                $acteur='No One';            
+                
+                //
+            }
         }        
         
         $versement = (float)($request->versement);
@@ -336,7 +350,7 @@ class LivraisonController extends Controller
 
         $remise = $livraison->remise;
 
-        if($livraison->statut != "rejeté") 
+        if($livraison->statut != "rejeté")
         {
             
             DB::update("update livraisons set versement = $versement,statut = 'encaissement',updated_at=now() where num_livraison = $num_livraison");
@@ -353,6 +367,8 @@ class LivraisonController extends Controller
             {
                 
                 DB::update("update livraisons set statut = 'terminé',updated_at=now() where num_livraison = $num_livraison");
+
+                Livraison::mise_a_jour_tickets_to_vendue($num_livraison);
 
                 // code...
             }

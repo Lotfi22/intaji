@@ -110,7 +110,17 @@
 
                     </div>
 
-                    
+
+{{--                     <div class="card col-md-3 text-center">
+
+                        <h4>
+
+                        Tickets vendue :
+
+                        </h4>
+
+                    </div>
+ --}}                    
 
                 </div>        
 
@@ -166,7 +176,7 @@
 
                         
 
-                        <div style=" cursor:pointer;" {{-- onclick="rediriger('sortie',{{ $produit->id }})" --}} class="card col-md-3 " style="margin-top: 2%;">
+                        <div style=" cursor:pointer;" class="card col-md-3 " style="margin-top: 2%;">
 
                             <div class="card-body">
 
@@ -178,6 +188,18 @@
 
                         </div>
 
+
+                        {{-- <div style=" cursor:pointer;" class="card col-md-3 " style="margin-top: 2%;">
+
+                            <div class="card-body">
+
+                                <h6 class="card-title">{{$produit->nom ?? ''}} / {{$produit->id_categorie ?? ''}} <span style="font-size:10px;"> (Sortie) </span> </h6>
+
+                                <p class="card-text text-center" id="produit_sortie_{{$produit->id}}">0</p>
+
+                            </div>
+
+                        </div> --}}
     
 
     

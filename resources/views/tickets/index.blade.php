@@ -129,8 +129,9 @@
 
 
 
-                                    @if ($ticket->satut == 'sortie')
-                                        {{ App\Ticket::get_nom_livreur($ticket->id) ?? '' }}
+                                    @if ($ticket->satut == 'sortie' || $ticket->satut == 'vendue')
+                                        {{ App\Ticket::get_nom_livreur($ticket->id) ?? '' }} 
+                                        {{ App\Ticket::get_num_livraison($ticket->id) ?? '' }}
                                     @endif
 
 
