@@ -147,8 +147,6 @@
 	                                <td>Num{!! $livraison->num_livraison !!}</td>
 	                                
 	                                <td>{!! date_format(date_create($livraison->updated_at),"d/m/Y H:i:s") !!}</td>
-									
-	                                {!! setlocale(LC_MONETARY,"en_US"); !!}
 
 	                                <td>
 	                                    {!! number_format(App\Livraison::get_total($livraison->num_livraison)) ?? '' !!} DA

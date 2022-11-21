@@ -520,13 +520,13 @@ function formatMoney(number)
 	if(number>=0)
 	{
 
-		var ret = number.toLocaleString('en-IN', { style: 'currency', currency: 'EUR' });
+		var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 		
 	  	return ret.substr(1);		
 	}		
 	else
 	{
-		var ret = number.toLocaleString('en-IN', { style: 'currency', currency: 'EUR' });
+		var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 		
 	  	return ret.substr(0,1)+ret.substr(2);		
 

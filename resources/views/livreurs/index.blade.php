@@ -303,7 +303,7 @@
 
                         works+='<tr> <td>'+data.livreur.name+' '+data.livreur.prenom+' '+data.livreur.email+'</td> <td>'+data.livraisons[i].nb_livraison+'</td> <td> '+img+' '+data.livraisons[i].statut+'</td></tr>';
                         
-                        nb_livraison+=data.livraisons[i].nb_livraison;
+                        nb_livraison = parseFloat(nb_livraison) + parseFloat(data.livraisons[i].nb_livraison);
                     }
 
                     works+='<tr> <td>-</td> <td style="background:#52b2c7;">Total livraison</td><td style="background:#52b2c7;"> '+nb_livraison+'</td></tr>';
