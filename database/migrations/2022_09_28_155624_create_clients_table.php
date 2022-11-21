@@ -21,6 +21,7 @@ class CreateClientsTable extends Migration
             $table->string('wilaya');
             $table->string('commune');
             $table->string('facebook')->nullable(true);
+            $table->string('comment')->nullable(true);
 
             $table->timestamps();
         });

@@ -60,7 +60,9 @@
 
                             <div class="form-group">
 
-                                <button type="submit" style="color: #ffffff; margin-top:9%;" class="form-control btn btn-info">
+                                <label style="visibility:hidden;" class="small" for="">l</label>                                
+
+                                <button type="submit" style="color: #ffffff;" class="col-md-12 btn btn-outline-info text-info">
 
                                     Filtrer
 
@@ -78,19 +80,13 @@
 
                 <div class="row col-md-12" style="padding-top:3%;">
 
-                    <a style="margin :0% 4%;" class="btn btn-success col-md-3" href="{{ route('ticket.affecter', ['livreur' => $livreur]) }}">
-
-                        Affecter Colis
-
-                    </a>
-
-                    <a style="margin :0% 4%;" class="btn btn-warning col-md-3" href="{{ route('ticket.detacher', ['livreur' => $livreur]) }}">
+                    <a style="margin :0% 4%;" class="btn btn-warning col-md-5" href="{{ route('ticket.detacher', ['livreur' => $livreur]) }}">
 
                         Détacher Colis
 
                     </a>
 
-                    <a style="margin :0% 4%;" class="btn btn-danger col-md-3" href="{{ route('ticket.retour', ['livreur' => $livreur]) }}">
+                    <a style="margin :0% 4%;" class="btn btn-danger col-md-5" href="{{ route('ticket.detacher', ['livreur' => $livreur]) }}">
 
                         Retour
 

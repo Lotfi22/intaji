@@ -52,13 +52,13 @@
 
                                     <td>
 
-                                        <a href="{{ route('depot.destroy', ['id_depot' => $depot->id]) }}"
+                                        {{-- <a href="{{ route('depot.destroy', ['id_depot' => $depot->id]) }}"
                                             onclick="return confirm('etes vous sure  ?')"
                                             class="text-white btn btn-sm btn-danger">
 
                                             <i class="fa fa-trash"></i>
 
-                                        </a>
+                                        </a> --}}
 
                                         <button data-toggle="modal" data-target="#modifier{{$depot->id}}"
                                             class="btn btn-sm btn-primary center-block">Modifier depot

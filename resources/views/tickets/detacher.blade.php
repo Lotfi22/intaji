@@ -7,15 +7,18 @@
     <div class="container-fluid">
         <div class="card">
             
-            <h4 class="card-header col-md-12">
-                Détacher {{ count($tickets) }} Tickets pour ce livreur :
+            <h4 style="margin-top:2%;" class="card-header col-md-12">
+                Détacher Tickets pour ce livreur :
             </h4>
             
             <div class="card-header col-md-12">
+                
                 <div class="row col-md-12">
+                
                     <div class="col-md-12">
+                
                         <input onblur="this.focus()" autofocus onchange="SearchFunction();" 
-                        class="col-md-12 form-control" id="search"  placeholder="filter avec Code Bar" />
+                        class="col-md-12 form-control is-valid" id="search"  placeholder="filter avec Code Bar" />
                     </div>
 
                     &nbsp;

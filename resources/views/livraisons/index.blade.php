@@ -70,7 +70,7 @@
                                 <th>Total</th>
                                 <th>Statut</th>
                                 <th>Demandeur</th>
-                                <th>Validateur</th>
+                                <th>Décision Par</th>
                             </tr>
                         </thead>
 
@@ -106,34 +106,34 @@
 
                                     @if (App\Livraison::get_statut($livraison->num_livraison) == "en attente")
                                         
-                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-warning blink">
-                                        <i class="fa fa-spinner" aria-hidden="true"></i>    
+                                        <td id="statut{{ $livraison->num_livraison }}" class="text-warning">
+                                        <img src="{{ asset('/spin.gif') }}" width="20%">    
                                         
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "rejeté")                     
 
-                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-danger">
-                                        <i class="fa fa-ban" aria-hidden="true"></i>
+                                        <td id="statut{{ $livraison->num_livraison }}" class="text-danger">
+                                        <i class="fa fa-ban" aria-hidden="true" width="30" ></i>
                                      
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "validé")
 
-                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-info">
+                                        <td id="statut{{ $livraison->num_livraison }}" class="text-info">
                                         <i class="fa fa-check" aria-hidden="true"></i>
 
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "BL")
-                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-primary">
+                                        <td id="statut{{ $livraison->num_livraison }}" class="text-primary">
                                         
                                         <i class="fa fa-truck" aria-hidden="true"></i>
 
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "terminé")
                                         
-                                        <td id="statut{{ $livraison->num_livraison }}" class="alert alert-success">
+                                        <td id="statut{{ $livraison->num_livraison }}" class="text-success">
                                             
                                         <img src="/img/termine.png" height="30" width="30">
                                         
 
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "encaissement")
                                         
-                                        <td style="background-color:;" id="statut{{ $livraison->num_livraison }}" class="alert alert-info">
+                                        <td style="background-color:;" id="statut{{ $livraison->num_livraison }}" class="text-danger">
                                         
                                         <img src="/exclamation.png" width="30">
 
@@ -238,8 +238,6 @@
                                         <label class="small" for="livreur">Livreur </label>
             
                                         <select name="livreur" onchange="fit_livreur_href();" class="form-control col-md-12">                                
-                                            <option value="0" class="form-control">Sélectionner livreur</option>
-
                                             @foreach ($livreurs as $livreur)
                                                 
                                                 <option class="form-control" value="{{ $livreur->id }}"> {!! $livreur->name !!} </option>
@@ -290,13 +288,13 @@
                                     
                                     <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
 
-                                    <button id="confirmer" onclick="afficher_confirmation(this);" class="btn btn-sm btn-primary col-md-12">Confirmer</button>
+                                    <button id="confirmer" onclick="afficher_confirmation(this);" class="btn btn btn-primary col-md-12">Confirmer</button>
 
-                                    <span id="confirmer_approbation">
+                                    <span id="confirmer_approbation" class="row col-md-12">
                                         
-                                        <button id="final_confirmation" type="submit" class="btn btn-sm btn-primary col-md-4">Oui, Confirmer</button>
+                                        <button id="final_confirmation" type="submit" class="btn btn-primary col-md-6">Oui, Confirmer</button>
 
-                                        <button onclick="retour();" class="btn btn-sm btn-warning col-md-4">Retour</button>
+                                        <button onclick="retour();" class="btn btn-warning col-md-6">Retour</button>
                                     </span>
                                 </div>
                             </div> 

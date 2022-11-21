@@ -29,7 +29,8 @@ class CreateCommandesTable extends Migration
             $table->string('BL')->default('/');
             $table->integer('id_depot')->nullable(true);
             $table->string('status_client')->default('aucun');
-            $table->unsignedBigInteger('num_livraison')->nullable();
+            $table->string('motif_annulation')->nullable(true);
+            $table->unsignedBigInteger('num_livraison')->nullable(true);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

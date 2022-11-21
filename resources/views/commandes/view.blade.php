@@ -15,9 +15,14 @@
 
 @section('content')
 <div class="container-fluid">
-    <h1 class="mt-4 text-white">Gestion Commandes</h1>
+    <h1 class="mt-4 text-white">Gestion Commande</h1>
         <div class="card mb-4">
+            
             <div class="card-header">
+
+                <h3 class="text-center"> Numéro {!! $num_commande !!} </h3>
+
+                {{--  --}}
             </div>
 
             <div class="card-body">
@@ -119,45 +124,90 @@
 
             </div>
 
-            @if ($commandes[0]->statut != "validé")
+            @if ((auth()->guard('admin')->check()))
                 
-                <div class="card-footer text-center">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <button class="col-md-12 btn btn-outline-primary "  id="btn_valider">  Valider</button>
+
+                @if ($commandes[0]->statut != "validé" )
+                    
+                    <div class="card-footer text-center">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="col-md-12 btn btn-outline-primary "  id="btn_valider">  Valider</button>
+                            </div>
+
+                            <div class="col-md-6">
+                                <button class="btn btn-outline-danger  col-md-12"  id="btn_rejeter">  Rejeter </button>                        
+                            </div>
+
+
                         </div>
-
-                        <div class="col-md-6">
-                            <button class="btn btn-outline-danger  col-md-12"  id="btn_rejeter">  Rejeter </button>                        
-                        </div>
-
-
+                            &nbsp;
                     </div>
-                        &nbsp;
-                </div>
 
-             @else
+                 @else
+
+                    <div class="card-footer text-center">
+                        <div class="row">
+                                                    
+                            <div class="col-md-12">
+                                <button class="btn btn-outline-danger  col-md-12"  id="btn_rejeter">  Rejeter </button>                        
+                            </div>
+
+
+                        </div>
+                            &nbsp;
+                    </div>
+
+                    {{--  --}}
+                @endif
+
+
+             @elseif(App\Commande::get_statut($num_commande)!='annulé')
 
                 <div class="card-footer text-center">
+                    
                     <div class="row">
-                        
-                        {{--<div class="col-md-6">
-                            <button class="col-md-12 btn btn-outline-primary "  id="btn_valider">  Valider</button>
-                        </div>--}}
-                        
+                                                
                         <div class="col-md-12">
-                            <button class="btn btn-outline-danger  col-md-12"  id="btn_rejeter">  Rejeter </button>                        
+                            <button class="btn btn-outline-danger  col-md-12" onclick="afficher_motif_annulation();"> Annuler </button>
                         </div>
 
 
+                        <div class="col-md-12">
+                            
+                            <form method="post" action="/commande/show/{{$num_commande}}/annuler">
+                                
+                                @csrf
+
+                                <label class="col-md-12" id="annulation" for="motif_annulation">
+
+                                    <span style="font-size:1.3em;" > Ecrivez le motif </span> 
+
+                                    <textarea rows="5" id="motif_annulation" name="motif_annulation" class="form-control col-md-12"></textarea>
+                                    
+                                    <label> </label>
+                                    
+                                    <button style="margin:;auto;" type="submit" class="btn btn-danger col-md-8">Annuler</button>
+                                </label>
+                            </form>
+
+                    
+                        </div>
+
+                        {{--  --}}
                     </div>
-                        &nbsp;
                 </div>
 
+                {{-- expr --}}                
+            @endif
+
+            @if(App\Commande::get_statut($num_commande)=='annulé')
+
+
+                <div class="alert alert-warning text-center text-danger"> Motif : {!! App\Commande::get_motif_annulation($num_commande) !!} </div>
 
                 {{--  --}}
             @endif
-
 
 
         </div>
@@ -179,6 +229,21 @@
 
 @section('scripts')
 <script>
+
+$("#annulation").hide();
+
+function afficher_motif_annulation()
+{
+
+    $("#annulation").show(300);
+
+    $("#motif_annulation").prop('required',true);
+
+    $('#motif_annulation').focus();
+
+    //
+}
+
 $( document ).ready(function() {
     $("#btn_valider").on("click", function(e) {
 		swal({
