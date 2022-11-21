@@ -405,7 +405,7 @@
                     {
                         var img = '<i class="fa fa-ban" aria-hidden="true"></i>';
 
-                        commandes+='<tr style="color:red;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+formatMoney(data.commandes[i].total*1)+' DA DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
+                        commandes+='<tr style="color:red;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+formatMoney(data.commandes[i].total*1)+' DA</td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
 
                         //
                     }
