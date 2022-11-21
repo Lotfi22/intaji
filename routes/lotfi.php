@@ -17,6 +17,7 @@ Route::get('/statistiques','StatistiqueController@index')->name('stats');
 Route::post('/statistiques/recevoir','StatistiqueController@recevoir');
 Route::post('/statistiques/filter','StatistiqueController@filter');
 Route::get('/remise_a_zero','StatistiqueController@remise_a_zero');
+Route::get('/rapport_speciaux','StatistiqueController@rapport_speciaux');
 
 
 
@@ -67,4 +68,11 @@ Route::post('/commercial/get_work_commercial','CommercialController@get_work_com
 
 //clients 
 Route::post('/client/get_client_interactions','ClientController@get_client_interactions');
+
+
+//Commandes : 
+Route::post('/commande/show/{num_commande}/annuler','CommandeController@annuler');
+Route::post('/commande/filter','CommandeController@filter');
+
+
 

@@ -63,6 +63,8 @@
 
                                  @elseif($input['name']=="freelance")
 
+                                    <option value="0">Aucun</option>
+
                                     @foreach($input['options'] as $option)
                                     <option value="{{$option->id}}">
                                         {{$option->nom ?? ''}} {{$option->prenom ?? ''}}

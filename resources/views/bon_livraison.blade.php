@@ -82,10 +82,10 @@
     <table class="table" width="100%">
         <thead style="background-color:#bb77cc;">
             <tr>
-                <th class="th">Nom Produit</th>
-                <th class="th">Quantité </th>
-                <th class="th">Prix Unitaire </th>
-                <th class="th">Total </th>
+                <th style="font-size:14px;" class="th">Nom Produit</th>
+                <th style="font-size:14px;" class="th">Quantité </th>
+                <th style="font-size:14px;" class="th">Prix Unitaire </th>
+                <th style="font-size:14px;" class="th">Total </th>
             </tr>
         </thead>
         
@@ -97,10 +97,10 @@
                 
                 <tr>
                     
-                    <td class="td" style="text-align: center;" >{!! $element->produit !!}</td>
-                    <td class="td" style="text-align: center;" >{!! $element->qte !!}</td>
-                    <td class="td" style="text-align: center;" >{!! number_format($element->prix) !!} DA</td>
-                    <td class="td" style="text-align: center;" >{!! number_format($element->prix*$element->qte) !!} DA</td>
+                    <td class="td" style="text-align: center; font-size:12px;" >{!! $element->produit !!}</td>
+                    <td class="td" style="text-align: center; font-size:12px;" >{!! $element->qte !!}</td>
+                    <td class="td" style="text-align: center; font-size:12px;" >{!! number_format($element->prix) !!} DA</td>
+                    <td class="td" style="text-align: center; font-size:12px;" >{!! number_format($element->prix*$element->qte) !!} DA</td>
 
                 </tr>
 
@@ -113,19 +113,19 @@
 
         <tfoot style="margin-top:10%;">
             <tr>
-                <td class="td" colspan="2"></td>
-                <td class="td" align="center">Total HT </td>
-                <td class="td" align="right">{!! number_format($total) !!} DA</td>
+                <td style="font-size: 14px;" class="td" colspan="2"></td>
+                <td style="font-size: 14px;" class="td" align="center">Total HT </td>
+                <td style="font-size: 14px;" class="td" align="right">{!! number_format($total) !!} DA</td>
             </tr>
             <tr>
-                <td class="td" colspan="2"></td>
-                <td class="td" align="center">Remise {!! $remise !!} %</td>
-                <td class="td" align="right">{!! number_format($total*($remise/100)) !!} DA</td>
+                <td style="font-size: 14px;" class="td" colspan="2"></td>
+                <td style="font-size: 14px;" class="td" align="center">Remise {!! $remise !!} %</td>
+                <td style="font-size: 14px;" class="td" align="right">{!! number_format($total*($remise/100)) !!} DA</td>
             </tr>
             <tr>
-                <td class="td" colspan="2"></td>
-                <td class="td" align="center" style="background-color:#bb77cc;">Net à payer</td>
-                <td class="td" align="right" style="background-color:#bb77cc;">{!! number_format($total*(1-($remise/100))) !!} DA</td>
+                <td style="font-size: 14px;" class="td" colspan="2"></td>
+                <td class="td" align="center" style="font-size: 14px;background-color:#bb77cc;">Net à payer</td>
+                <td class="td" align="right" style="font-size: 14px; background-color:#bb77cc;">{!! number_format($total*(1-($remise/100))) !!} DA</td>
             </tr>
 
         </tfoot>

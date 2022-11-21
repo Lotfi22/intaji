@@ -42,10 +42,10 @@
                                     <td>{{ $depot->password_text ?? '' }}</td>
                                     <td>
                                         <div class="table-action">
-                                            <a href="{{ route('depot.destroy', ['depot' => $depot->id]) }}"
+                                            {{-- <a href="{{ route('depot.destroy', ['depot' => $depot->id]) }}"
                                                 onclick="return confirm('etes vous sure  ?')"
                                                 class="btn btn-danger text-white"><i class="fa fa-trash"></i> &nbsp; 
-                                            </a>
+                                            </a> --}}
 
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target="#exampleModal{{ $depot->id }}">

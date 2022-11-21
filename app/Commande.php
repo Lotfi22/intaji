@@ -27,11 +27,10 @@ class Commande extends Model
 
         return json_encode($prods);
 
-
+        //
     }
 
     
-
     public static function get_client($num_commande)
     {
 
@@ -42,6 +41,17 @@ class Commande extends Model
         return $client;
         // code...
     }
+
+
+    public static function get_motif_annulation($num_commande)
+    {
+
+        $motif = DB::select("select * from commandes 
+        where num_commande = $num_commande");
+        return $motif[0]->motif_annulation ?? "";
+        // code...
+    }
+
 
 
     public static function get_total($num_commande)
@@ -104,7 +114,7 @@ class Commande extends Model
         $commande = DB::select("select num_livraison from commandes 
             where num_commande = $num_commande");
         
-        return $commande[0]->num_livraison;
+        return $commande[0]->num_livraison ?? "-";
 
     }
 
@@ -127,7 +137,7 @@ class Commande extends Model
         }
         else
         {
-            return $freelancer[0]->nom . " ".$freelancer[0]->prenom ?? "";  
+            return $freelancer[0]->nom ." ".$freelancer[0]->prenom ?? "";
         } 
 
     }

@@ -328,6 +328,10 @@
                                                 </li>
 
                                                 <li aria-haspopup="true">
+                                                    <a href="/rapport_speciaux">Rapports spéciaux</a>
+                                                </li>
+
+                                                <li aria-haspopup="true">
                                                     <a href="/statistiques">Statistiques</a>
                                                 </li>
 

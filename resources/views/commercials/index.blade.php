@@ -280,7 +280,7 @@
                         }
 
                         
-                        nb_commande+=data.commandes[i].nb_commande;
+                        nb_commande = parseFloat(nb_commande) + parseFloat(data.commandes[i].nb_commande);
                     }
 
                     works+='<tr> <td>-</td> <td style="background:#52b2c7;">Total commandes</td><td style="background:#52b2c7;"> '+nb_commande+'</td></tr>';

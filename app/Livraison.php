@@ -155,7 +155,7 @@ class Livraison extends Model
         $user = DB::select("select user from livraisons 
             where num_livraison = $num_livraison");
 
-        return $user[0]->user;
+        return $user[0]->user ?? "";
         // code...
     }
 

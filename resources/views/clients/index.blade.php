@@ -72,16 +72,18 @@
 
                                         <div class="table-action">
 
-                                            <a href="{{ route('client.destroy', ['id_client' => $client->id]) }}"
+                                            {{-- <a href="{{ route('client.destroy', ['id_client' => $client->id]) }}"
                                                 onclick="return confirm('etes vous sure  ?')"
                                                 class="text-white btn btn-danger">
 
                                                 <i class="fa fa-trash"></i>
 
-                                            </a>
+                                            </a> --}}
 
                                             <button data-toggle="modal" data-target="#squarespaceModal{{ $client->id }}"
-                                                class="btn btn-primary center-block">Modifier client</button>
+                                                class="btn btn-primary center-block">
+                                            <i class="fa fa-pencil"></i>
+                                            Modifier client</button>
                                             @include('includes.edit_client',['client'=>$client])
 
 
@@ -215,6 +217,7 @@
                                 <option value="youtube">Youtube</option>
                                 <option value="google">Google</option>
                                 <option value="freelancer">Freelancer</option>
+                                <option value="autre">Autre</option>
 
                                 {{--  --}}
                             </select>
@@ -241,6 +244,19 @@
                                 
                                 <input class="form-control" type="tel" name="freelancer_tel" id="freelancer_tel">                                                        
                             </div>
+                        </div>
+
+
+                        <div class="row" id="info_autre">
+
+                            <div class="form-group col-md-12">
+                                
+                                <label class="control-label" for="autre_desc">Description</label>
+                                
+                                <textarea class="form-control" type="text" name="autre_desc" id="autre_desc" rows="5" ></textarea>
+
+                            </div>
+
                         </div>
 
 
@@ -475,6 +491,7 @@
 
 
     $("#info_freelancer").hide();
+    $("#info_autre").hide();
 
     function hide_or_show_freelancer(objet) 
     {
@@ -500,6 +517,26 @@
             $("#freelancer_prenom").prop('required',false);
             $("#freelancer_nom").prop('required',false);
             $("#freelancer_tel").prop('required',false);
+
+            if (option=="autre")
+            {
+
+                $("#info_autre").show(300);
+
+                $("#autre_desc").prop('required',true);
+
+                //
+            }
+            else
+            {
+
+                $("#info_autre").hide(300);
+
+                $("#autre_desc").prop('required',false);
+
+
+                //
+            }
 
 
             //

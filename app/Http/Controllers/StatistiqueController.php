@@ -231,5 +231,44 @@ class StatistiqueController extends Controller
     }
 
 
+    public function rapport_speciaux()
+    {
+
+        $commandes_rejete = DB::select("select count(*) as nb 
+        from commandes c where (c.statut = 'rejeté')");
+
+        $commandes_rejete_mois = DB::select("select count(*) as nb 
+        from commandes c where (c.statut = 'rejeté') and (extract(month from c.updated_at) = month(now()) )");
+
+        
+        $commandes_annule = DB::select("select count(*) as nb 
+        from commandes c where (c.statut = 'annulé')");
+
+        $commandes_annule_mois = DB::select("select count(*) as nb 
+        from commandes c where (c.statut = 'annulé') and (extract(month from c.updated_at) = month(now()) )");
+
+
+
+        $commandes_en_attente = DB::select("select count(*) as nb 
+        from commandes c where (c.statut = 'en attente')");
+
+        $commandes_en_attente_mois = DB::select("select count(*) as nb 
+        from commandes c where (c.statut = 'en attente') and (extract(month from c.updated_at) = month(now()) )");
+
+
+
+        $commandes_valide = DB::select("select count(*) as nb 
+        from commandes c where (c.statut = 'validé')");
+
+        $commandes_valide_mois = DB::select("select count(*) as nb 
+        from commandes c where (c.statut = 'validé') and (extract(month from c.updated_at) = month(now()) )");
+
+
+
+        return view('Statistiques.rapport_speciaux',compact('commandes_rejete','commandes_annule','commandes_en_attente','commandes_valide','commandes_rejete_mois','commandes_annule_mois','commandes_en_attente_mois','commandes_valide_mois'));
+        // code...
+    }    
+
+
     //
 }

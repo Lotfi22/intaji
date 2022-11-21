@@ -43,7 +43,7 @@ class Client extends Model
 
             $versement = DB::select("select sum(versement) as versement
             from versements v 
-            where v.num_livraison = $num_livraison");
+            where (v.num_livraison = $num_livraison)");
 
             $total=$total+$versement[0]->versement;
 

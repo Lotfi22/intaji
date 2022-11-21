@@ -27,20 +27,7 @@ class ClientController extends Controller
         return view('clients.index',compact('communes','wilayas','clients','telephones'));
     }
 
-    public function state($id_client)
-    {
-        $client = Client::find($id_client);
-        DB::table('clients')
-            ->where('id',$client->id)
-            ->update(['etat'=>!$client->etat]);            
-    return Response::json($client);        
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $wilayas = Wilaya::all();
@@ -69,6 +56,10 @@ class ClientController extends Controller
         $client->facebook = $request['facebook'];
         $client->save();
 
+        $client = DB::table('clients')->orderBy('id', 'desc')->first();
+
+        $id_client=$client->id;
+
         if ($request->comment == "freelancer") 
         {
             
@@ -78,6 +69,17 @@ class ClientController extends Controller
 
             DB::insert("insert into freelancers(nom,prenom,telephone)
             values ('$freelancer_nom','$freelancer_prenom','$freelancer_tel')");
+
+            //
+        }
+
+        if ($request->comment == "autre") 
+        {
+
+            $autre_desc = $request->autre_desc;
+
+            DB::update("update clients cl set comment = '$autre_desc' 
+            where cl.id = '$id_client' ");
 
             //
         }
@@ -113,13 +115,6 @@ class ClientController extends Controller
         return view('clients.edit',compact('categories','communes','wilayas','client'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Produit  $client
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,$client_id)
     {
         $client = Client::find($client_id);  
@@ -128,21 +123,12 @@ class ClientController extends Controller
         $client->wilaya = $request['wilaya_id2'];
         $client->commune = $request['commune_id2'];
         $client->telephone = $request['telephone2'];
-        $client->facebook = $request['facebook2'];
-
-
-       
+        $client->facebook = $request['facebook2'];       
 
         $client->save();
         return redirect()->route('client.index')->with('success', 'Modifié avec succés ');  
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Produit  $client
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id_client)
     {
         $client = Client::find($id_client);

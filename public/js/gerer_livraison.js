@@ -185,6 +185,7 @@ function get_livraison(objet)
 			if (data.livraison[0].statut=="BL" || data.livraison[0].statut=="validé") 
 			{
 
+
 				$("#affecter").show();
 
 				//
@@ -439,7 +440,7 @@ function valider_versement()
 
 				$("#"+data.livraison.num_livraison).addClass("alert alert-success");
 				$("#statut"+data.livraison.num_livraison).attr('class','text-center alert alert-success');
-				$("#statut"+data.livraison.num_livraison).text('terminé');
+				$("#statut"+data.livraison.num_livraison).html('<img src="/img/termine.png" height="30" width="30"> Terminé');
 				$("#modal_statut"+data.livraison.num_livraison).attr('class','text-center alert alert-success');
 				$("#modal_statut"+data.livraison.num_livraison).text('terminé');
 				
@@ -489,6 +490,12 @@ function valider_versement()
 				$("#past_versements").show(1000)
 
 
+
+				$("#affecter").hide(200);
+
+
+
+
 				/*$(".close").click();*/
 
 
@@ -510,10 +517,20 @@ function valider_versement()
 
 function formatMoney(number) 
 {
+	if(number>=0)
+	{
 
-	var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-	
-  	return ret.substr(1);
+		var ret = number.toLocaleString('en-IN', { style: 'currency', currency: 'EUR' });
+		
+	  	return ret.substr(1);		
+	}		
+	else
+	{
+		var ret = number.toLocaleString('en-IN', { style: 'currency', currency: 'EUR' });
+		
+	  	return ret.substr(0,1)+ret.substr(2);		
+
+	}
 }
 
 function test_depassement(objet)

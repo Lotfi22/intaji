@@ -24,6 +24,42 @@
             </div>
 
             <div class="card-body">
+
+
+                <div class="card-header row col-md-12">
+
+                    <form class="row col-md-12" method="post" action="/commande/filter">
+                        @csrf
+                        <div class="row col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="small" for="date_debut">date début : </label>
+                                    <input  class="form-control" id="date_debut"
+                                     name="date_debut" value="{{$date_debut}}"
+                                     type="date" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="small " for="date_fin">date fin: </label>
+                                    <input  class="form-control" id="date_fin"
+                                     name="date_fin" value="{{$date_fin}}"
+                                     type="date" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                
+                                <label style="visibility: hidden;" class="small" for="date_fin">date fin: </label>
+
+                                <button type="submit" class="text-white form-control btn btn-primary">
+                                    <span style="color:#fff;">Filtrer</span>
+                                </button>
+                            </div>
+                    </form>
+                </div>
+
+
                 <div class="table-responsive">
                     <table class="table table-bordered text-center"  id="datatable-10" width="100%" cellspacing="0">
 
@@ -40,7 +76,7 @@
                                 <th>Statut Commande</th>
                                 <th>Freelancer</th>
                                 <th>Demandeur</th>
-                                <th>Validateur</th>
+                                <th>Décision Par </th>
                                 <th>Num Livraison</th>
 
                             </tr>
@@ -89,38 +125,42 @@
 
                                     @if (App\Commande::get_statut($commande->num_commande) == "en attente")
                                     	
-                                    	<td id="statut{{ $commande->num_commande }}" class="alert alert-warning">
+                                    	<td id="statut{{ $commande->num_commande }}" class="text-warning">
                                         <img src="{{ asset('/spin.gif') }}" width="20%">
 										
 									 @elseif(App\Commande::get_statut($commande->num_commande) == "rejeté")					   
 
-									 	<td id="statut{{ $commande->num_commande }}" class="alert alert-danger">
+									 	<td id="statut{{ $commande->num_commande }}" class="text-danger">
                                         <i class="fa fa-ban" aria-hidden="true"></i>
 									 
 									 @elseif(App\Commande::get_statut($commande->num_commande) == "validé")
 
-									 	<td id="statut{{ $commande->num_commande }}" class="alert alert-info">
+									 	<td id="statut{{ $commande->num_commande }}" class="text-success">
                                         <i class="fa fa-check" aria-hidden="true"></i>
 
 									 @elseif(App\Commande::get_statut($commande->num_commande) == "BL")
-									 	<td id="statut{{ $commande->num_commande }}" class="alert alert-primary">
+									 	<td id="statut{{ $commande->num_commande }}" class="text-info">
                                         
                                         <i class="fa fa-truck" aria-hidden="true"></i>
 
 									 @elseif(App\Commande::get_statut($commande->num_commande) == "terminé")
 									 	
-                                        <td id="statut{{ $commande->num_commande }}" class="alert alert-success">
+                                        <td id="statut{{ $commande->num_commande }}" class="text-success">
                                             
                                         <img src="/payment-complet.png" height="30" width="30">
                                         <i class="fa fa-check" aria-hidden="true"></i>
 
                                      @elseif(App\Commande::get_statut($commande->num_commande) == "encaissement")
                                         
-                                        <td id="statut{{ $commande->num_commande }}" class="alert alert-info">
+                                        <td id="statut{{ $commande->num_commande }}" class="text-info">
                                         
                                         <img src="/hand-pay.jpg" width="30">
 
-
+                                     @elseif(App\Commande::get_statut($commande->num_commande) == "annulé")
+                                        
+                                        <td id="statut{{ $commande->num_commande }}" class="text-danger">
+                                        
+                                        <i class="fa fa-times" aria-hidden="true"></i>
                                     @endif
 
                                     
@@ -142,7 +182,7 @@
                                     </td>
 
                                     <td class="text-center" id="">
-                                    {!! App\Commande::get_num_livraison($commande->num_commande) ?? ''!!}
+                                    {!! App\Commande::get_num_livraison($commande->num_commande) ?? 'No Livraison'!!}
                                     </td>
 
                                 </tr>
