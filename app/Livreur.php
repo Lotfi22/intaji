@@ -5,7 +5,7 @@ namespace App;
 use App\Wilaya;
 use App\Commune;
 use App\Commande;
-    
+use DB;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -42,4 +42,38 @@ class Livreur extends Authenticatable
     {
         return $this->hasMany('App\Commande');
     }
+
+    public static function get_livreur_disponibles()
+    {
+        $ret = [];
+        $i=0;
+
+        $livreurs = DB::select("select * from livreurs l");
+
+        foreach ($livreurs as $livreur) 
+        {
+            
+            $id_livreur = $livreur->id;
+
+            $occupe = DB::select("select * from livraisons where statut = 'BL' and  livreur = $id_livreur");
+
+            if (count($occupe)>0) 
+            {
+                
+                $ret[$i]=(object)["id" => $livreur->id , "name" => $livreur->name , "occupe" => "en cours de livraison num".$occupe[0]->num_livraison];
+
+                $i++;
+
+                //
+            }
+
+
+            // code...
+        }
+
+        return $ret;
+
+        // code...
+    }
+
 }

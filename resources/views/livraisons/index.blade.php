@@ -240,7 +240,7 @@
                                         <select name="livreur" onchange="fit_livreur_href();" class="form-control col-md-12">                                
                                             @foreach ($livreurs as $livreur)
                                                 
-                                                <option class="form-control" value="{{ $livreur->id }}"> {!! $livreur->name !!} </option>
+                                                <option class="form-control" value="{{ $livreur->id }}"> {!! $livreur->name !!} ({!! $livreur->occupe !!}) </option>
 
                                                 {{-- expr --}}
                                             @endforeach

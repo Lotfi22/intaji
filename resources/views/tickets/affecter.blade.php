@@ -25,7 +25,7 @@
                 
                 <h1 style="cursor:pointer;" class="col-md-12 alert alert-info text-center blink" >Livreur : {{ $le_livreur->prenom ?? '' }} / {{ $le_livreur->email ?? '' }} </h1>
                 <h4 class="col-md-12">
-                    Affecter Ticket {{ count($tickets) }} 
+                    Affecter Ticket
                 </h4>
             </div>
             

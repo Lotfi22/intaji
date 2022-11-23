@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Milon\Barcode\DNS1D;
 use App\Wilaya;
 use App\Template;
-use App\Livreur;
 use App\Sortie;
 use App\Retour;
 use App\Ticket;
 use App\Check;
 use App\Livraison;
+use App\Livreur;
 use DB;
 use Auth;
 use PDF;
@@ -66,7 +66,7 @@ class LivraisonController extends Controller
         from versements
         order by num_livraison");
 
-        $livreurs = DB::select("select * from livreurs order by name");
+        $livreurs = Livreur::get_livreur_disponibles();
         
         $depots = DB::select("select * from mes_depots order by nom");
 
@@ -88,10 +88,34 @@ class LivraisonController extends Controller
         $date_debut = $request->date_debut;
         $date_fin = $request->date_fin;
 
-        $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise
-        from livraisons 
-        where date(updated_at) between date('$date_debut') and date('$date_fin')
-        order by num_livraison desc");
+        if(Check::CheckAuth(['depot']))
+        {
+
+            $depot = (Auth::guard('depot')->user()->depot);
+
+            $id_depot = DB::select("select * from mes_depots d where d.nom = '$depot'");
+
+            $id_depot = $id_depot[0]->id;
+            
+            $livraisons=DB::select("select distinct
+            num_livraison,livreur,updated_at,remise
+            from livraisons l
+            where (l.id_depot = '$id_depot') and (date(updated_at) between date('$date_debut') and date('$date_fin'))
+            order by num_livraison desc");
+
+            //
+        }
+        else
+        {
+
+            $livraisons=DB::select("select distinct 
+            num_livraison,livreur,updated_at,remise
+            from livraisons 
+            where date(updated_at) between date('$date_debut') and date('$date_fin')
+            order by num_livraison desc");
+
+            //
+        }
 
         $livreurs = DB::select("select * from livreurs order by name");
 
