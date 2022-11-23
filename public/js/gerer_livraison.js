@@ -182,7 +182,7 @@ function get_livraison(objet)
 				//
 			}
 
-			if (data.livraison[0].statut=="BL" || data.livraison[0].statut=="validé") 
+			if (data.livraison[0].statut=="validé") 
 			{
 
 
@@ -199,7 +199,7 @@ function get_livraison(objet)
 			}
 
 
-			if (data.livraison[0].statut!=="en attente" && data.livraison[0].statut!=="rejeté" && data.livraison[0].statut!=="validé")
+			if (data.livraison[0].statut!=="en attente" && data.livraison[0].statut!=="rejeté" /*&& data.livraison[0].statut!=="validé"*/)
 			{
 
 				$("#encaissements").show();
@@ -339,13 +339,39 @@ function afficher_confirmation(objet)
 
 	event.preventDefault();
 
-	$(objet).hide('400', function() 
-	{
-		$("#confirmer_approbation").show(200)
+	$(objet).prop("disabled",true);
 
-		$("#encaissements").show();
+	$("#encaissements").show();
 
-	});
+	var num_livraison = $("#num_livraison").val();
+
+	var id_livreur = $('select[name="livreur"]').find(":selected").val();
+
+	var id_depot = $('select[name="depot"]').find(":selected").val();
+
+	var remise = $("#remise").val();
+
+    $.ajax({
+		headers: 
+		{
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},                    
+		type:"POST",
+		url:"/home/livraisons/last_approbation/BL",
+		data:{num_livraison:num_livraison,livreur:id_livreur,depot:id_depot,remise:remise},
+
+		success:function(data) 
+		{
+
+			console.log(data);
+
+			//
+		}
+
+	    //
+    });
+
+
 
 	//
 }
@@ -368,10 +394,17 @@ function retour()
 
 function final_confirmation() 
 {
+
+	var num_livraison = ($("#approuver").attr('num_livraison'));
+
+	id_livreur = $('select[name="livreur"]').find(":selected").val();
+
+	var href = "/ticket/affecter/num_livraison/"+num_livraison+"/livreur/"+id_livreur
+
+	$("#affecter").attr('href',href);
+
  	
  	var remise = $("#remise").val();
-
- 	var num_livraison = ($("#approuver").attr('num_livraison'));
 
     $.ajax({
 		headers: 
@@ -520,13 +553,13 @@ function formatMoney(number)
 	if(number>=0)
 	{
 
-		var ret = number.toLocaleString('en-IN', { style: 'currency', currency: 'EUR' });
+		var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 		
 	  	return ret.substr(1);		
 	}		
 	else
 	{
-		var ret = number.toLocaleString('en-IN', { style: 'currency', currency: 'EUR' });
+		var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 		
 	  	return ret.substr(0,1)+ret.substr(2);		
 
@@ -592,7 +625,7 @@ function test_depassement(objet)
 
 function get_bl() 
 {
-	var num_livraison = $("#numm_livraison").val();/*$("#approuver").attr('num_livraison')*/;
+	var num_livraison = $("#numm_livraison").val();
 	
 	window.open("/home/livraisons/voir/"+num_livraison+"/BL", '_blank');
 
@@ -602,9 +635,11 @@ function get_bl()
 function fit_livreur_href() 
 {
 
+	var num_livraison = $("#num_livraison").val();
+
 	id_livreur = $('select[name="livreur"]').find(":selected").val();
 
-	var href = $("#affecter").attr('href')+id_livreur;
+	var href = "/ticket/affecter/num_livraison/"+num_livraison+"/livreur/"+id_livreur;
 
 	$("#affecter").attr('href',href);
 

@@ -140,8 +140,6 @@
 
                             <th class="text-center" style="cursor:pointer;">Retour</th>
 
-                            <th class="text-center" style="cursor:pointer;">Vendue</th>
-
                             <th class="text-center" style="cursor:pointer;">D-F</th>
 
                         </tr>
@@ -170,8 +168,6 @@
                                 <td class="text-center">
                                     {{ App\Ticket::get_retour($produit_qte->id_produit, $livreur->id, $date_debut, $date_fin) }}
                                 </td>
-
-                                <td class="text-center">{{ $produit_qte->nb_ticket }}</td>
 
                                 <td class="text-center">{{ $date_debut ?? '' }} | {{ $date_fin ?? '' }}</td>
 

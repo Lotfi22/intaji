@@ -24,6 +24,8 @@ class ClientController extends Controller
 
         $wilayas = Wilaya::all();
         $communes=Commune::all();
+
+
         return view('clients.index',compact('communes','wilayas','clients','telephones'));
     }
 
@@ -153,13 +155,13 @@ class ClientController extends Controller
 
         $id_client = $request->id_client;
 
-        $commande = DB::select("select num_commande,statut,sum(prix) as total 
+        $commande = DB::select("select num_commande,statut,sum(prix*qte) as total 
         from commandes 
         where id_client = $id_client
         group by num_commande,statut
         order by statut,num_commande");
 
-        $livraisons = DB::select("select num_livraison,remise,statut,sum(prix*(1-(remise/100))) as total 
+        $livraisons = DB::select("select num_livraison,remise,statut,sum(prix*qte*(1-(remise/100))) as total 
         from livraisons 
         where id_client = $id_client
         group by num_livraison,remise,statut

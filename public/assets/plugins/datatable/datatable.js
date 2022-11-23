@@ -52,7 +52,7 @@ $(function(e) {
 	var table = $('#datatable-10').DataTable( {
 		lengthChange: true,
 		"lengthMenu": [ [300, 400, 500, -1], [300, 400, 500, "All"] ],
-		order:[[0,'desc']],
+		order:[[1,'desc']],
 		buttons: ['excel', 'pdf']
 	} );
 	table.buttons().container()

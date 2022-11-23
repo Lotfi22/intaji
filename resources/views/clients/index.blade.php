@@ -387,7 +387,7 @@
                     {
                         var img = '<img src="/spin.gif" width="10%">';
     
-                        commandes+='<tr style="color:orange;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+data.commandes[i].total+' DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
+                        commandes+='<tr style="color:orange;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+formatMoney(data.commandes[i].total*1)+' DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
 
                         //
                     }
@@ -396,7 +396,7 @@
                     {
                         var img = '<i class="fa fa-check" aria-hidden="true"></i>';
 
-                        commandes+='<tr style="color:green;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+data.commandes[i].total+' DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
+                        commandes+='<tr style="color:green;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+formatMoney(data.commandes[i].total*1)+' DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
 
                         //
                     }
@@ -405,7 +405,7 @@
                     {
                         var img = '<i class="fa fa-ban" aria-hidden="true"></i>';
 
-                        commandes+='<tr style="color:red;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+data.commandes[i].total+' DA DA </td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
+                        commandes+='<tr style="color:red;"><td>Num_commande_'+data.commandes[i].num_commande+'</td><td>'+formatMoney(data.commandes[i].total*1)+' DA</td><td> '+img+' '+data.commandes[i].statut+'</td></tr>';
 
                         //
                     }
@@ -467,7 +467,7 @@
                     }
 
 
-                    livraisons+='<tr><td>Num_livraison_'+data.livraisons[i].num_livraison+'</td><td>'+data.livraisons[i].remise+' % </td><td>'+data.livraisons[i].total+' DA </td><td> '+img+' '+data.livraisons[i].statut+'</td></tr>';
+                    livraisons+='<tr><td>Num_livraison_'+data.livraisons[i].num_livraison+'</td><td>'+data.livraisons[i].remise+' % </td><td>'+formatMoney(data.livraisons[i].total*1)+' DA </td><td> '+img+' '+data.livraisons[i].statut+'</td></tr>';
 
 
                     //
@@ -660,6 +660,26 @@
     });
         
 
+    function formatMoney(number) 
+    {
+        if(number>=0)
+        {
+
+            var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            
+            return ret.substr(1);
+        }       
+        else
+        {
+            var ret = number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            
+            return ret.substr(0,1)+ret.substr(2);       
+
+        }
+    }
+
+
+    /**/
 </script>
 
 @endsection

@@ -275,7 +275,7 @@ class TicketController  extends Controller
 
     public function affecter_livraison($num_livraison,$livreur)
     {
-
+        
         if(Check::CheckAuth(['admin','production','depot'])==false)
         {
             return redirect()->route('login.admin');     
@@ -295,7 +295,7 @@ class TicketController  extends Controller
         where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie') 
         group by p.id,p.nom order by p.nom");
                 
-        $tickets = DB::select("select * from tickets where (satut <> 'sortie' and satut <> 'annulé' ) order by updated_at desc");
+        $tickets = DB::select("select * from tickets where (satut <> 'sortie' and satut <> 'annulé' and satut <> 'vendue' ) order by updated_at desc");
 
         $ids = Ticket::extract_ids($tickets);
         
@@ -362,41 +362,89 @@ class TicketController  extends Controller
         if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user()->email);}
         if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user()->email);}
         
-        $id_ticket = $request['ticket'];
-        $ticket = Ticket::find($request['ticket']);
-        $ticket->satut = 'sortie';
-        $ticket->maj = $acteur;
-        $ticket->updated_at=date("Y-m-d H:i:s");
-        $ticket->save();
-        
-        DB::delete("delete from sorties where id_ticket = '$id_ticket' ");
-        $nbticket = DB::select("select statut_livraison as nbticket from sorties where id_ticket=$id_ticket and date(updated_at)=CURDATE()");
-        
-        if(count($nbticket)==0)
-        {
-            $sortie  = new Sortie();
-            $sortie->id_ticket = $request['ticket'];
-            $sortie->id_livreur = $request['livreur'];
-            $sortie->id_client = 1;
-            $sortie->num_livraison = $request['num_livraison'];
-            $sortie->prix_vente = 100;        
-            $sortie->save();    
-        }
-        
+        $num_livraison = $request['num_livraison'];
         $id_livreur = $request['livreur'];
+        $id_ticket = $request['ticket'];
+
+        $nom_produit = Ticket::get_nom_produit($id_ticket);
+
+        $livraisons = DB::select("select nom_produit,qte 
+        from livraisons 
+        where num_livraison = $num_livraison
+        order by id asc");
         
         $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
         from produits p, sorties s,tickets t 
-        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie' /*and date(s.created_at) = CURDATE()*/) 
-        group by p.id,p.nom order by p.nom");
+        where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur='$id_livreur' and t.satut='sortie' and s.num_livraison = $num_livraison)
+        group by p.id,p.nom 
+        order by p.nom");
 
-        return response()->json([
-            'ticket'=>$request['ticket'],
-            'livreur'=>$request['livreur'],
-            'produit_qte'=>$produit_qte
-                        
-        ]);    
+        Livraison::jump_to_bl_autorisee($livraisons,$produit_qte,$num_livraison);
+
+        if(Livraison::affectation_autorisee($livraisons,$produit_qte,$nom_produit))
+        {
+
+            $id_ticket = $request['ticket'];
+            $ticket = Ticket::find($request['ticket']);
+            $ticket->satut = 'sortie';
+            $ticket->maj = $acteur;
+            $ticket->updated_at=date("Y-m-d H:i:s");
+            $ticket->save();
+
+            DB::delete("delete from sorties where id_ticket = '$id_ticket' ");
+            $nbticket = DB::select("select statut_livraison as nbticket from sorties where id_ticket=$id_ticket and date(updated_at)=CURDATE()");
+            
+            if(count($nbticket)==0)
+            {
+                $sortie  = new Sortie();
+                $sortie->id_ticket = $request['ticket'];
+                $sortie->id_livreur = $request['livreur'];
+                $sortie->id_client = 1;
+                $sortie->num_livraison = $request['num_livraison'];
+                $sortie->prix_vente = 100;        
+                $sortie->save();    
+            }
+            
+            $id_livreur = $request['livreur'];
+            
+            $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+            from produits p, sorties s,tickets t 
+            where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie' /*and date(s.created_at) = CURDATE()*/) 
+            group by p.id,p.nom order by p.nom");
+
+            return response()->json([
+                'ticket'=>$request['ticket'],
+                'livreur'=>$request['livreur'],
+                'produit_qte'=>$produit_qte
+                            
+            ]);    
+
+            //
+        }
+        else
+        {
+
+            $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+            from produits p, sorties s,tickets t 
+            where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie') 
+            group by p.id,p.nom order by p.nom");
+
+            return response()->json([
+                'ticket'=>$request['ticket'],
+                'livreur'=>$request['livreur'],
+                'produit_qte'=>$produit_qte,
+                'msg' => 'Affectation Impossible'
+                            
+            ]);    
+
+
+
+            /**/
+        }
+
+        //        
     }
+
 
     public function retour_manuelle($id_livreur)
     {

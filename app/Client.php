@@ -59,7 +59,7 @@ class Client extends Model
     {
 
         $num_livraisons = DB::select("select distinct(num_livraison) from livraisons 
-        where id_client = $id_client and statut!='rejeté' and statut!='en attente'");
+        where id_client = $id_client and statut<>'rejeté' and statut<>'en attente'");
 
         return $num_livraisons ?? "";
 
@@ -73,7 +73,9 @@ class Client extends Model
 
         $num_livraisons = Client::get_num_livraison_client($id_client);
 
+        
         $total_du = 0;
+
 
         foreach ($num_livraisons as $num_livraison) 
         {
@@ -83,7 +85,7 @@ class Client extends Model
 
             // code...
         }        
-
+        
         $credits = $total_du - $total_versement;
 
         return $credits;
