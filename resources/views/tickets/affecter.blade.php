@@ -342,27 +342,43 @@
             })
             .then(res => res.json())
             .then(res => 
-            {
-                
-                $(".affecter").click();
-                
-                $("#produit_qte").html("");
-                
-                for(i=0;i<res.produit_qte.length;i++)
-                {   
-                    //console.log(res.produit_qte[i]);
+            {   
+
+                if(res.msg!=="Affectation Impossible") 
+                {
+
+                    $(".affecter").click();
                     
-                    trAppended = '<tr><td class="text-center">'+res.produit_qte[i].nom+'</td><td class="text-center"> '+res.produit_qte[i].qte+'</td></tr>'
+                    $("#produit_qte").html("");
                     
-                    $("#produit_qte").append(trAppended)
+                    for(i=0;i<res.produit_qte.length;i++)
+                    {   
+                        //console.log(res.produit_qte[i]);
+                        
+                        trAppended = '<tr><td class="text-center">'+res.produit_qte[i].nom+'</td><td class="text-center"> '+res.produit_qte[i].qte+'</td></tr>'
+                        
+                        $("#produit_qte").append(trAppended)
+                        
+                    }
+
+                    trFound.getElementsByTagName("td")[4].innerHTML = "Sortie";
                     
+                    $('#' + trId).addClass('alert alert-success')
+
+                    //
                 }
+                else
+                {
 
-                trFound.getElementsByTagName("td")[4].innerHTML = "Sortie";
-                
-                $('#' + trId).addClass('alert alert-success')
+                    var audio = new Audio('{{ asset('/assets/sounds/beep.mp3') }}');
+                    audio.play();
 
+                    swal("Attention", "Veuillez Avez déja affecter toute la quantité au livreur", "error");                    
+
+                    //
+                }
                 
+                //
             })
             .catch(err => function(err) {
                 toastr.danger('Error')

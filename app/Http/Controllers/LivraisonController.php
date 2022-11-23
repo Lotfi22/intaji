@@ -252,22 +252,17 @@ class LivraisonController extends Controller
 
         $depot = $request->depot;
 
-        if(Check::CheckAuth(['admin','production','depot','commercial'])==false)
-        {
-            return redirect()->route('login.admin');     
-        }
-
         $num_livraison = ($request->num_livraison);
 
         $remise = ($request->remise);
-
+        
         DB::update("update livraisons set 
-        statut = 'BL',remise=$remise,id_depot='$depot',livreur='$livreur'
+        statut = 'validé',remise=$remise,id_depot='$depot',livreur='$livreur'
         where num_livraison = $num_livraison");
 
         $livraison = (DB::select("select * from livraisons where num_livraison = $num_livraison"));
 
-        $client = Livraison::get_client($num_livraison);
+        /*$client = Livraison::get_client($num_livraison);
         
         $adresse = Livraison::get_adresse_client($num_livraison);
 
@@ -293,9 +288,9 @@ class LivraisonController extends Controller
         }
 
         $num_bl = $num_livraison;
-        $elements = $informations;
+        $elements = $informations;*/
 
-        $pdf = PDF::loadView("bon_livraison",compact('livreur','elements','client','adresse','remise','num_bl'));
+        /*$pdf = PDF::loadView("bon_livraison",compact('livreur','elements','client','adresse','remise','num_bl'));
 
         $pdf->getDomPDF()->setHttpContext(
             stream_context_create([
@@ -309,7 +304,7 @@ class LivraisonController extends Controller
         
         $pdf->setPaper('A4', 'potrait');
 
-        return $pdf->stream("bon.pdf",array("Attachment"=>1));
+        return $pdf->stream("bon.pdf",array("Attachment"=>1));*/
     }   
 
 
@@ -440,6 +435,7 @@ class LivraisonController extends Controller
                 ]
             ])
         );        
+
         
         $pdf->setPaper('A4', 'potrait');
 

@@ -6,8 +6,130 @@ use Illuminate\Database\Eloquent\Model;
 
 use DB;
 
+use Auth;
+
 class Livraison extends Model
 {
+
+    public static function produit_existe_livraison($livraisons,$nom_produit)
+    {
+
+        foreach ($livraisons as $livraison) 
+        {
+            
+            if ($livraison->nom_produit == $nom_produit) 
+            {
+
+                return true;
+
+                // code...
+            }
+
+            // code...
+        }
+
+        return false;
+
+        // code...
+    }
+
+
+    public static function affectation_autorisee($livraisons,$produit_qte,$nom_produit)
+    {
+
+        if (count($produit_qte)==0 && Livraison::produit_existe_livraison($livraisons,$nom_produit)) 
+        {
+            
+            return true;
+
+            // code...
+        }
+
+        foreach ($livraisons as $livraison) 
+        {
+            
+            foreach ($produit_qte as $prod)
+            {
+                
+                if ($livraison->nom_produit == $prod->nom && $prod->nom==$nom_produit) 
+                {
+
+                    if ($livraison->qte > $prod->qte)
+                    {
+                        
+                        return true;
+
+                        // code...
+                    }
+
+                    return false;
+
+                    // code...
+                }
+
+                // code...
+            }
+
+            // code...
+        }
+
+        return false;
+
+        // code...
+    }
+
+    public static function jump_to_bl_autorisee($livraisons,$produit_qte,$num_livraison)
+    {
+
+        $result=[];
+        $i=0;
+
+        foreach ($livraisons as $livraison) 
+        {
+            
+            foreach ($produit_qte as $prod)
+            {
+                
+                if ($livraison->nom_produit == $prod->nom) 
+                {
+
+                    if ($livraison->qte > ($prod->qte+1))
+                    {
+                        
+                        $result[$i]=true;
+
+                        //
+                    }
+                    else
+                    {
+
+                        $result[$i]=false;
+
+                        //
+                    }
+
+                    $i++;
+                }
+
+                //
+            }
+
+            //
+        }
+
+
+        if(in_array(false, $result))
+        {
+
+            DB::update("update livraisons l set l.statut = 'BL',updated_at=now()
+            where l.num_livraison = '$num_livraison' ");
+
+            //
+        }
+
+        //
+    }
+
 
     public static function get_next_num_livraison()
     {
@@ -24,7 +146,8 @@ class Livraison extends Model
     public static function get_products($num_livraison)
     {
 
-        $produits = DB::select("select * from livraisons where num_livraison = $num_livraison");
+        $produits = DB::select("select * from livraisons 
+        where num_livraison = $num_livraison order by id asc");
 
         $prods=[];
         $i=0;

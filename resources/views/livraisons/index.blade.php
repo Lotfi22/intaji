@@ -112,7 +112,7 @@
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "rejeté")                     
 
                                         <td id="statut{{ $livraison->num_livraison }}" class="text-danger">
-                                        <i class="fa fa-ban" aria-hidden="true" width="30" ></i>
+                                        <img src="/img/denied.png" height="30" width="30">
                                      
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "validé")
 
@@ -258,7 +258,6 @@
                                         <label class="small" for="depo">Dépot </label>
             
                                         <select name="depot" class="form-control col-md-12">                                
-                                            <option value="0" class="form-control">Sélectionner depot</option>
 
                                             @foreach ($depots as $depot)
                                                 
