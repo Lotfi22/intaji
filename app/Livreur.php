@@ -66,6 +66,16 @@ class Livreur extends Authenticatable
 
                 //
             }
+            else
+            {
+
+                $ret[$i]=(object)["id" => $livreur->id , "name" => $livreur->name , "occupe" => "Disponible"];
+
+                $i++;
+
+
+                //
+            }
 
 
             // code...

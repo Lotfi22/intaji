@@ -45,7 +45,7 @@
         <tr width="100%">
             <td align="left">
                 
-                <img src="lion.jpeg" width="150px" height="150px">
+                <img src="intaji.jpeg" width="150px" height="150px">
                                 
             </td>
 

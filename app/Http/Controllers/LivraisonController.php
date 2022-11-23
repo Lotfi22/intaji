@@ -117,7 +117,7 @@ class LivraisonController extends Controller
             //
         }
 
-        $livreurs = DB::select("select * from livreurs order by name");
+        $livreurs = Livreur::get_livreur_disponibles();
 
         $versements = DB::select("select num_livraison,versement 
         from versements

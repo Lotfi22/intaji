@@ -92,6 +92,8 @@
 
                                     <td class="text-left">
                                         
+                                        {!! App\Wilaya::get_num_wilaya(App\Client::get_wilaya(App\Livraison::get_client_all($livraison->num_livraison)[0]->id)) !!} - 
+
                                         {!! App\Client::get_wilaya(App\Livraison::get_client_all($livraison->num_livraison)[0]->id) !!}
 
                                     </td>

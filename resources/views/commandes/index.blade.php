@@ -100,6 +100,9 @@
                                     </td>
 
                                     <td class="text-left">
+
+                                        {!! App\Wilaya::get_num_wilaya(App\Client::get_wilaya(App\Commande::get_client($commande->num_commande)[0]->id) ) !!} - 
+
                                         {!! App\Client::get_wilaya(App\Commande::get_client($commande->num_commande)[0]->id) !!}
 
                                     </td>
