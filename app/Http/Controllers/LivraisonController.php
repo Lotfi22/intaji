@@ -537,6 +537,40 @@ class LivraisonController extends Controller
         // code...
     }
 
+    public function annuler_livraison(Request $request)
+    {
+
+        $num_livraison = ($request->num_livraison);
+
+        $motif = ($request->motif);
+
+        if(auth()->guard('admin')->check())
+        {
+
+            $acteur= (Auth::guard('admin')->user()->email);
+
+        }
+        elseif(auth()->guard('depot')->check())
+        {
+
+            $acteur= (Auth::guard('depot')->user()->email);
+            //
+        }
+        else
+        {
+
+            $acteur='Unknown';
+        }
+
+        DB::update("update livraisons l set l.statut = 'annulé', l.updated_at = now(),
+        l.validator = '$acteur',l.commentaire='$motif'
+        where l.num_livraison = $num_livraison");
+
+        return response()->json();
+
+        // code...
+    }
+
 
     //
 }

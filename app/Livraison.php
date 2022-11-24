@@ -272,6 +272,17 @@ class Livraison extends Model
         // code...
     }
 
+    public static function get_commentaire($num_livraison)
+    {
+
+        $statut = DB::select("select commentaire from livraisons 
+            where num_livraison = $num_livraison");
+        
+        return $statut[0]->commentaire ?? "";
+        // code...
+    }
+
+
     public static function get_demandeur($num_livraison)
     {
 

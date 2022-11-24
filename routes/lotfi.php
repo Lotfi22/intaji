@@ -53,6 +53,8 @@ Route::post('/home/client/verif_tel/ajax','ClientController@verif_tel');
 Route::post('/home/livraisons/get_depot/ajax','LivraisonController@get_depot');
 Route::post('/livreur/get_work_livreur','LivraisonController@get_work_livreur');
 Route::get('/ticket/affecter/num_livraison/{num_livraison}/livreur/{livreur}', 'TicketController@affecter_livraison');
+Route::post('/home/livraisons/annuler_livraison/ajax','LivraisonController@annuler_livraison');
+
 
 
 //caisse : 

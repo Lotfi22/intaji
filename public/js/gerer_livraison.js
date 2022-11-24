@@ -2,6 +2,10 @@ document.getElementById("confirmer_approbation").style.display = "none";
 document.getElementById("la_remise").style.display = "none";
 document.getElementById("encaissements").style.display = "none";
 document.getElementById("versement_complet").style.display = "none";
+document.getElementById("annuler_livraison").style.display = "none";
+document.getElementById("confirmation_annuler_livraison").style.display = "none";
+document.getElementById("motif_d_annulation").style.display = "none";
+
 
 function get_client(num_livraison)
 {
@@ -94,6 +98,10 @@ function get_livreur(num_livraison)
 function get_livraison(objet) 
 {
  
+	$("#annuler_livraison").hide();
+	$("#confirmation_annuler_livraison").hide();
+	$("#motif_d_annulation").hide();
+
 	var num_livraison = $(objet).attr('num_livraison');
     
 	$("#num_livraison").val(num_livraison);
@@ -188,6 +196,8 @@ function get_livraison(objet)
 
 				$("#affecter").show();
 
+				$("#annuler_livraison").show();
+
 				//
 			}
 			else
@@ -198,8 +208,30 @@ function get_livraison(objet)
 				//
 			}
 
+			if (data.livraison[0].statut=="BL")
+			{
 
-			if (data.livraison[0].statut!=="en attente" && data.livraison[0].statut!=="rejeté" /*&& data.livraison[0].statut!=="validé"*/)
+				$("#annuler_livraison").show();
+
+				//
+			}
+
+			if (data.livraison[0].statut=="annulé")
+			{
+
+				$("#rejeter").hide();
+				$("#approuver").hide();
+				$("#encaissements").hide();
+				
+				$("#motif_d_annulation").text('Commande Annulée, Motif : '+data?.livraison[0]?.commentaire);
+
+				$("#motif_d_annulation").show();
+
+				//
+			}
+
+
+			if (data.livraison[0].statut!=="en attente" && data.livraison[0].statut!=="rejeté" && data.livraison[0].statut!=="annulé")
 			{
 
 				$("#encaissements").show();
@@ -233,20 +265,20 @@ function get_livraison(objet)
 			{
 				versements += '<tr><td style="font-weight:bold; color:red;">Reste : </td><td style="font-weight:bold; color:red;">'+formatMoney(reste)+' DA</td></tr>';
 
-				$("#versement").show(100);
-				$("#label_versement").show(100);
-				$("#valider_versement").show(100);
-				$("#versement_complet").hide(100);
+				$("#versement").show();
+				$("#label_versement").show();
+				$("#valider_versement").show();
+				$("#versement_complet").hide();
 
 			}
 			else
 			{
 				versements += '<tr><td style="font-weight:bold; color:green;">Payement Complet</td><td style="font-weight:bold; color:green;">'+formatMoney(total_versements)+' DA</td></tr>';
 				
-				$("#versement").hide(100);
-				$("#label_versement").hide(100);
-				$("#valider_versement").hide(100);
-				$("#versement_complet").show(100);
+				$("#versement").hide();
+				$("#label_versement").hide();
+				$("#valider_versement").hide();
+				$("#versement_complet").show();
 			}
 
 			$("#past_versements").html(versements);
@@ -500,22 +532,24 @@ function valider_versement()
 				{
 					versements += '<tr><td style="font-weight:bold; color:red;">Reste : </td><td style="font-weight:bold; color:red;">'+formatMoney(reste)+' DA</td></tr>';
 
-					$("#versement").show(100);
-					$("#label_versement").show(100);
-					$("#valider_versement").show(100);
-					$("#versement_complet").hide(100);
+					$("#versement").show();
+					$("#label_versement").show();
+					$("#valider_versement").show();
+					$("#versement_complet").hide();
 
 				}
 				else
 				{
 					versements += '<tr class="alert alert-success"><td style="font-weight:bold; color:green;">Payement Complet</td><td style="font-weight:bold; color:green;">'+formatMoney(total_versements*1)+' DA</td></tr>';
 					
-					$("#versement").hide(100);
-					$("#label_versement").hide(100);
-					$("#valider_versement").hide(100);
-					$("#versement_complet").show(100);
+					$("#versement").hide();
+					$("#label_versement").hide();
+					$("#valider_versement").hide();
+					$("#versement_complet").show();
 
-					$("#statut"+num_livraison).text('terminé');
+					var terminee = $('<img src="/img/termine.png" height="30" width="30"> <span style="color:blue;">Terminé</span>');
+
+					$("#statut"+num_livraison).html(terminee);
 				}
 
 				$("#past_versements").hide()
@@ -527,7 +561,7 @@ function valider_versement()
 				$("#affecter").hide(200);
 
 
-
+				$("#annuler_livraison").hide();
 
 				/*$(".close").click();*/
 
@@ -642,6 +676,83 @@ function fit_livreur_href()
 	var href = "/ticket/affecter/num_livraison/"+num_livraison+"/livreur/"+id_livreur;
 
 	$("#affecter").attr('href',href);
+
+	// body...
+}
+
+function afficher_confirmation_annulation(objet)
+{
+
+	$(objet).hide('400', function() 
+	{
+	
+		$("#confirmation_annuler_livraison").show();
+
+		$("#motif_annulation").focus();
+
+		//		
+	});
+
+
+	// body...
+}
+
+function annulation_back(objet) 
+{
+ 	
+	$("#confirmation_annuler_livraison").hide('400', function() 
+	{
+	
+		$("#annuler_livraison").show();
+
+		//		
+	});
+ 	
+ 	// body...
+}
+
+function f_annuler()
+{
+
+	var num_livraison = $("#num_livraison").val();
+
+	var motif = $("#motif_annulation").val();
+
+    $.ajax({
+		headers: 
+		{
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},                    
+		type:"POST",
+		url:"/home/livraisons/annuler_livraison/ajax",
+		data:{num_livraison:num_livraison,motif:motif},
+
+		success:function(data) 
+		{
+						
+			$("#rejeter").hide();
+			$("#approuver").hide();
+			$("#encaissements").hide();
+			$("#affecter").hide();
+			$("#versement").hide();
+			$("#label_versement").hide();
+			$("#valider_versement").hide();
+			$("#versement_complet").hide();
+			$("#annuler_livraison").hide();
+			$("#confirmation_annuler_livraison").hide();
+
+			$("#motif_d_annulation").text('Commande Annulée, Motif : '+motif);
+
+			$("#motif_d_annulation").show();
+
+			
+			//
+		}
+	    //
+    });
+
+
+	
 
 	// body...
 }

@@ -35,14 +35,14 @@
 
                             @foreach ($commercials as $commercial)
                                 
-                                <tr  data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');">
+                                <tr>
 
-                                    <td>{{ $commercial->id }}</td>
-                                    <td>{{ $commercial->nom ?? '' }}</td>
-                                    <td>{{ $commercial->prenom ?? '' }}</td>
-                                    <td>{{ $commercial->telephone ?? '' }}</td>
-                                    <td>{{ $commercial->email ?? '' }}</td>
-                                    <td>{{ $commercial->password_text ?? '' }}</td>
+                                    <td data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');" >{{ $commercial->id }}</td>
+                                    <td data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');" >{{ $commercial->nom ?? '' }}</td>
+                                    <td data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');" >{{ $commercial->prenom ?? '' }}</td>
+                                    <td data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');" >{{ $commercial->telephone ?? '' }}</td>
+                                    <td data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');" >{{ $commercial->email ?? '' }}</td>
+                                    <td data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');" >{{ $commercial->password_text ?? '' }}</td>
                                     <td>
                                         <div class="table-action">
                                             <a href=""

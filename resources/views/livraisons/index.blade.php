@@ -116,6 +116,12 @@
                                         <td id="statut{{ $livraison->num_livraison }}" class="text-danger">
                                         <img src="/img/denied.png" height="30" width="30">
                                      
+                                     @elseif(App\Livraison::get_statut($livraison->num_livraison) == "annulé")                     
+
+                                        <td id="statut{{ $livraison->num_livraison }}" class="text-danger">
+                                        <img src="/img/annulé.png" height="30" width="30">
+                                        {{-- <span style="font-size: 9px;">({!! App\Livraison::get_commentaire($livraison->num_livraison) !!})</span><br> --}}
+
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "validé")
 
                                         <td id="statut{{ $livraison->num_livraison }}" class="text-info">
@@ -217,6 +223,8 @@
                         </tbody>
                     </table>
 
+                    <p id="motif_d_annulation" class="alert alert-danger col-md-12 text-center text-danger">  </p>
+
                     @if (auth()->guard('admin')->check())
     
                         <button id="approuver" num_livraison="" onclick="approuver(this);" style="margin: 0% 8%;" type="submit" class="col-md-4 btn btn-primary btn_ajouter">Approuver</button>
@@ -306,6 +314,18 @@
                         @include('encaissement.encaissement')
 
                         <a id="affecter" style="margin-top:5%; color: Blue;" class="btn btn-outline-info col-md-12" href="/ticket/affecter/num_livraison/" >Cliquez pour Affecter les Produits Au Livreur</a>
+
+                        <button onclick="afficher_confirmation_annulation(this);" style="margin-top:2%;" id="annuler_livraison" class="btn btn-outline-danger col-md-12" >Annuler Livraison</button>
+
+                        <div style="margin-top:2%;" id="confirmation_annuler_livraison" class="row col-md-12">
+                            
+                            <textarea id="motif_annulation" class="form-control col-md-12" rows="5"></textarea>
+
+                            <button style="margin-top:1%;" onclick="f_annuler();" id="annuler_livraison" class="btn btn-outline-danger col-md-6" >Oui, Annuler</button>                                                        
+                            <button style="margin-top:1%;" onclick="annulation_back(this);" id="annuler_livraison" class="btn btn-outline-info col-md-6">Retour</button>
+
+                            {{--  --}}
+                        </div>
                                              
                      @else
 
