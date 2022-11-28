@@ -315,7 +315,7 @@ class Livraison extends Model
         $livreur = DB::select("select email from livreurs where 
         id=(select livreur from livraisons where num_livraison = $num_livraison limit 1)");
 
-        return $livreur[0]->email ?? "";
+        return $livreur[0]->email ?? "Deleted";
         // code...
     }
 

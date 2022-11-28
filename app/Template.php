@@ -44,7 +44,7 @@ class Template extends Model
         
     ];
     
-    public static function templateBon($commande,$margin,$codebar,$number,$num_lot) 
+    public static function templateBon($commande,$margin,$codebar,$number,$num_lot,$desc) 
     {
         $codebar = asset($codebar);
         $html='
@@ -56,7 +56,7 @@ class Template extends Model
                     <div style="position:absolute;left:1.89px;top:55px;font-size:5px;" class="cls_006">
                         '.substr($number,10).'
                     </div>
-                    <div style="position:absolute;left:0.5px;top:59px;font-size:12px;" class="cls_006"> Lot N° '.$num_lot.' </div>
+                    <div style="position:absolute;left:0.5px;top:59px;font-size:12px;" class="cls_006"> '.$desc.' </div>
                 </div>
                 
             </div>

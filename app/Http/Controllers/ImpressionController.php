@@ -60,9 +60,9 @@ class ImpressionController  extends Controller
 
         $produits = DB::table('produits')->orderBy('nom','asc')->get();
 
-        
+        $num_lot = Ticket::get_num_lot(date("Y/m/d"));
 
-        return view('impression',compact('produits'));
+        return view('impression',compact('produits','num_lot'));
 
     }
 
@@ -70,9 +70,10 @@ class ImpressionController  extends Controller
 
 
 
-    public function imprimer(Request $request){
+    public function imprimer(Request $request)
+    {
 
-
+        $desc = ($request->description);
 
         $first=DB::select("select date(created_at) as first from tickets order by date(created_at) asc limit 1");
 
@@ -311,7 +312,7 @@ class ImpressionController  extends Controller
 
             $codebar = 'img/essahel_food/'.$number.'.svg';
 
-            $h = Template::templateBon($i,$margin,$codebar,$number,$num_lot);
+            $h = Template::templateBon($i,$margin,$codebar,$number,$num_lot,$desc);
 
             $html=$html.$h;
 

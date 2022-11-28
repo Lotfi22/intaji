@@ -59,16 +59,48 @@
 
                                         <div class="table-action">
 
-                                            <a href="{{ route('livreur.destroy', ['id_livreur' => $livreur->id]) }}"
-                                                onclick="return confirm('etes vous sure  ?')"
-                                                class="text-white btn btn-danger">
-
-                                                <i class="fa fa-trash"></i>
-
+                                            <a type="button" class="btn btn-sm btn-danger text-white" data-toggle="modal"
+                                                data-target="#deleteModal{{ $livreur->id }}">
+                                                <i class="fa fa-trash"></i> &nbsp; 
                                             </a>
 
+                                            <div class="modal fade" id="deleteModal{{ $livreur->id }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="deleteLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="text-center modal-title" id="deleteLabel">Etes vous sur de vouloir Supprimer 
+                                                            <br>
+                                                            Agent livreur : {{ $livreur->name ?? '' }} {{ $livreur->prenom ?? '' }} - {{ $livreur->email ?? '' }}</h5>
+                                                            <button type="button" class="close"
+                                                                data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            
+                                                            <div class="btn-group row col-md-12" role="group">
+                                                                
+                                                                <a type="submit" href="/livreur/supprimer/{{$livreur->id}}" class="btn btn-outline-primary col-md-5" style="margin-right:14%;">
+                                                                Supprimer</a>
+        
+                                                                <button type="button" class="btn btn-outline-danger col-md-5"
+                                                                    data-dismiss="modal" role="button">Annuler
+                                                                </button>
+
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <button data-toggle="modal" data-target="#squarespaceModal{{ $livreur->id }}"
-                                                class="btn btn-primary center-block">Modifier livreur</button>
+                                                class="btn btn-sm btn-primary center-block">
+                                                <i class="fa fa-pencil"></i> &nbsp;
+                                                Modifier livreur
+                                            </button>
                                             @include('includes.edit_livreur')
 
 

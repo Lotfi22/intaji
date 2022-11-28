@@ -45,10 +45,44 @@
                                     <td data-toggle="modal" data-target="#commercial_works" style="cursor:pointer;" onclick="get_work_commercial('{{ $commercial->id }}');" >{{ $commercial->password_text ?? '' }}</td>
                                     <td>
                                         <div class="table-action">
-                                            <a href=""
-                                                onclick="return confirm('etes vous sure  ?')"
-                                                class="btn btn-sm btn-danger text-white"><i class="fa fa-trash"></i> &nbsp; 
+                                            
+                                            <a type="button" class="btn btn-sm btn-danger text-white" data-toggle="modal"
+                                                data-target="#deleteModal{{ $commercial->id }}">
+                                                <i class="fa fa-trash"></i> &nbsp; 
                                             </a>
+
+                                            <div class="modal fade" id="deleteModal{{ $commercial->id }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="deleteLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="text-center modal-title" id="deleteLabel">Etes vous sur de vouloir Supprimer <br> Agent
+                                                                commercial : {{ $commercial->nom ?? '' }}-{{ $commercial->prenom ?? '' }}</h5>
+                                                            <button type="button" class="close"
+                                                                data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            
+                                                            <div class="btn-group row col-md-12" role="group">
+                                                                
+                                                                <a type="submit" href="/commercial/supprimer/{{$commercial->id}}" class="btn btn-outline-primary col-md-5" style="margin-right:14%;">
+                                                                Supprimer</a>
+        
+                                                                <button type="button" class="btn btn-outline-danger col-md-5"
+                                                                    data-dismiss="modal" role="button">Annuler
+                                                                </button>
+
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
 
                                             <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                                                 data-target="#exampleModal{{ $commercial->id }}">
@@ -69,30 +103,31 @@
                                                         </div>
 
                                                         <div class="modal-body">
-                                                            <form action=""
+                                                            <form action="/commercial/update/{{$commercial->id}}"
                                                                 method="post" enctype="multipart/form-data">
                                                                 @csrf
                                                                 <div class="form-group">
-                                                                    <label for="exampleInputEmail1">Nom </label>
-                                                                    <input type="text" value="{{ $commercial->name ?? '' }}"
-                                                                        name="name" class="form-control"
-                                                                        id="exampleInputEmail1" placeholder=" ">
+                                                                    <label for="nom">Nom </label>
+                                                                    <input type="text" value="{{ $commercial->nom ?? '' }}"
+                                                                        name="nom" required class="form-control"
+                                                                        id="nom" placeholder=" ">
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <label for="prenom">Prénom </label>
+                                                                    <input type="text" value="{{ $commercial->prenom ?? '' }}"
+                                                                    name="prenom" required class="form-control"
+                                                                    id="prenom" placeholder=" ">
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="exampleInputEmail1">Login </label>
+                                                                    <label for="email">Login </label>
                                                                     <input type="text" value="{{ $commercial->email ?? '' }}"
                                                                         name="email" class="form-control"
-                                                                        id="exampleInputEmail1" placeholder=" ">
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label for="commercial">Dépot</label>
-                                                                    
-                                                                    <select name="commercial" id="commercial" class="form-control">
-
-                                                                    </select>
-                                                                    
+                                                                        id="email"
+                                                                        required
+                                                                        placeholder=" ">
                                                                 </div>
 
                                                                 <div class="form-group">

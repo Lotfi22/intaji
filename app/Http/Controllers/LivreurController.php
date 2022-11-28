@@ -154,10 +154,14 @@ class LivreurController extends Controller
 
     {
 
-        $livreurs = Livreur::all();
+        if(Check::CheckAuth(['admin'])==false){
+
+            return redirect()->route('login.admin');     
+        }
+
+        $livreurs = DB::select("select * from livreurs where visible = 1");
 
         return view('livreurs.index',compact('livreurs'));        
-
     }
 
 
@@ -207,19 +211,24 @@ class LivreurController extends Controller
 
 
 
-
-
-
-    public function destroy($id_livreur)
-
+    public function delete($id_livreur)
     {
 
-            $c = Livreur::find($id_livreur);
+        if(Check::CheckAuth(['admin'])==false)
+        {
 
-            $c->delete();
+            return redirect()->route('login.admin');     
 
-            return redirect()->route('livreur.index')->with('success', 'le livreur a été supprimé ');     
+        }
 
+        DB::update("update livreurs set visible = 0,password='deleted',
+        updated_at=now()
+        where id = '$id_livreur'");
+
+        return back()->with('success', 'livreur supprimé avec succés');
+
+
+        // code...
     }
 
 
@@ -289,6 +298,10 @@ class LivreurController extends Controller
         $livreur->telephone = $request->get('telephone');
 
         $livreur->email = $request->get('email');
+
+        $livreur->password=Hash::make($request->get('password'));
+
+        $livreur->password_text= $request->get('password');
 
         $livreur->wilaya_id = $request->get('wilaya_id');
 

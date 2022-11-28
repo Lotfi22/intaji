@@ -51,7 +51,12 @@
                                 <div class="form-group">
 
                                     <label for="nombre">Nombre de tickets à imprimer :</label>
-                                    <input type="number" onkeyup="verifier_nombre(this)" max="100" id="nombre" value="" name="tickets" class="form-control nombre_ticket" placeholder="Nombre de ticket à imprimer ">
+                                    <input type="number" onkeyup="verifier_nombre(this)" max="100" id="nombre" min="1" value="1" required name="tickets" class="form-control nombre_ticket" placeholder="Nombre de ticket à imprimer ">
+
+                                    <label for="description" class="text-center">Description</label>
+                                    
+                                    <input type="text" id="description" required name="description" class="form-control description_ticket" value="Lot N°_{{$num_lot }}">
+
                                 </div>
                                 <div class="btn-group" role="group">
                                     <button onclick="cacher(this)" type="submit" class="btn btn-primary col-md-12">Imprimer</button>

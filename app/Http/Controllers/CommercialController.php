@@ -8,7 +8,7 @@ use Hash;
 use App\Commune;
 use App\Commercial;
 use DB;
-
+use App\Check;
 
 
 class CommercialController extends Controller
@@ -20,22 +20,67 @@ class CommercialController extends Controller
 
     }
     
-    
+
     public function index()
     {
-        $commercials =commercial::all();
+
+        if(Check::CheckAuth(['admin'])==false){
+
+            return redirect()->route('login.admin');     
+
+        }
+
+        $mes_depots = DB::select("select * from mes_depots order by id desc");
+
+        $commercials = DB::select("select * from commercials where visible = 1");
         
-        return view('commercials.index',compact('commercials'));
+        return view('commercials.index',compact('commercials','mes_depots'));
     }
 
+
+    public function delete($id_commercial)
+    {
+
+        if(Check::CheckAuth(['admin'])==false)
+        {
+
+            return redirect()->route('login.admin');     
+
+        }
+
+        DB::update("update commercials set visible = 0,password='deleted',
+        updated_at=now()
+        where id = '$id_commercial'");
+
+        return back()->with('success', 'Commercial supprimé avec succés');
+
+        // code...
+    }
     
     public function create()
     {
+
+        if(Check::CheckAuth(['admin'])==false)
+        {
+
+            return redirect()->route('login.admin');     
+
+        }
+
+
         return view('commercials.create');
     }
     
     public function store(Request $request)
     {
+
+        if(Check::CheckAuth(['admin'])==false)
+        {
+
+            return redirect()->route('login.admin');     
+
+        }
+
         $commercial = new commercial();
         $commercial->nom = $request->get('nom');
         $commercial->prenom = $request->get('prenom');
@@ -54,20 +99,20 @@ class CommercialController extends Controller
 
     public function update(Request $request,$id_commercial)
     {
-        $commercial = commercial::find($id_commercial);
-
-        if($request['password']==null){
+        
+        if($request['password']==null)
+        {
             return redirect()->back()->with('error', 'mot de passe n\'a été entré ');
         }
-        if($request['password']!=$commercial->password_text){
-            return redirect()->back()->with('error', 'ancien mot de passe n\'est pas correcte ');
-        }
-        if($request['new_password']==null){
-            return redirect()->back()->with('error', 'Nouveau mot de passe ne peut aps etre vide ');
-        }
 
-        $commercial->password = Hash::make($request->get('new_password'));
-        $commercial->password_text = $request->get('new_password');
+        $commercial = commercial::find($id_commercial);
+
+        $commercial->prenom = $request->get('prenom');
+        $commercial->nom = $request->get('nom');
+        $commercial->email = $request->get('email');
+        $commercial->password = Hash::make($request->get('password'));
+        $commercial->password_text = $request->get('password');
+
         try {
             $commercial->save();
             return redirect()->back()->with('success', 'Mot de passe modifié avec succés ');

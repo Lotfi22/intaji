@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg" >
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="lineModalLabel">Ajouter livreur</h3>
+                <h3 class="modal-title" id="lineModalLabel">Modifier livreur</h3>
             </div>
 
         <div class="modal-body">
