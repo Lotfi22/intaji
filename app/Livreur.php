@@ -60,7 +60,7 @@ class Livreur extends Authenticatable
             if (count($occupe)>0) 
             {
                 
-                $ret[$i]=(object)["id" => $livreur->id , "name" => $livreur->name , "occupe" => "en cours de livraison num".$occupe[0]->num_livraison];
+                $ret[$i]=(object)["id" => $livreur->id , "name" => $livreur->name ,"email" => $livreur->email,"prenom" => $livreur->prenom , "occupe" => "en cours de livraison num".$occupe[0]->num_livraison];
 
                 $i++;
 
@@ -69,7 +69,7 @@ class Livreur extends Authenticatable
             else
             {
 
-                $ret[$i]=(object)["id" => $livreur->id , "name" => $livreur->name , "occupe" => "Disponible"];
+                $ret[$i]=(object)["id" => $livreur->id , "name" => $livreur->name ,"email" => $livreur->email,"prenom" => $livreur->prenom , "occupe" => "Disponible"];
 
                 $i++;
 

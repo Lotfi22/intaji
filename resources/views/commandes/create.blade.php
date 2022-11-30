@@ -103,7 +103,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Quantité:</label>
-                                <input type="number"  required name="quantite" id="quantite" placeholder="quantite produit" class="form-control">
+                                <input type="number" min="0" max="100" required name="quantite" id="quantite" placeholder="quantite produit" class="form-control">
                             </div>
                         </div>
 

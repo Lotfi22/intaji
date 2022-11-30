@@ -198,6 +198,12 @@ function get_livraison(objet)
 
 				$("#annuler_livraison").show();
 
+				$("#encaissements").hide();
+
+				$("#rejeter").hide();
+				$("#approuver").hide();
+
+
 				//
 			}
 			else
@@ -241,6 +247,7 @@ function get_livraison(objet)
 
 				//
 			}
+
 
 			var versements = ''			
 
@@ -487,8 +494,8 @@ function valider_versement()
 			//
 		}	
 
-		var num_livraison = $("#num_livraison").val();
-
+		var num_livraison = $("#numm_livraison").val();
+		
 		$("#depassement").hide();
 
 	    $.ajax({
@@ -605,7 +612,7 @@ function test_depassement(objet)
 
 	var total_livraison = ($(objet).attr('max'));
 
-	var num_livraison = $("#approuver").attr('num_livraison');
+	var num_livraison = $("#numm_livraison").val();
 
 	var val = ($(objet).val());
 

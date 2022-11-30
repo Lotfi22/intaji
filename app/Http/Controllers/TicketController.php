@@ -37,8 +37,25 @@ class TicketController  extends Controller
         {
             return redirect()->route('login.admin');     
         }
-        
+
         $tickets = DB::select("select t.id,t.id_produit,t.created_at,t.updated_at,t.satut,t.num_ticket_produit,t.codebar,t.impression,t.maj ,p.nom  as nom from tickets t,produits p where (p.id=t.id_produit) and (date(t.updated_at) = date(now())) order by t.created_at desc");
+
+        if(Check::CheckAuth(['depot']))
+        {
+
+
+            if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user()->email);}
+
+            $tickets = DB::select("select t.id,t.id_produit,t.created_at,t.updated_at,t.satut,t.num_ticket_produit,t.codebar,t.impression,t.maj ,p.nom  as nom 
+            from tickets t,produits p 
+            where (p.id=t.id_produit) and (date(t.updated_at) = date(now())) and 
+            (maj='$acteur')
+            order by t.created_at desc");
+            
+            
+            // code...
+        }
+
                         
         $nbrtickets = count(Ticket::all());
         
@@ -68,6 +85,22 @@ class TicketController  extends Controller
         // $tickets = DB::select("select * from tickets t where ( DATE(t.created_at)>=DATE('$date_debut') and DATE(t.created_at)<=DATE('$date_fin') )");
 
         $tickets = DB::select("select t.id,t.id_produit,t.created_at,t.updated_at,t.satut,t.num_ticket_produit,t.codebar,t.impression,t.maj ,p.nom  as nom from tickets t,produits p where (p.id=t.id_produit) and ( DATE(t.updated_at)>=DATE('$date_debut') and DATE(t.updated_at)<=DATE('$date_fin') ) order by t.created_at desc");
+
+        if(Check::CheckAuth(['depot']))
+        {
+
+
+            if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user()->email);}
+
+            $tickets = DB::select("select t.id,t.id_produit,t.created_at,t.updated_at,t.satut,t.num_ticket_produit,t.codebar,t.impression,t.maj ,p.nom  as nom 
+            from tickets t,produits p 
+            where (p.id=t.id_produit) and (date(t.updated_at) = date(now())) and 
+            (maj='$acteur')
+            order by t.created_at desc");            
+            
+            // code...
+        }
+
 
         return view('tickets.index',compact(
             'tickets',
@@ -657,6 +690,11 @@ class TicketController  extends Controller
             return redirect()->route('login.admin');     
         }
 
+        if(auth()->guard('admin')->check()){$acteur= (Auth::guard('admin')->user()->email);} 
+        if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user()->email);}
+        if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user()->email);}
+
+
         $livreurs = DB::select("select * from livreurs");
 
         $tickets = Ticket::whereIn('satut', ['0','annulé'])
@@ -666,11 +704,17 @@ class TicketController  extends Controller
         
         $produit_qte = DB::select("select p.id,p.nom,l.email as livreur,count(*) as qte 
         from produits p, tickets t,livreurs l
-        where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot' and t.id_livreur = l.id) 
+        where (p.id = t.id_produit and date(t.updated_at) = date(now()) and
+        satut='vers_depot' and t.id_livreur = l.id and t.maj = '$acteur') 
         group by p.id,p.nom,l.email 
-        order by p.nom");
-        
-        return view('tickets.vers_depot',compact('tickets','produit_qte','livreurs'));
+        order by p.id asc");
+
+
+        $depot = (Auth::guard('depot')->user()->depot) ?? "";
+
+        $produits = DB::select("select * from produits order by id asc");
+
+        return view('tickets.vers_depot',compact('tickets','produit_qte','livreurs','produits','depot'));
 
     }
 
@@ -744,18 +788,30 @@ class TicketController  extends Controller
             
             $produit_qte = DB::select("select p.id,p.nom,l.email as livreur,count(*) as qte 
             from produits p, tickets t,livreurs l
-            where (p.id = t.id_produit and date(t.updated_at) = date(now()) and satut='vers_depot' and t.id_livreur = l.id) 
+            where (p.id = t.id_produit and date(t.updated_at) = date(now()) and
+            satut='vers_depot' and t.id_livreur = l.id and t.maj = '$acteur') 
             group by p.id,p.nom,l.email 
-            order by p.nom");
+            order by p.id asc");
             
             $reste = DB::select("select * from tickets t where (date(t.updated_at) = date( now() ) and t.satut='0') ");
             
             $reste = count($reste);
             
+
+            $depot = (Auth::guard('depot')->user()->depot) ?? "";
+
+            $produits = DB::select("select * from produits order by id asc");
+
+            $qte1 = Depot::depot_single_produit_qte($depot,$produits[0]->id) ?? '0';
+            
+            $qte2 = Depot::depot_single_produit_qte($depot,$produits[1]->id) ?? '0';
+
             return response()->json([
                 'ticket'=>$request['ticket'],
                 'produit_qte'=>$produit_qte,
-                'reste' => $reste
+                'reste' => $reste,
+                'qte1' =>$qte1,
+                'qte2' =>$qte2
             ]);
         }
         else
@@ -789,6 +845,9 @@ class TicketController  extends Controller
             return redirect()->route('login.admin');     
         }
 
+        if(auth()->guard('admin')->check()){$acteur= (Auth::guard('admin')->user()->email);} 
+        if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user()->email);}
+        if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user()->email);}
 
         $tickets = Ticket::where('satut', '=', 'vers_depot')
             ->orWhere('satut', '=', '0')
@@ -798,11 +857,16 @@ class TicketController  extends Controller
 
         $produit_qte = DB::select("select p.id,p.nom,count(*) as qte 
         from produits p, tickets t
-        where (p.id = t.id_produit and satut='au_depot') 
-        group by p.id,p.nom 
-        order by p.nom");
+        where (p.id = t.id_produit) and (satut='au_depot') and (maj = '$acteur') and 
+        (date(t.updated_at) = date(now())) 
+        group by p.id,p.nom
+        order by p.id asc");
 
-        return view('tickets.au_depot',compact('tickets','produit_qte'));
+        $depot = (Auth::guard('depot')->user()->depot) ?? "";
+
+        $produits = DB::select("select * from produits order by id asc");
+
+        return view('tickets.au_depot',compact('tickets','produit_qte','depot','produits'));
 
     }
 
@@ -821,7 +885,7 @@ class TicketController  extends Controller
         if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user());}
         if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user());}
 
-        ($request->depot==null) ? $depot = $acteur->depot : $depot = $request->depot;
+        ($acteur->depot==null) ? $depot = $request->depot : $depot = $acteur->depot;
 
         (DB::insert("insert into historiques (id_ticket,depot) 
                     values ($id_ticket,'$depot')"));
@@ -833,13 +897,25 @@ class TicketController  extends Controller
         
         $produit_qte = DB::select("select p.id,p.nom,count(*) as qte 
         from produits p, tickets t
-        where (p.id = t.id_produit and satut='au_depot') 
-        group by p.id,p.nom 
-        order by p.nom");
+        where (p.id = t.id_produit) and (satut='au_depot') and (maj = '$acteur->email') and 
+        (date(t.updated_at) = date(now())) 
+        group by p.id,p.nom
+        order by p.id asc");
+
+        $depot = (Auth::guard('depot')->user()->depot) ?? "";
+
+        $produits = DB::select("select * from produits order by id asc");
+
+        $qte1 = Depot::depot_single_produit_qte($depot,$produits[0]->id) ?? '0';
+        
+        $qte2 = Depot::depot_single_produit_qte($depot,$produits[1]->id) ?? '0';
+
 
         return response()->json([
             'ticket'=>$request['ticket'],
-            'produit_qte'=>$produit_qte
+            'produit_qte'=>$produit_qte,
+            'qte1'=>$qte1,
+            'qte2'=>$qte2
         ]);
     }
 

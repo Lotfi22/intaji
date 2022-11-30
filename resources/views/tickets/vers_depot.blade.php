@@ -6,16 +6,32 @@
 
     <div class="container-fluid">
 
-        <div class="card mb-4">
+        <div class="card mb-4 row col-md-12">
 
-            <h4 class="card-header">
+            <h4 class="card-header row col-md-12">
 
-                Scanner {{-- <span id="nb_tickets"> {{ count($tickets) }} </span> --}}  Tickets vers depot :
+                <div class="col-md-2">
+                    
+                    <img src="{{ asset('img/sending.jpg') }}">
 
+                    {{--  --}}
+                </div>
+
+                <div class="col-md-8 text-primary text-center" style="font-size:1.6em;">Scanner Tickets pour ENVOYER vers depot : <span >({!! $depot!="" ? $depot : '' !!})</span> </div>
+
+                <div class="col-md-2">
+                    
+                    <img src="{{ asset('img/sending.jpg') }}">
+
+                    {{--  --}}
+                </div>
+
+
+
+                {{--  --}}
             </h4>
 
-
-
+            
             <div class="row card-header">
 
                 <div class="col-md-12 row" style="margin:2% 0%;">
@@ -51,7 +67,7 @@
 
                     </div>
 
-                    <div class="col-md-11">
+                    <div class="col-md-12">
 
                         <input {{-- onblur="this.focus();" --}} autofocus onchange="SearchFunction();" 
 
@@ -62,140 +78,332 @@
                 </div>    
 
 
-                <table class="col-md-12 table table-bordered" width="100%" cellspacing="0">
+                <div class="container-fluid py-4">
 
-                    <thead>
+                    <div class="row">
+                        
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body" style="border: solid purple 1px;">
+                                    <div class="card-order">
+                                        <h6 class="mb-2">
+                                            
+                                            {!! $produits[0]->nom ?? '' !!} | {!! $produits[0]->reference ?? '' !!}
 
-                        <tr>
+                                            {{--  --}}
+                                        </h6>
+                                        <h2 class="text-right ">
 
-                            <th class="text-center" >Produit</th>
+                                            <img class="float-left" src="{{ asset('produits/1.jpeg') }}" width="7%">
 
-                            <th class="text-center" >Livreur</th>
-
-                            <th class="text-center" >Quantité</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="produit_qte">
-
-                        @foreach($produit_qte as $prod)
-
-                            
-
-                            <tr>
-
-                                
-
-                                <td class="text-center" > {{ $prod->nom }} </td>
-
-                                <td class="text-center" > {{ $prod->livreur }} </td>
-
-                                <td class="text-center" > {{ $prod->qte }} </td>
-
-                                
-
-                            </tr>
-
-                             
-
-                        @endforeach
-
-                    </tbody>
-
-                </table>
-
-            </div>
+                                            <span id="scan_{{ $produits[0]->nom }}">
+                                                {!! $produit_qte[0]->qte !!}
+                                            </span>
+                                        </h2>
+                                        <p class="mb-0">
 
 
+                                            Machine scannées Aujourd'hui
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="card-body">
 
-                <div class="table-responsive">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body" style="border: solid purple 1px;">
+                                    <div class="card-order">
+                                        <h6 class="mb-2">
+                                            
+                                            {!! $produits[0]->nom ?? '' !!} | {!! $produits[0]->reference ?? '' !!}
 
-                    <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                                            {{--  --}}
+                                        </h6>
+                                        <h2 class="text-right ">
+
+                                            <img class="float-left" src="{{ asset('produits/1.jpeg') }}" width="7%">
+                                            
+                                            <span id="au_depot_{{$produits[0]->nom}}">
+                                                
+                                                {!! App\Depot::depot_single_produit_qte($depot,$produits[0]->id) ?? '0' !!}
+
+                                            </span>
+
+                                        </h2>
+                                        <p class="mb-0">
+
+
+                                            Machine Au dépot
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body" style="border: solid black 1px;">
+                                    <div class="card-order">
+                                        <h6 class="mb-2">
+                                            
+                                            {!! $produits[1]->nom ?? '' !!} | {!! $produits[1]->reference ?? '' !!}
+
+                                            {{--  --}}
+                                        </h6>
+                                        <h2 class="text-right ">
+
+                                            <img class="float-left" src="{{ asset('produits/2.jpeg') }}" width="7%">
+                                            
+                                            <span id="scan_{{ $produits[1]->nom }}">
+                                                {!! $produit_qte[1]->qte !!}
+                                            </span>
+
+                                        </h2>
+                                        <p class="mb-0">
+
+
+                                            Machine scannées Aujourd'hui
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body" style="border: solid black 1px;">
+                                    <div class="card-order">
+                                        <h6 class="mb-2">
+                                            
+                                            {!! $produits[1]->nom ?? '' !!} | {!! $produits[1]->reference ?? '' !!}
+
+                                            {{--  --}}
+                                        </h6>
+                                        <h2 class="text-right ">
+
+                                            <img class="float-left" src="{{ asset('produits/2.jpeg') }}" width="7%">
+                                            
+                                            <span id="au_depot_{{ $produits[1]->nom }}">
+                                                
+                                                {!! App\Depot::depot_single_produit_qte($depot,$produits[1]->id) ?? '0' !!}
+
+                                            </span>
+
+                                        </h2>
+                                        <p class="mb-0">
+
+
+                                            Machine Au dépot
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    {{--  --}}
+                </div>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <?php use App\Check; ?>
+                
+                @if(Check::CheckAuth(['admin']))
+
+                    <table class="col-md-12 table table-bordered" width="100%" cellspacing="0">
 
                         <thead>
 
                             <tr>
 
-                                <th class="text-center" >créé le</th>
+                                <th class="text-center" >Produit</th>
 
-                                <th class="text-center" >Au Depot le </th>
+                                <th class="text-center" >Livreur</th>
 
-                                <th class="text-center" >nom de produit</th>
-
-                                <th class="text-center" >code bar </th>
-
-                                <th class="text-center" >ID </th>
-
-                                <th class="text-center" >Staut </th>
-
-                                <th class="text-center" >num_ticket_produit </th>
+                                <th class="text-center" >Quantité</th>
 
                             </tr>
 
                         </thead>
 
-                        <tbody>
+                        <tbody id="produit_qte">
 
-                            @foreach ($tickets as $ticket)
+                            @foreach($produit_qte as $prod)
 
-                                @if($ticket->id == substr($ticket->codebar,2) )
+                                
 
-                                    <tr id="{{$ticket->id}}">
+                                <tr>
 
-                                @else        
+                                    
 
-                                    <tr id="{{$ticket->id}}" class="alert alert-danger">
+                                    <td class="text-center" > {{ $prod->nom }} </td>
 
-                                @endif
+                                    <td class="text-center" > {{ $prod->livreur }} </td>
 
-                                    <td class="text-center">{{ $ticket->created_at }}</td>
+                                    <td class="text-center" > {{ $prod->qte }} </td>
 
-                                    <td class="text-center">{{ $ticket->updated_at }}</td>
-
-                                    <td class="text-center">{{ $ticket->getProduit()['nom'] ?? '' }}</td>
-
-                                    <td class="text-center">{{ $ticket->codebar ?? '' }}</td>
-
-                                    <td class="text-center">{{ $ticket->id ?? '' }}</td>
-
-                                    <td class="text-center">{{ $ticket->satut == '0' ? 'Vient d\'étre créé' : $ticket->satut }}</td>
-
-                                    <td class="text-center">{{ $ticket->num_ticket_produit ?? '' }}</td>
+                                    
 
                                 </tr>
+
+                                 
 
                             @endforeach
 
                         </tbody>
 
-
-
                     </table>
-
-                    <br>
-
-
-
-
 
                 </div>
 
+
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th class="text-center" >créé le</th>
+
+                                    <th class="text-center" >Au Depot le </th>
+
+                                    <th class="text-center" >nom de produit</th>
+
+                                    <th class="text-center" >code bar </th>
+
+                                    <th class="text-center" >ID </th>
+
+                                    <th class="text-center" >Staut </th>
+
+                                    <th class="text-center" >num_ticket_produit </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @foreach ($tickets as $ticket)
+
+                                    @if($ticket->id == substr($ticket->codebar,2) )
+
+                                        <tr id="{{$ticket->id}}">
+
+                                    @else        
+
+                                        <tr id="{{$ticket->id}}" class="alert alert-danger">
+
+                                    @endif
+
+                                        <td class="text-center">{{ $ticket->created_at }}</td>
+
+                                        <td class="text-center">{{ $ticket->updated_at }}</td>
+
+                                        <td class="text-center">{{ $ticket->getProduit()['nom'] ?? '' }}</td>
+
+                                        <td class="text-center">{{ $ticket->codebar ?? '' }}</td>
+
+                                        <td class="text-center">{{ $ticket->id ?? '' }}</td>
+
+                                        <td class="text-center">{{ $ticket->satut == '0' ? 'Vient d\'étre créé' : $ticket->satut }}</td>
+
+                                        <td class="text-center">{{ $ticket->num_ticket_produit ?? '' }}</td>
+
+                                    </tr>
+
+                                @endforeach
+
+                            </tbody>
+
+
+
+                        </table>
+
+                        <br>
+
+
+
+
+
+                    </div>
+
+                </div>
+
+
+
+
+
             </div>
 
-
-
-
-
         </div>
+    @endif
 
-    </div>
-
-
-
+    <br><br><br><br><br><br><br>
 
 
 <button style="display:none;" class="vers_depot">bbb</button>
@@ -341,7 +549,17 @@
 
                         $("#produit_qte").append(trAppended)
 
+                        $("#scan_"+res.produit_qte[i].nom).text(res.produit_qte[i].qte);
+
+                        //
                     }
+
+
+                    $("#au_depot_"+res.produit_qte[0].nom).text(res.qte1);
+
+                    $("#au_depot_"+res.produit_qte[1].nom).text(res.qte2);
+
+
 
                     $("#nb_tickets").html(res.reste);
 

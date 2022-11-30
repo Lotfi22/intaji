@@ -17,9 +17,9 @@ class Wilaya extends Model
     public static function get_num_wilaya($nom_wilaya)
     {
 
-        $num_wilaya = DB::select("select id from wilayas where name = '$nom_wilaya'")[0]->id;
+        $num_wilaya = DB::select("select id from wilayas where name = '$nom_wilaya'");
 
-        return $num_wilaya ?? "";
+        return $num_wilaya[0]->id ?? "";
 
         // code...
     }

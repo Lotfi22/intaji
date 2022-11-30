@@ -69,7 +69,7 @@
                                 <th>Wilaya</th>
                                 <th>Total</th>
                                 <th>Statut</th>
-                                <th>Demandeur</th>
+                                {{-- <th>Demandeur</th> --}}
                                 <th>Décision Par</th>
                             </tr>
                         </thead>
@@ -119,7 +119,7 @@
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "annulé")                     
 
                                         <td id="statut{{ $livraison->num_livraison }}" class="text-danger">
-                                        <img src="/img/annulé.png" height="30" width="30">
+                                        <img src="/img/annule.png" height="30" width="30">
                                         {{-- <span style="font-size: 9px;">({!! App\Livraison::get_commentaire($livraison->num_livraison) !!})</span><br> --}}
 
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "validé")
@@ -152,9 +152,9 @@
                                         {!! App\Livraison::get_statut($livraison->num_livraison) ?? ''!!} 
                                     </td>
 
-                                    <td>
+                                    {{-- <td>
                                         {!! App\Livraison::get_demandeur($livraison->num_livraison) ?? ''!!}
-                                    </td>
+                                    </td> --}}
 
                                     <td id="validateur{{$livraison->num_livraison}}">
                                         {!! App\Livraison::get_validator($livraison->num_livraison) ?? ''!!}
@@ -250,7 +250,7 @@
                                         <select name="livreur" onchange="fit_livreur_href();" class="form-control col-md-12">                                
                                             @foreach ($livreurs as $livreur)
                                                 
-                                                <option class="form-control" value="{{ $livreur->id }}"> {!! $livreur->name !!} ({!! $livreur->occupe !!}) </option>
+                                                <option class="form-control" value="{{ $livreur->id }}"> {!! $livreur->email !!} ({!! $livreur->occupe !!}) </option>
 
                                                 {{-- expr --}}
                                             @endforeach

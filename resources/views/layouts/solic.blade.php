@@ -13,8 +13,8 @@
         <meta content="Solic – Bootstrap Responsive Modern Simple Dashboard Clean HTML Premium Admin Template" name="description">
         
         <!--favicon2 -->
-        <link rel="icon" href="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" type="image/x-icon"/>
-        <link rel="shortcut icon" href="{{ asset('../../assets/images/brand/favicon2.jpeg') }}" type="image/x-icon"/>
+        <link rel="icon" href="{{ asset('assets/images/brand/favicon2.jpeg') }}" type="image/x-icon"/>
+        <link rel="shortcut icon" href="{{ asset('assets/images/brand/favicon2.jpeg') }}" type="image/x-icon"/>
 
         <style type="text/css">
             
