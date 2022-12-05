@@ -241,7 +241,7 @@ class Ticket extends Model
     {    
         
         $first=DB::select("select date(created_at) as first from tickets order by date(created_at) asc limit 1");
-        $first = ($first[0]->first);
+        $first = ($first[0]->first) ?? date("Y-m-d");
         $first = strtotime($first);
         $created_at = substr($created_at,0,10);
         $created_at = strtotime($created_at);

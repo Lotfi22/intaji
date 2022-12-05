@@ -33,6 +33,28 @@ class Livraison extends Model
         // code...
     }
 
+    public static function calcul_produit_in_produits_qte($produit_qte,$nom_produit)
+    {
+
+        foreach ($produit_qte as $prod) 
+        {
+            
+            if ($prod->nom==$nom_produit) 
+            {
+
+                return $prod->qte;
+
+                // code...
+            }
+
+            // code...
+        }
+
+        return 0;
+
+        // code...
+    }
+
 
     public static function affectation_autorisee($livraisons,$produit_qte,$nom_produit)
     {
@@ -45,12 +67,20 @@ class Livraison extends Model
             // code...
         }
 
+        if (Livraison::calcul_produit_in_produits_qte($produit_qte,$nom_produit)==0 && Livraison::produit_existe_livraison($livraisons,$nom_produit) )
+        {
+
+            return true;
+
+            // code...
+        }
+
         foreach ($livraisons as $livraison) 
         {
             
             foreach ($produit_qte as $prod)
             {
-                
+
                 if ($livraison->nom_produit == $prod->nom && $prod->nom==$nom_produit) 
                 {
 
@@ -81,8 +111,41 @@ class Livraison extends Model
     public static function jump_to_bl_autorisee($livraisons,$produit_qte,$num_livraison)
     {
 
-        $result=[];
+        $arr=[];
         $i=0;
+
+        foreach ($livraisons as $livraison)
+        {
+
+            $arr[$i] = Livraison::affectation_autorisee($livraisons,$produit_qte,$livraison->nom_produit);
+
+            $i++;
+
+            // code...
+        }
+
+        if(!in_array(true, $arr))
+        {
+
+            DB::update("update livraisons l set l.statut = 'BL',updated_at=now()
+            where l.num_livraison = '$num_livraison' ");
+
+            return true;
+
+            //
+        }
+
+        return false;
+
+        /*dd($livraisons,$produit_qte,$num_livraison);*/
+
+        /*        $result=[];
+        $i=0;
+
+        if (count($livraisons) != count($produit_qte) ) 
+        {
+            return 0;
+        }
 
         foreach ($livraisons as $livraison) 
         {
@@ -93,7 +156,7 @@ class Livraison extends Model
                 if ($livraison->nom_produit == $prod->nom) 
                 {
 
-                    if ($livraison->qte > ($prod->qte+1))
+                    if ($livraison->qte >= $prod->qte)
                     {
                         
                         $result[$i]=true;
@@ -113,19 +176,10 @@ class Livraison extends Model
 
                 //
             }
-
+            
             //
-        }
+        }*/
 
-
-        if(in_array(false, $result))
-        {
-
-            DB::update("update livraisons l set l.statut = 'BL',updated_at=now()
-            where l.num_livraison = '$num_livraison' ");
-
-            //
-        }
 
         //
     }

@@ -96,8 +96,8 @@
 
                                             <img class="float-left" src="{{ asset('produits/1.jpeg') }}" width="7%">
 
-                                            <span id="scan_{{ $produits[0]->nom }}">
-                                                {!! $produit_qte[0]->qte !!}
+                                            <span id="scan_{{ $produits[0]->nom ?? ''}}">
+                                                {!! $produit_qte[0]->qte ?? ''!!}
                                             </span>
                                         </h2>
                                         <p class="mb-0">
@@ -126,7 +126,7 @@
 
                                             <img class="float-left" src="{{ asset('produits/1.jpeg') }}" width="7%">
                                             
-                                            <span id="au_depot_{{$produits[0]->nom}}">
+                                            <span id="au_depot_{{$produits[0]->nom ?? ''}}">
                                                 
                                                 {!! App\Depot::depot_single_produit_qte($depot,$produits[0]->id) ?? '0' !!}
 
@@ -160,8 +160,8 @@
 
                                             <img class="float-left" src="{{ asset('produits/2.jpeg') }}" width="7%">
                                             
-                                            <span id="scan_{{ $produits[1]->nom }}">
-                                                {!! $produit_qte[1]->qte !!}
+                                            <span id="scan_{{ $produits[1]->nom ?? ""}}">
+                                                {!! $produit_qte[1]->qte ?? ""!!}
                                             </span>
 
                                         </h2>
@@ -192,7 +192,7 @@
 
                                             <img class="float-left" src="{{ asset('produits/2.jpeg') }}" width="7%">
                                             
-                                            <span id="au_depot_{{ $produits[1]->nom }}">
+                                            <span id="au_depot_{{ $produits[1]->nom ?? ""}}">
                                                 
                                                 {!! App\Depot::depot_single_produit_qte($depot,$produits[1]->id) ?? '0' !!}
 

@@ -401,20 +401,19 @@ class TicketController  extends Controller
 
         $nom_produit = Ticket::get_nom_produit($id_ticket);
 
-        $livraisons = DB::select("select nom_produit,qte 
+
+        $livraisonss = DB::select("select nom_produit,qte 
         from livraisons 
         where num_livraison = $num_livraison
         order by id asc");
         
-        $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+        $produit_qtes = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
         from produits p, sorties s,tickets t 
         where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur='$id_livreur' and t.satut='sortie' and s.num_livraison = $num_livraison)
         group by p.id,p.nom 
         order by p.nom");
 
-        Livraison::jump_to_bl_autorisee($livraisons,$produit_qte,$num_livraison);
-
-        if(Livraison::affectation_autorisee($livraisons,$produit_qte,$nom_produit))
+        if(Livraison::affectation_autorisee($livraisonss,$produit_qtes,$nom_produit))
         {
 
             $id_ticket = $request['ticket'];
@@ -442,8 +441,21 @@ class TicketController  extends Controller
             
             $produit_qte = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
             from produits p, sorties s,tickets t 
-            where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie' /*and date(s.created_at) = CURDATE()*/) 
+            where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie') 
             group by p.id,p.nom order by p.nom");
+
+            $livraisonss = DB::select("select nom_produit,qte 
+            from livraisons 
+            where num_livraison = $num_livraison
+            order by id asc");
+            
+            $produit_qtes = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+            from produits p, sorties s,tickets t 
+            where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur='$id_livreur' and t.satut='sortie' and s.num_livraison = $num_livraison)
+            group by p.id,p.nom 
+            order by p.nom");
+
+            Livraison::jump_to_bl_autorisee($livraisonss,$produit_qtes,$num_livraison);
 
             return response()->json([
                 'ticket'=>$request['ticket'],
@@ -461,6 +473,19 @@ class TicketController  extends Controller
             from produits p, sorties s,tickets t 
             where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur = '$id_livreur' and t.satut='sortie') 
             group by p.id,p.nom order by p.nom");
+
+            $livraisonss = DB::select("select nom_produit,qte 
+            from livraisons 
+            where num_livraison = $num_livraison
+            order by id asc");
+            
+            $produit_qtes = DB::select("select p.id,p.nom,count(distinct(t.id)) as qte 
+            from produits p, sorties s,tickets t 
+            where (p.id = t.id_produit and t.id=s.id_ticket and s.id_livreur='$id_livreur' and t.satut='sortie' and s.num_livraison = $num_livraison)
+            group by p.id,p.nom 
+            order by p.nom");
+
+            Livraison::jump_to_bl_autorisee($livraisonss,$produit_qtes,$num_livraison);
 
             return response()->json([
                 'ticket'=>$request['ticket'],
