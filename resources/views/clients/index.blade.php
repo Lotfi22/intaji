@@ -633,7 +633,7 @@
 
         
     $('.wilaya_select').on('change', function (e) {
-        console.log('saz');
+        
         e.preventDefault();
         var $communes = $('#commune_select');
         var $communesLoader = $('#commune_select_loading');

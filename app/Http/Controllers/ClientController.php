@@ -47,7 +47,7 @@ class ClientController extends Controller
         $commune = DB::select("select * from communes 
         where id = '$id_commune'");
         
-        $commune = $commune[0]->name;
+        $commune = $commune[0]->name ?? "";
         
         $client = new Client();  
         $client->nom = $request['nom'];

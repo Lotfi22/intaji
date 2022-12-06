@@ -39,72 +39,54 @@
                         </div>
 
 
-                            <div class="form-group">
+                        <div class="form-group">
 
-                                <label class="control-label">{{ __('Wilaya') }}: </label>
+                            <label class="control-label">{{ __('Wilaya') }}: </label>
 
-                                <select class="form-control" id="wilaya_select2" name="wilaya_id2">
+                            <select class="form-control" onclick="fit_communes(this,{{$client->id}});"  id="wilaya_select2" name="wilaya_id2">
 
-                                    <option  value="">{{ __('Please choose...') }}</option>
+                                <option id="{{ App\Wilaya::get_num_wilaya($client->wilaya) }}" value="{!! $client->wilaya !!}">
+                                
+                                    {!! $client->wilaya !!}
 
-                                    @foreach ($wilayas as $wilaya)
+                                    {{--  --}}
+                                </option>
 
-                                        <option 
-                                        
-                                        <?php if($wilaya->id == $client->wilaya){ {echo "selected";} } ?>
-                                        value="{{$wilaya->id}}" {{$wilaya->id == ($client->wilaya_id ?? ($member->wilaya_id ?? '')) ? 'selected' : ''}}>
-                                            {{$wilaya->id}}
-                                                - 
-                                            {{$wilaya->name}}
+                                @foreach ($wilayas as $wilaya)
 
-                                        </option>
+                                    <option id="{{$wilaya->id}}" value="{{$wilaya->name}}" >
 
-                                    @endforeach
+                                        {{$wilaya->id}}
+                                            - 
+                                        {{$wilaya->name}}
 
-                                </select>
+                                    </option>
 
-                                @if ($errors->has('wilaya_id'))
+                                @endforeach
 
-                                    <p class="help-block">{{ $errors->first('wilaya_id') }}</p>
+                            </select>
 
-                                @endif
+                            @if ($errors->has('wilaya_id'))
 
-                            </div>
+                                <p class="help-block">{{ $errors->first('wilaya_id') }}</p>
 
-                            <div class="form-group">
+                            @endif
 
-                                <label class="control-label">{{ __('Commune') }}: </label>
+                        </div>
 
-                                <select class="form-control" name="commune_id2" id="commune_select2">
+                        <div class="form-group">
 
-                                    <option  value="">{{ __('Please choose...') }}</option>
+                            <label class="control-label">{{ __('Commune') }}: </label>
 
-                                    @foreach ($communes as $commune)
+                            <select class="form-control" name="commune_id2" id="commune_select2_{{$client->id}}">
 
-                                        <option
-                                        <?php if($commune->id == $client->commune){ {echo "selected";} } ?>
+                                <option value="{!! $client->wilaya !!}"> {!! $client->wilaya !!} </option>
+                                
 
-                                        value="{{$commune->id}}" >
+                            </select>
 
-                                            {{$commune->name}}
-
-                                        </option>
-
-                                    @endforeach
-
-                                </select>
-
-                                <input class="form-control valid" id="commune_select2_loading" value="{{ __('Loading...') }}"
-
-                                    readonly style="display: none;"/>
-
-                                @if ($errors->has('commune_id'))
-
-                                    <p class="help-block">{{ $errors->first('commune_id') }}</p>
-
-                                @endif
-
-                            </div>
+                            {{--  --}}
+                        </div>
 
 
 
@@ -127,3 +109,42 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+    
+
+    function fit_communes(objet,id_client) 
+    {
+
+        $.ajax({
+            
+            type:"GET",
+            url: "/api/static/communes/"+$(objet).find('option:selected').attr('id'),
+        
+            success : function (response) 
+            {
+                console.log(response);
+
+                var options = "";
+
+                for (var i = 0; i < response.length; i++)
+                {               
+                    options +='<option id="'+response[i].id+'" value="'+response[i].name+'">'+response[i].name+'</option>';
+
+                    //
+               }
+
+               $("#commune_select2_"+id_client).html(options)
+
+               //
+            }
+
+            // body...
+        });
+
+    }
+        
+    
+
+    /**/
+</script>
