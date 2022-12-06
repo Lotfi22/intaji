@@ -55,7 +55,7 @@ function get_depot(num_livraison)
 		success:function(data) 
 		{
 			
-			$("#depot").html("Dépot : "+data);
+			$("#depot").html('<span> Dépot : '+data+' | <span class="text-primary"> Livraison : Num'+num_livraison+'</span></span>');
 			//
 		}
 	    //
@@ -168,6 +168,16 @@ function get_livraison(objet)
 				$(".alerte").remove();
 
 				$("#myTable").after('<h3 id="modal_statut'+data.livraison[0].num_livraison+'" class="alert alert-warning col-md-12 text-center alerte"> Statut Livraison : '+ data.livraison[0].statut +' </h3>')
+
+				$("#affecter").hide();
+
+				$("#annuler_livraison").hide();
+
+				$("#encaissements").hide();
+
+				$("#rejeter").show();
+				$("#approuver").show();
+
 			}
 			else
 			{
@@ -389,6 +399,12 @@ function afficher_confirmation(objet)
 	var id_depot = $('select[name="depot"]').find(":selected").val();
 
 	var remise = $("#remise").val();
+
+	var href = "/ticket/affecter/num_livraison/"+num_livraison+"/livreur/"+id_livreur
+
+	$("#affecter").attr('href',href);
+
+	$("#affecter").show();
 
     $.ajax({
 		headers: 

@@ -24,34 +24,64 @@
             <div class="card-header row col-md-12">
                 
                 <h1 style="cursor:pointer;" class="col-md-12 alert alert-info text-center blink" >Livreur : {{ $le_livreur->prenom ?? '' }} / {{ $le_livreur->email ?? '' }} </h1>
-                <h4 class="col-md-12">
-                    Affecter Ticket
-                </h4>
+                
+                <div class="row col-md-12">
+
+                    <div class="col-md-12">
+
+                        <table class="col-md-12 table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" >Produit Livraison</th>
+                                    <th class="text-center" >Quantité Livraison</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($livraisons as $prod)
+                                    
+                                    <tr>
+                                        
+                                        <td class="text-center" > {{ $prod->nom_produit }} </td>
+                                        
+                                        <td class="text-center" > {{ $prod->qte }} </td>
+                                        
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div style="margin-top:5%;" class="col-md-12">
+
+                        <table id="datatable-5" class="col-md-6 table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Produit ({!! $le_livreur->email !!})</th>
+                                    <th class="text-center">Quantité ({!! $le_livreur->email !!})</th>
+                                </tr>
+                            </thead>
+                            <tbody id="produit_qte">
+                                @foreach($produit_qte as $prod)
+                                    
+                                    <tr>
+                                        
+                                        <td class="text-center" > {{ $prod->nom }} </td>
+                                        
+                                        <td class="text-center" > {{ $prod->qte }} </td>
+                                        
+                                    </tr>
+                                     
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+              {{--  --}}                
             </div>
             
-
-            <table class="col-md-12 table table-bordered" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th class="text-center" >Produit</th>
-                        <th class="text-center" >Quantité</th>
-                    </tr>
-                </thead>
-                <tbody id="produit_qte">
-                    @foreach($produit_qte as $prod)
-                        
-                        <tr>
-                            
-                            <td class="text-center" > {{ $prod->nom }} </td>
-                            
-                            <td class="text-center" > {{ $prod->qte }} </td>
-                            
-                        </tr>
-                         
-                    @endforeach
-                </tbody>
-            </table>
-
 
             <div class="card-header row col-md-12">
 
@@ -155,6 +185,7 @@
 
             </div>
 
+            
 
             <div class="card-body">
                 <div class="table-responsive">

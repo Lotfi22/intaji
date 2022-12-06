@@ -333,8 +333,10 @@ class TicketController  extends Controller
         $ids = Ticket::extract_ids($tickets);
         
         $ids = json_encode($ids);
-        
-        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids','num_livraison'));
+     
+        $livraisons = (DB::select("select * from livraisons where num_livraison = $num_livraison"));
+
+        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids','num_livraison','livraisons'));
     }
 
 
@@ -383,8 +385,10 @@ class TicketController  extends Controller
         $ids = Ticket::extract_ids($tickets);
         
         $ids = json_encode($ids);
+
+        $livraisons = [];
         
-        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids'));
+        return view('tickets.affecter',compact('tickets','_livreur','le_livreur','produit_qte','ids','livraisons'));
     }
     
 
@@ -910,7 +914,7 @@ class TicketController  extends Controller
         if(auth()->guard('depot')->check()){$acteur =(Auth::guard('depot')->user());}
         if(auth()->guard('production')->check()){$acteur= (Auth::guard('production')->user());}
 
-        ($acteur->depot==null) ? $depot = $request->depot : $depot = $acteur->depot;
+        ($acteur->depot==null) ? $depot = "Annonyme_".$acteur->email : $depot = "$acteur->depot";
 
         (DB::insert("insert into historiques (id_ticket,depot) 
                     values ($id_ticket,'$depot')"));
@@ -920,10 +924,10 @@ class TicketController  extends Controller
         $ticket->maj= $acteur->email;
         $ticket->save();
         
-        $produit_qte = DB::select("select p.id,p.nom,count(*) as qte 
+        $produit_qte = DB::select("select p.id,p.nom,count(*) as qte
         from produits p, tickets t
-        where (p.id = t.id_produit) and (satut='au_depot') and (maj = '$acteur->email') and 
-        (date(t.updated_at) = date(now())) 
+        where (p.id = t.id_produit) and (satut='au_depot') and (maj = '$acteur->email') 
+        and (date(t.updated_at) = date(now())) 
         group by p.id,p.nom
         order by p.id asc");
 
@@ -931,10 +935,9 @@ class TicketController  extends Controller
 
         $produits = DB::select("select * from produits order by id asc");
 
-        $qte1 = Depot::depot_single_produit_qte($depot,$produits[0]->id) ?? '0';
+        $qte1 = Depot::depot_single_produit_qte($depot,$produits[0]->id ?? "") ?? '0';
         
-        $qte2 = Depot::depot_single_produit_qte($depot,$produits[1]->id) ?? '0';
-
+        $qte2 = Depot::depot_single_produit_qte($depot,$produits[1]->id ?? "") ?? '0';
 
         return response()->json([
             'ticket'=>$request['ticket'],

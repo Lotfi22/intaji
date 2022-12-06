@@ -234,7 +234,9 @@ class LivraisonController extends Controller
                 
         $num_livraison = $request->num_livraison;
         
-        DB::update("update livraisons set statut = 'validé' ,validator = '$acteur' ,updated_at=now() where num_livraison = '$num_livraison'");
+        DB::update("update livraisons set statut = 'en attente' ,validator = '$acteur' ,updated_at=now() where num_livraison = '$num_livraison'");
+
+        /*DB::update("update livraisons set statut = 'validé' ,validator = '$acteur' ,updated_at=now() where num_livraison = '$num_livraison'");*/
 
         return response()->json($acteur);
 

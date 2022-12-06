@@ -1,6 +1,9 @@
 @extends('layouts.solic')
 
 
+<?php use App\Check; ?>
+
+
 
 @section('content')
 
@@ -52,140 +55,168 @@
 
             <div class="container-fluid py-4">
 
-                <div class="row">
-                    
-                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" style="color:purple;">
-                        <div class="card">
-                            <div class="card-body" style="border: solid purple 1px;">
-                                <div class="card-order">
-                                    <h6 class="mb-2">
-                                        
-                                        {!! $produits[0]->nom ?? '' !!} | {!! $produits[0]->reference ?? '' !!}
+                @if(Check::CheckAuth(['depot']))
 
-                                        {{--  --}}
-                                    </h6>
-                                    <h2 class="text-right ">
-
-                                        <img class="float-left" src="{{ asset('produits/1.jpeg') }}" width="7%">
-
-                                        <span id="scan_{{ $produits[0]->nom ?? '' }}">
-                                            {!! $produit_qte[0]->qte ?? '' !!}
-                                        </span>
-                                    </h2>
-                                    <p class="mb-0">
-
-
-                                        Machine scannées Aujourd'hui
-                                        
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" style="color:purple;">
-                        <div class="card">
-                            <div class="card-body" style="border: solid purple 1px;">
-                                <div class="card-order">
-                                    <h6 class="mb-2">
-                                        
-                                        {!! $produits[0]->nom ?? '' !!} | {!! $produits[0]->reference ?? '' !!}
-
-                                        {{--  --}}
-                                    </h6>
-                                    <h2 class="text-right ">
-
-                                        <img class="float-left" src="{{ asset('produits/1.jpeg') }}" width="7%">
-                                        
-                                        <span id="au_depot_{{$produits[0]->nom ?? '' }}">
+                    <div class="row">
+                        
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" style="color:purple;">
+                            <div class="card">
+                                <div class="card-body" style="border: solid purple 1px;">
+                                    <div class="card-order">
+                                        <h6 class="mb-2">
                                             
-                                            {!! App\Depot::depot_single_produit_qte($depot ?? '',$produits[0]->id ?? '') ?? '0' !!}
+                                            {!! $produits[0]->nom ?? '' !!} | {!! $produits[0]->reference ?? '' !!}
 
-                                        </span>
+                                            {{--  --}}
+                                        </h6>
+                                        <h2 class="text-right ">
 
-                                    </h2>
-                                    <p class="mb-0">
+                                            <img class="float-left" src="{{ asset('produits/1.jpeg') }}" width="7%">
 
+                                            <span id="scan_{{ $produits[0]->nom ?? '' }}">
 
-                                        Machine Au dépot
-                                        
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                                @if ($produits[0]->nom == $produit_qte[0]->nom)
 
+                                                    {!! $produit_qte[0]->qte ?? '' !!}    
+                                                @else
 
+                                                    0
+                                                    {{-- expr --}}
+                                                @endif
 
-                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                        <div class="card">
-                            <div class="card-body" style="border: solid black 1px;">
-                                <div class="card-order">
-                                    <h6 class="mb-2">
-                                        
-                                        {!! $produits[1]->nom ?? '' !!} | {!! $produits[1]->reference ?? '' !!}
-
-                                        {{--  --}}
-                                    </h6>
-                                    <h2 class="text-right ">
-
-                                        <img class="float-left" src="{{ asset('produits/2.jpeg') }}" width="7%">
-                                        
-                                        <span id="scan_{{ $produits[1]->nom ?? ''}}">
-                                            {!! $produit_qte[1]->qte ?? '' !!}
-                                        </span>
-
-                                    </h2>
-                                    <p class="mb-0">
+                                                
+                                            </span>
+                                        </h2>
+                                        <p class="mb-0">
 
 
-                                        Machine scannées Aujourd'hui
-                                        
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                        <div class="card">
-                            <div class="card-body" style="border: solid black 1px;">
-                                <div class="card-order">
-                                    <h6 class="mb-2">
-                                        
-                                        {!! $produits[1]->nom ?? '' !!} | {!! $produits[1]->reference ?? '' !!}
-
-                                        {{--  --}}
-                                    </h6>
-                                    <h2 class="text-right ">
-
-                                        <img class="float-left" src="{{ asset('produits/2.jpeg') }}" width="7%">
-                                        
-                                        <span id="au_depot_{{ $produits[1]->nom ?? ''}}">
+                                            Machine scannées Aujourd'hui
                                             
-                                            {!! App\Depot::depot_single_produit_qte($depot ?? '',$produits[1]->id ?? '') ?? '0' !!}
-
-                                        </span>
-
-                                    </h2>
-                                    <p class="mb-0">
-
-
-                                        Machine Au dépot
-                                        
-                                    </p>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                {{--  --}}
-            </div>    
 
 
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" style="color:purple;">
+                            <div class="card">
+                                <div class="card-body" style="border: solid purple 1px;">
+                                    <div class="card-order">
+                                        <h6 class="mb-2">
+                                            
+                                            {!! $produits[0]->nom ?? '' !!} | {!! $produits[0]->reference ?? '' !!}
+
+                                            {{--  --}}
+                                        </h6>
+                                        <h2 class="text-right ">
+
+                                            <img class="float-left" src="{{ asset('produits/1.jpeg') }}" width="7%">
+                                            
+                                            <span id="au_depot_{{$produits[0]->nom ?? '' }}">
+                                                
+                                                {!! App\Depot::depot_single_produit_qte($depot ?? '',$produits[0]->id ?? '') ?? '0' !!}
+
+                                            </span>
+
+                                        </h2>
+                                        <p class="mb-0">
+
+
+                                            Machine Au dépot
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body" style="border: solid black 1px;">
+                                    <div class="card-order">
+                                        <h6 class="mb-2">
+                                            
+                                            {!! $produits[1]->nom ?? '' !!} | {!! $produits[1]->reference ?? '' !!}
+
+                                            {{--  --}}
+                                        </h6>
+                                        <h2 class="text-right ">
+
+                                            <img class="float-left" src="{{ asset('produits/2.jpeg') }}" width="7%">
+                                            
+                                            <span id="scan_{{ $produits[1]->nom ?? ''}}">
+                                                
+                                                @if (count($produit_qte)>1)
+                                                    
+                                                    @if ($produits[1]->nom == $produit_qte[1]->nom ?? "")
+
+                                                        {!! $produit_qte[1]->qte ?? '' !!}
+                                                        
+                                                    @endif
+                                                @else
+
+                                                    0
+
+                                                    {{-- expr --}}
+                                                @endif
+
+
+                                                {{--  --}}                                       
+                                            </span>
+
+                                        </h2>
+                                        <p class="mb-0">
+
+
+                                            Machine scannées Aujourd'hui
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body" style="border: solid black 1px;">
+                                    <div class="card-order">
+                                        <h6 class="mb-2">
+                                            
+                                            {!! $produits[1]->nom ?? '' !!} | {!! $produits[1]->reference ?? '' !!}
+
+                                            {{--  --}}
+                                        </h6>
+                                        <h2 class="text-right ">
+
+                                            <img class="float-left" src="{{ asset('produits/2.jpeg') }}" width="7%">
+                                            
+                                            <span id="au_depot_{{ $produits[1]->nom ?? ''}}">
+                                                
+                                                {!! App\Depot::depot_single_produit_qte($depot ?? '',$produits[1]->id ?? '') ?? '0' !!}
+
+                                            </span>
+
+                                        </h2>
+                                        <p class="mb-0">
+
+
+                                            Machine Au dépot
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    {{--  --}}
+                </div>    
+
+            @endif
 
 
 
@@ -211,7 +242,6 @@
 
 
 
-            <?php use App\Check; ?>
             
             @if(Check::CheckAuth(['admin']))
 
@@ -463,7 +493,7 @@
 
                 {
 
-                    console.log(res);                    
+                    /*console.log(res);*/
 
                     $(".au_depot").click();
 
@@ -482,11 +512,11 @@
                         //
                     }
 
-                    $("#au_depot_"+res.produit_qte[0].nom).text(res.qte1);
+                    $("#au_depot_au_depot_ICE_CREAM_MACHINE_PRECOOL_SYSTEM").text(res.qte1);
 
-                    $("#au_depot_"+res.produit_qte[1].nom).text(res.qte2);
+                    $("#au_depot_ICE_CREAM_MACHINE_COMPRESSOR").text(res.qte2);
 
-                    $("#au_depot_"+res.produit_qte[1].nom).css("color", "green");
+                    /*$("#au_depot_"+res.produit_qte[1].nom).css("color", "green");*/
 
                     $('#'+trId).css({"color": "rgb(97,193,33)", "font-weight": "bold","background-color": "#316170"}).addClass('alert alert-success')
 
