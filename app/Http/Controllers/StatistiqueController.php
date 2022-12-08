@@ -8,7 +8,9 @@ use DB;
 use Auth;
 
 use App\Ticket;
+use App\Livraison;
 use App\Check;
+use App\Caisse;
 
 class StatistiqueController extends Controller
 {
@@ -234,38 +236,45 @@ class StatistiqueController extends Controller
     public function rapport_speciaux()
     {
 
-        $commandes_rejete = DB::select("select count(*) as nb 
+        $commandes_rejete = DB::select("select count(distinct(num_commande)) as nb 
         from commandes c where (c.statut = 'rejeté')");
 
-        $commandes_rejete_mois = DB::select("select count(*) as nb 
+        $commandes_rejete_mois = DB::select("select count(distinct(num_commande)) as nb 
         from commandes c where (c.statut = 'rejeté') and (extract(month from c.updated_at) = month(now()) )");
 
         
-        $commandes_annule = DB::select("select count(*) as nb 
+        $commandes_annule = DB::select("select count(distinct(num_commande)) as nb 
         from commandes c where (c.statut = 'annulé')");
 
-        $commandes_annule_mois = DB::select("select count(*) as nb 
+        $commandes_annule_mois = DB::select("select count(distinct(num_commande)) as nb 
         from commandes c where (c.statut = 'annulé') and (extract(month from c.updated_at) = month(now()) )");
 
 
 
-        $commandes_en_attente = DB::select("select count(*) as nb 
+        $commandes_en_attente = DB::select("select count(distinct(num_commande)) as nb 
         from commandes c where (c.statut = 'en attente')");
 
-        $commandes_en_attente_mois = DB::select("select count(*) as nb 
+        $commandes_en_attente_mois = DB::select("select count(distinct(num_commande)) as nb 
         from commandes c where (c.statut = 'en attente') and (extract(month from c.updated_at) = month(now()) )");
 
 
 
-        $commandes_valide = DB::select("select count(*) as nb 
+        $commandes_valide = DB::select("select count(distinct(num_commande)) as nb 
         from commandes c where (c.statut = 'validé')");
 
-        $commandes_valide_mois = DB::select("select count(*) as nb 
+        $commandes_valide_mois = DB::select("select count(distinct(num_commande)) as nb 
         from commandes c where (c.statut = 'validé') and (extract(month from c.updated_at) = month(now()) )");
 
 
+        $livraisons = (Livraison::get_all_livraisons());
 
-        return view('Statistiques.rapport_speciaux',compact('commandes_rejete','commandes_annule','commandes_en_attente','commandes_valide','commandes_rejete_mois','commandes_annule_mois','commandes_en_attente_mois','commandes_valide_mois'));
+        $caisses = Livraison::get_all_caisse();
+
+        $stocks = Livraison::get_all_stock();
+
+        $tickets = Livraison::get_all_tickets();
+        
+        return view('Statistiques.rapport_speciaux',compact('commandes_rejete','commandes_annule','commandes_en_attente','commandes_valide','commandes_rejete_mois','commandes_annule_mois','commandes_en_attente_mois','commandes_valide_mois','livraisons','caisses','stocks','tickets'));
         // code...
     }    
 

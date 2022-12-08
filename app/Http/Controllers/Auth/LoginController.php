@@ -27,35 +27,40 @@ class LoginController extends Controller
     public function showAdminLoginForm()
     {
         return view('auth.auth', [
-            'url' => Config::get('constants.guards.admin')
+            'url' => Config::get('constants.guards.admin'),
+            'img' => 'intaji.jpeg'
         ]);
     }
 
     public function showLivreurLoginForm()
     {
         return view('auth.auth', [
-            'url' => Config::get('constants.guards.livreur')
+            'url' => Config::get('constants.guards.livreur'),
+            'img' => ''
         ]);
     }
 
     public function showFournisseurLoginForm()
     {
         return view('auth.auth', [
-            'url' => Config::get('constants.guards.fournisseur')
+            'url' => Config::get('constants.guards.fournisseur'),
+            'img' => ''
         ]);
     }
 
     public function showProductionLoginForm()
     {
         return view('auth.auth', [
-            'url' => 'production'
+            'url' => 'production',
+            'img' => ''
         ]);
     }
 
     public function showDepotLoginForm()
     {
         return view('auth.auth', [
-            'url' => 'depot'
+            'url' => 'depot',
+            'img' => '/auth/depot.jpeg'
         ]);
     }
 
@@ -63,7 +68,8 @@ class LoginController extends Controller
     public function showcommercialLoginForm()
     {
         return view('auth.auth', [
-            'url' => 'commercial'
+            'url' => 'commercial',
+            'img' => '/auth/commercial.png'
         ]);
     }
     

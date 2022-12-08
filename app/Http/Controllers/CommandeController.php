@@ -70,9 +70,40 @@ class CommandeController extends Controller
     public function show($id_commande)
     {
         $num_commande = $id_commande;
-        $commandes =  Commande::where('num_commande',$id_commande)->get();
         
-        return view('commandes.view',compact('commandes','num_commande'));
+        $commandes =  Commande::where('num_commande',$id_commande)->get();
+
+        if(auth()->guard('commercial')->check())
+        {
+
+            $acteur= (Auth::guard('commercial')->user()->id);
+
+            $acteur = "commercial_".$acteur;
+        }
+        else
+        {
+
+            if(auth()->guard('admin')->check())
+            {
+
+                $acteur= (Auth::guard('admin')->user()->id);
+
+                $acteur = "admin_".$acteur;
+
+                // code...
+            }
+            else
+            {
+                
+                $acteur='Unknown';
+                
+                //
+            }
+
+            //
+        }
+        
+        return view('commandes.view',compact('commandes','num_commande','acteur'));
     }
 
     public function create(Request $request)

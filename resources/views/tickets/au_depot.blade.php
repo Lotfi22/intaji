@@ -75,14 +75,22 @@
 
                                             <span id="scan_{{ $produits[0]->nom ?? '' }}">
 
-                                                @if ($produits[0]->nom == $produit_qte[0]->nom)
+                                                @if (count($produit_qte)>0)
+                                                    
+                                                    @if ($produits[0]->nom == $produit_qte[0]->nom ?? '')
 
-                                                    {!! $produit_qte[0]->qte ?? '' !!}    
+                                                        {!! $produit_qte[0]->qte ?? '' !!}    
+                                                        {{-- expr --}}
+                                                    @endif
+                                                
                                                 @else
 
                                                     0
+
+
                                                     {{-- expr --}}
                                                 @endif
+
 
                                                 
                                             </span>
@@ -512,7 +520,7 @@
                         //
                     }
 
-                    $("#au_depot_au_depot_ICE_CREAM_MACHINE_PRECOOL_SYSTEM").text(res.qte1);
+                    $("#au_depot_ICE_CREAM_MACHINE_PRECOOL_SYSTEM").text(res.qte1);
 
                     $("#au_depot_ICE_CREAM_MACHINE_COMPRESSOR").text(res.qte2);
 

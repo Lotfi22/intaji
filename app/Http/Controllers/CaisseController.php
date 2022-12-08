@@ -40,7 +40,7 @@ class CaisseController extends Controller
 
         $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise
         from livraisons l
-        where l.statut<>'rejeté' 
+        where l.statut<>'rejeté' and l.statut<>'annulé' 
         and date(l.updated_at) between date('$date_debut') and date('$date_fin')
         order by num_livraison desc");
 
@@ -72,7 +72,7 @@ class CaisseController extends Controller
 
         $livraisons=DB::select("select distinct num_livraison,livreur,updated_at,remise
         from livraisons l
-        where l.statut<>'rejeté' 
+        where l.statut<>'rejeté' and l.statut<>'annulé' 
         and date(l.updated_at) between date('$date_debut') and date('$date_fin')
         order by num_livraison desc");
 

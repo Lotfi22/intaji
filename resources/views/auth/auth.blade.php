@@ -121,7 +121,7 @@
 
 
 
-                            <img style="margin:auto;" width="100%" src="{{ asset('intaji.jpeg') }}">
+                            <img style="margin-top:20%;" width="100%" src="{{ asset($img) }}">
 
                         </div>
                     </div>

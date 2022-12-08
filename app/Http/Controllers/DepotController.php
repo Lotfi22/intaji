@@ -88,28 +88,22 @@ class DepotController extends Controller
 
     public function update(Request $request,$id_depot)
     {
-        $depot = Depot::find($id_depot);
-        if($request['password']==null){
-            return redirect()->back()->with('error', 'mot de passe n\'a été entré ');
-        }
-        if($request['password']!=$depot->password_text){
-            return redirect()->back()->with('error', 'ancien mot de passe n\'est pas correcte ');
-        }
-        if($request['new_password']==null){
-            return redirect()->back()->with('error', 'Nouveau mot de passe ne peut aps etre vide ');
-        }
 
+        $depot = Depot::find($id_depot);
         $depot->name = $request->get('name');
         $depot->email = $request->get('email');
         $depot->depot = $request->get('depot');
-        $depot->password = Hash::make($request->get('new_password'));
-        $depot->password_text = $request->get('new_password');
-        try {
-            $depot->save();
-            return redirect()->back()->with('success', 'Mot de passe modifié avec succés ');
-        } catch (\Throwable $e) {
+        $depot->password = Hash::make($request->get('password'));
+        $depot->password_text = $request->get('password');
+        $depot->save();
+        return redirect()->back()->with('success', 'Mot de passe modifié avec succés ');
+        
+        /*try 
+        {    
+        } 
+        catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
-        }
+        }*/
 
     }
 

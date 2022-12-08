@@ -167,11 +167,27 @@
                 <div class="card-footer text-center">
                     
                     <div class="row">
-                                                
-                        <div class="col-md-12">
-                            <button class="btn btn-outline-danger  col-md-12" onclick="afficher_motif_annulation();"> Annuler </button>
-                        </div>
+                        
+                        @if(auth()->guard('commercial')->check())
+                            
+                            @if ($acteur=='commercial'.Auth::guard('commercial')->user()->id  )
 
+                                <div class="col-md-12">
+                                    <button class="btn btn-outline-danger  col-md-12" onclick="afficher_motif_annulation();"> Annuler </button>
+                                </div>
+
+                                {{-- expr --}}
+                            @endif
+
+                        @endif
+
+                        @if(auth()->guard('admin')->check())
+
+                            <div class="col-md-12">
+                                <button class="btn btn-outline-danger  col-md-12" onclick="afficher_motif_annulation();"> Annuler </button>
+                            </div>
+
+                        @endif
 
                         <div class="col-md-12">
                             

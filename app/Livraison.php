@@ -260,7 +260,7 @@ class Livraison extends Model
 
         $remise = DB::select("select remise from livraisons where num_livraison = $num_livraison");
 
-        $remise=$remise[0]->remise;
+        $remise=$remise[0]->remise ?? 0;
 
         $total = DB::select("select sum(prix*qte) as total from livraisons 
             where num_livraison = $num_livraison");
@@ -275,7 +275,7 @@ class Livraison extends Model
         $total_versement = DB::select("select sum(versement) as total from versements 
             where num_livraison = $num_livraison");
 
-        return $total_versement[0]->total;
+        return $total_versement[0]->total ?? 0;
         // code...
     }
 
@@ -322,7 +322,7 @@ class Livraison extends Model
         $statut = DB::select("select statut from livraisons 
             where num_livraison = $num_livraison");
         
-        return $statut[0]->statut;
+        return $statut[0]->statut ?? '';
         // code...
     }
 
@@ -354,7 +354,7 @@ class Livraison extends Model
         $id_depot = DB::select("select id_depot from livraisons 
             where num_livraison = $num_livraison");
 
-        $id_depot = $id_depot[0]->id_depot;
+        $id_depot = $id_depot[0]->id_depot ?? '';
 
         $depot = DB::select("select * from mes_depots where id = '$id_depot'");
 
@@ -369,7 +369,7 @@ class Livraison extends Model
         $livreur = DB::select("select email from livreurs where 
         id=(select livreur from livraisons where num_livraison = $num_livraison limit 1)");
 
-        return $livreur[0]->email ?? "Deleted";
+        return $livreur[0]->email ?? "-";
         // code...
     }
 
@@ -391,7 +391,7 @@ class Livraison extends Model
         $validator = DB::select("select validator from livraisons 
             where num_livraison = $num_livraison");
 
-        return $validator[0]->validator;
+        return $validator[0]->validator ?? '';
         // code...
     }
 
@@ -410,9 +410,9 @@ class Livraison extends Model
 
         $balance = DB::select("select sum(prix*qte) as balance 
         from livraisons l
-        where l.statut <> 'rejeté'");
+        where l.statut <> 'rejeté' and l.statut <> 'annulé'");
 
-        return $balance[0]->balance;
+        return $balance[0]->balance ?? 0;
         // code...
     }
 
@@ -422,7 +422,7 @@ class Livraison extends Model
         $versement = DB::select("select sum(versement) as versement 
         from versements");
 
-        return $versement[0]->versement;
+        return $versement[0]->versement ?? 0;
 
         // code...
     }
@@ -440,10 +440,10 @@ class Livraison extends Model
 
         $balance = DB::select("select sum(prix*qte) as balance 
         from livraisons l
-        where l.statut <> 'rejeté'
+        where l.statut <> 'rejeté' and l.statut <> 'annulé'
         and date(l.updated_at) between date('$date_debut') and date('$date_fin') ");
 
-        return $balance[0]->balance;
+        return $balance[0]->balance ?? 0;
         // code...
     }
 
@@ -454,7 +454,7 @@ class Livraison extends Model
         from versements
         where date(updated_at) between date('$date_debut') and date('$date_fin')");
 
-        return $versement[0]->versement;
+        return $versement[0]->versement ?? 0;
 
         // code...
     }
@@ -474,6 +474,138 @@ class Livraison extends Model
 
         //
     }
+
+    public static function get_all_livraisons()
+    {
+
+        $livraisons = DB::select("select statut,count(distinct(num_livraison)) as nb_livraison
+        from livraisons l 
+        group by statut
+        order by statut");
+
+        return Livraison::statuts_existants($livraisons);
+
+        // code...
+    }
+
+    public static function statuts_existants($livraisons)
+    {
+
+        $statuts = ['en attente','rejeté','annulé','validé','BL','terminé','encaissement'];
+        
+        $statuts_existants=[];
+        $i=0;
+        
+        foreach ($livraisons as $livraison) 
+        {
+        
+            foreach ($statuts as $statut) 
+            {
+            
+                if ($livraison->statut == $statut) 
+                {
+
+                    $statuts_existants[$i] = (object)array('statut' => $statut ,'nb_livraison' => $livraison->nb_livraison );
+
+                    $statuts = array_diff($statuts, [$statut]);
+
+                    $i++;
+
+                    // code...
+                }
+
+                // code...
+            }
+
+            // code...
+        }
+        
+        $statuts_0 = [];
+        $i=0;
+
+        foreach ($statuts as $statut) 
+        {
+        
+            $statuts_0[$i] = (object)array('statut'=>$statut , 'nb_livraison'=>0);
+
+            $i++;
+
+            // code...
+        }
+
+        $ret = array_merge($statuts_existants,$statuts_0);
+
+        return $ret;
+
+        // code...
+    }
+
+    public static function get_all_caisse()
+    {
+
+        $date_debut = Date('Y-m-d');
+        $date_fin = Date('Y-m-d');
+
+        $versements_aujoudhui=Livraison::get_versements_interval($date_debut,$date_fin);
+        
+        $versement_total = Livraison::get_versements();
+
+        $reste = Livraison::get_restes();
+
+
+        return array('versements_aujoudhui' => $versements_aujoudhui,'versement_total' => $versement_total,'reste' => $reste);
+        // code...
+    }
+
+
+    public static function get_all_stock()
+    {
+
+        $stock = DB::select("select p.id,p.nom,count(*) as qte
+        from produits p, tickets t
+        where (t.id_produit = p.id) and (t.satut = 'au_depot')
+        group by p.id,p.nom
+        order by p.id,p.nom");
+
+        return ($stock);
+
+        // code...
+    }
+
+    public static function get_all_tickets()
+    {
+
+        $stock = DB::select("select p.id,p.nom,count(*) as qte
+        from produits p, tickets t
+        where (t.id_produit = p.id)
+        group by p.id,p.nom
+        order by p.id,p.nom");
+
+        return ($stock);
+
+        // code...
+    }
+
+    public static function get_pourcentage_decrease($qte,$total)
+    {
+
+        return ((int)(($qte->qte/$total->qte)*100/10))*10 ?? '0';
+
+        // code...
+    }
+
+
+    public static function get_color()
+    {
+
+        $tab1 = ['warning','danger','info','primary','success','danger'];
+
+        return $tab1[random_int(0, 5)];
+
+        // code...
+    }
+
+
 
 
     //

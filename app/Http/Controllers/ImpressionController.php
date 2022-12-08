@@ -291,8 +291,6 @@ class ImpressionController  extends Controller
 
             $ticket = new Ticket();
 
-            
-
             $ticket->id = $lastIdTicket;
 
             $ticket->id_produit = $id_produit;
@@ -304,6 +302,8 @@ class ImpressionController  extends Controller
             $ticket->impression = $acteur;
 
             $ticket->maj = 'Pas encore';
+
+            $ticket->description = $desc;
 
             $ticket->save();       
 

@@ -23,7 +23,7 @@
         <div class="card row col-md-12">
             <div class="card-header row col-md-12">
                 
-                <h1 style="cursor:pointer;" class="col-md-12 alert alert-info text-center blink" >Livreur : {{ $le_livreur->prenom ?? '' }} / {{ $le_livreur->email ?? '' }} </h1>
+                <h1 style="cursor:pointer;" class="col-md-12 alert alert-info text-center blink" >Livreur : {{ $le_livreur->prenom ?? '' }} / {{ $le_livreur->email ?? '' }} Livraison Num {!! $num_livraison !!} </h1>
                 
                 <div class="row col-md-12">
 
@@ -92,7 +92,7 @@
                             id="search" placeholder="Cliquez ici pour filter avec Code Bar" />
                     </div>
 
-                    <div class="col-md-6">
+{{--                     <div class="col-md-6">
                         <a class=" col-md-12 float-right btn btn-primary btn-sm"
                             href="{{ route('ticket.detacher', ['livreur' => $_livreur]) }}">
                             Détacher Colis
@@ -106,7 +106,7 @@
                             Colis Retour
                         </a>
                     </div>
-
+ --}}
                     
                     {{-- <div class="col-md-4">
                         <button onclick="fit_produits();" data-toggle="modal" data-target="#Bon_livraison" class="col-md-12 btn btn-primary btn-sm"> 
@@ -185,7 +185,7 @@
 
             </div>
 
-            
+
 
             <div class="card-body">
                 <div class="table-responsive">

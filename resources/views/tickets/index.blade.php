@@ -101,8 +101,7 @@
 
                                 <td class="text-center">{{ App\Produit::getNomProduit($ticket->id_produit) ?? '' }}</td>
 
-                                <td class="text-center">{{ $ticket->codebar ?? '' }}|Lot
-                                    N°:{{ App\Ticket::get_num_lot($ticket->created_at) ?? '' }}</td>
+                                <td class="text-center">{{ $ticket->codebar ?? '' }} | Desc : {!! $ticket->description ?? '' !!}</td>
 
 
 
