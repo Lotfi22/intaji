@@ -52,7 +52,7 @@ class LoginController extends Controller
     {
         return view('auth.auth', [
             'url' => 'production',
-            'img' => ''
+            'img' => '/auth/prodd.png'
         ]);
     }
 
@@ -60,7 +60,7 @@ class LoginController extends Controller
     {
         return view('auth.auth', [
             'url' => 'depot',
-            'img' => '/auth/depot.jpeg'
+            'img' => '/auth/DEPOT.png'
         ]);
     }
 
@@ -69,7 +69,7 @@ class LoginController extends Controller
     {
         return view('auth.auth', [
             'url' => 'commercial',
-            'img' => '/auth/commercial.png'
+            'img' => '/auth/CSS.png'
         ]);
     }
     
@@ -107,7 +107,7 @@ class LoginController extends Controller
     public function adminLogin(Request $request)
     {
         if ($this->guardLogin($request, Config::get('constants.guards.admin'))) {
-            return redirect()->intended('/rapport');
+            return redirect()->intended('/rapport_speciaux');
         }
         return back()->withInput($request->only('email', 'remember'));
     }

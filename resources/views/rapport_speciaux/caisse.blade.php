@@ -13,16 +13,16 @@
 							@if ($i==0)
 								
 								<h6 class="mb-0 text-primary">Recette Aujoud'hui</h6>
-								<h2 class="mb-1 mt-2 text-primary">{!! number_format($caisse) !!} DA </h2>
+								<h2 class="mb-1 mt-2 text-primary" id="caisse_aujoudhui">{!! number_format($caisse) !!} DA </h2>
 
 							@elseif($i==1)
 								
 								<h6 class="mb-0 text-success">Total caisse</h6>
-								<h2 class="mb-1 mt-2 text-success">{!! number_format($caisse) !!} DA </h2>
+								<h2 class="mb-1 mt-2 text-success" id="caisse_total">{!! number_format($caisse) !!} DA </h2>
 							@elseif($i==2)
 								
 								<h6 class="mb-0 text-danger">Reste</h6>
-								<h2 class="mb-1 mt-2 text-danger">{!! number_format($caisse) !!} DA </h2>
+								<h2 class="mb-1 mt-2 text-danger" id="caisse_reste">{!! number_format($caisse) !!} DA </h2>
 								
 								{{-- expr --}}
 							@endif

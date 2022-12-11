@@ -18,6 +18,7 @@ Route::post('/statistiques/recevoir','StatistiqueController@recevoir');
 Route::post('/statistiques/filter','StatistiqueController@filter');
 Route::get('/remise_a_zero','StatistiqueController@remise_a_zero');
 Route::get('/rapport_speciaux','StatistiqueController@rapport_speciaux');
+Route::post('/rapport_speciaux/ajax','StatistiqueController@rapport_speciaux_ajax');
 
 
 

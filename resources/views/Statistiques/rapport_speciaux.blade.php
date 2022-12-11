@@ -14,8 +14,8 @@
 					<div class="card-body">
 						<div class="card-order">
 							<h6 class="mb-2">Commandes en Attente</h6>
-							<h2 class="text-right "><i class="mdi mdi-timer-sand icon-size float-left text-warning"></i><span>{!! $commandes_en_attente[0]->nb ?? '0' !!}</span></h2>
-							<p class="mb-0">Commandes en attente du mois<span class="float-right">{!! $commandes_en_attente_mois[0]->nb !!}</span></p>
+							<h2 class="text-right "><i class="mdi mdi-timer-sand icon-size float-left text-warning"></i><span id="commande_en_attente">{!! $commandes_en_attente[0]->nb ?? '0' !!}</span></h2>
+							<p class="mb-0">Commandes en attente du mois<span class="float-right" id="commande_en_attente_mois">{!! $commandes_en_attente_mois[0]->nb !!}</span></p>
 						</div>
 					</div>
 				</div>
@@ -28,8 +28,8 @@
 							<h6 class="mb-2">Commandes Annulées</h6>
 							<h2 class="text-right">
 								<i class="fa fa-times icon-size float-left text-danger" aria-hidden="true"></i>
-								<span>{!! $commandes_annule[0]->nb ?? '0' !!}</span></h2>
-							<p class="mb-0">Commandes annulées du mois <span class="float-right">{!! $commandes_annule_mois[0]->nb ?? "0" !!}</span></p>
+								<span id="commande_annule">{!! $commandes_annule[0]->nb ?? '0' !!}</span></h2>
+							<p class="mb-0">Commandes annulées du mois <span class="float-right" id="commande_annule_mois">{!! $commandes_annule_mois[0]->nb ?? "0" !!}</span></p>
 						</div>
 					</div>
 				</div>
@@ -43,8 +43,8 @@
 							<h2 class="text-right">
 
 							<i class="icon-size fa fa-ban float-left text-danger" aria-hidden="true"></i>
-								<span>{!! $commandes_rejete[0]->nb ?? '0' !!}</span></h2>
-							<p class="mb-0">Commandes rejetées du mois<span class="float-right">{!! $commandes_rejete_mois[0]->nb ?? "0" !!}</span></p>
+								<span id="commande_rejete">{!! $commandes_rejete[0]->nb ?? '0' !!}</span></h2>
+							<p class="mb-0">Commandes rejetées du mois<span class="float-right" id="commande_rejete_mois">{!! $commandes_rejete_mois[0]->nb ?? "0" !!}</span></p>
 						</div>
 					</div>
 				</div>
@@ -58,9 +58,8 @@
 							<h2 class="text-right">
 
 							<i class="fa fa-check icon-size float-left text-success" aria-hidden="true" ></i>
-
-							<span>{!! $commandes_valide[0]->nb ?? '0' !!}</span></h2>
-							<p class="mb-0">Commandes Validées du Mois<span class="float-right">{!! $commandes_valide_mois[0]->nb ?? '0' !!}</span></p>
+							<span id="commande_valide">{!! $commandes_valide[0]->nb ?? '0' !!}</span></h2>
+							<p class="mb-0">Commandes Validées du Mois<span class="float-right" id="commande_valide_mois">{!! $commandes_valide_mois[0]->nb ?? '0' !!}</span></p>
 						</div>
 					</div>
 				</div>
@@ -85,6 +84,10 @@
 		{{--  --}}
 	</div>    
 
+	@section('scripts')
+
+		<script src="{{ asset('js/gerer_rapports_speciaux.js') }}"></script>
+	@endsection
 
 	{{--  --}}
 @endsection

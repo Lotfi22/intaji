@@ -121,7 +121,7 @@
 
 
 
-                            <img style="margin-top:20%;" width="100%" src="{{ asset($img) }}">
+                            <img style="margin-top:20%;" width="110%" src="{{ asset($img) }}">
 
                         </div>
                     </div>

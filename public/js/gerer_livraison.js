@@ -300,6 +300,17 @@ function get_livraison(objet)
 
 			$("#past_versements").html(versements);
 
+			if (parseFloat(total_versements)==0) 
+			{
+				$("#annuler_livraison").show();
+			}
+			else
+			{
+
+				$("#annuler_livraison").hide();
+			}
+			
+
 			//
 		}
 
@@ -583,8 +594,15 @@ function valider_versement()
 
 				$("#affecter").hide(200);
 
+				if (parseFloat(total_versements)==0) 
+				{
+					$("#annuler_livraison").show();
+				}
+				else
+				{
 
-				$("#annuler_livraison").hide();
+					$("#annuler_livraison").hide();
+				}
 
 				/*$(".close").click();*/
 
@@ -605,7 +623,7 @@ function valider_versement()
 	//
 }
 
-function formatMoney(number) 
+function formatMoney(number)
 {
 	if(number>=0)
 	{

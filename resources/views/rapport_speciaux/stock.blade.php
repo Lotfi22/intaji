@@ -15,11 +15,11 @@
 					</div>
 				</div>
 				<div class="card-body pt-0">
-					<h3 class="d-inline-block mb-2">{!! $stock->qte !!} Machines / {!! $tickets[$i]->qte !!}</h3>
+					<h3 class="d-inline-block mb-2"> <span id="machine_{{$stock->nom}}">{!! $stock->qte !!}</span> Machines / <span id="all_machine_{{$stock->nom}}">{!! $tickets[$i]->qte !!}</span></h3>
 					
 					<div class="progress h-2 mt-2 mb-2">
 						
-						<div class="progress-bar bg-{{App\Livraison::get_color()}} w-{{App\Livraison::get_pourcentage_decrease($stock,$tickets[$i])}}" role="progressbar"></div>
+						<div id="progressbar{{$stock->nom}}" class="progress-bar bg-{{App\Livraison::get_color()}} w-{{App\Livraison::get_pourcentage_decrease($stock,$tickets[$i])}}" role="progressbar"></div>
 						{{-- expr --}}
 						
 
