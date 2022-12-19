@@ -125,12 +125,12 @@
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "validé")
 
                                         <td id="statut{{ $livraison->num_livraison }}" class="text-info">
-                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        <img src="{{asset('/img/fa_check.png')}}" height="30" width="30">
 
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "BL")
                                         <td id="statut{{ $livraison->num_livraison }}" class="text-primary">
                                         
-                                        <i class="fa fa-truck" aria-hidden="true"></i>
+                                        <img src="{{asset('/img/forklift.jpg')}}" height="30" width="30">
 
                                      @elseif(App\Livraison::get_statut($livraison->num_livraison) == "terminé")
                                         

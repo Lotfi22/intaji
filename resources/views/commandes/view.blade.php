@@ -103,8 +103,8 @@
                                     <th scope="row">{{$index+1 }}</th>
                                     <td>{{$commande->nom_produit ?? ""}}</td>
                                     <td align="center">{{$commande->qte}}</td>
-                                    <td align="center">{{$commande->prix}} DA</td>
-                                    <td align="center">{{$commande->qte*$commande->prix}} DA</td>
+                                    <td align="center">{{number_format($commande->prix)}} DA</td>
+                                    <td align="center">{{number_format($commande->qte*$commande->prix)}} DA</td>
                                 </tr>
                             <?php $total = $total + $commande->qte*$commande->prix; ?>
 
@@ -115,7 +115,7 @@
                             <tr>
                                 <td colspan="3"></td>
                                 <td align="center">Total</td>
-                                <td align="center">{{$total}} DA</td>
+                                <td align="center">{{number_format($total)}} DA</td>
                             </tr>
                         </tfoot>
                     </table>

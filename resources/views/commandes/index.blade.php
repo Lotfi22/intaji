@@ -17,7 +17,8 @@
 <div class="container-fluid">
     <h1 class="mt-4">Gestion Commandes</h1>
         <div class="card mb-4">
-        <div class="card-header">
+            
+            <div class="card-header">
                 <a class="btn btn-primary" href="{{route('commande.show.create')}}"> <i
                         class="fa fa-plus"></i> Ajouter Commande
                 </a>
@@ -108,8 +109,6 @@
                                     </td>
                                     
                                     <td>
-
-                                        {{-- {!! setlocale(LC_MONETARY,"en_US"); !!} --}}
 
                                     	{!! number_format((App\Commande::get_total($commande->num_commande))); !!} DA
                                     </td>

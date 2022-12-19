@@ -196,6 +196,7 @@ function get_livraison(objet)
 				$("#rejeter").hide();
 				$("#approuver").hide();
 				$("#encaissements").hide();
+				$("#annuler_livraison").hide();
 
 				//
 			}
@@ -238,14 +239,18 @@ function get_livraison(objet)
 				$("#rejeter").hide();
 				$("#approuver").hide();
 				$("#encaissements").hide();
-				
+				$("#annuler_livraison").hide();
 				$("#motif_d_annulation").text('Commande Annulée, Motif : '+data?.livraison[0]?.commentaire);
-
 				$("#motif_d_annulation").show();
 
 				//
 			}
 
+
+			if (data.livraison[0].statut=="annulé")
+			{
+				$("#annuler_livraison").hide();
+			}
 
 			if (data.livraison[0].statut!=="en attente" && data.livraison[0].statut!=="rejeté" && data.livraison[0].statut!=="annulé")
 			{
@@ -254,10 +259,14 @@ function get_livraison(objet)
 				$("#rejeter").hide();
 				$("#approuver").hide();
 
-
 				//
 			}
 
+			if (data.livraison[0].statut=='terminé')
+			{
+				$("#annuler_livraison").hide();
+				//
+			}
 
 			var versements = ''			
 
@@ -588,11 +597,11 @@ function valider_versement()
 
 				$("#past_versements").hide()
 				$("#past_versements").html(versements);
-				$("#past_versements").show(1000)
+				$("#past_versements").show()
 
 
 
-				$("#affecter").hide(200);
+				$("#affecter").hide();
 
 				if (parseFloat(total_versements)==0) 
 				{
@@ -600,7 +609,6 @@ function valider_versement()
 				}
 				else
 				{
-
 					$("#annuler_livraison").hide();
 				}
 

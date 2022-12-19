@@ -217,13 +217,20 @@ class Commande extends Model
 
         $type=(explode("_",$chaine)[0])."s";
 
-        $id_demandeur=(explode("_",$chaine)[1]);
+        $id_demandeur=(explode("_",$chaine)[1]) ??  "0";
+        
+        if($id_demandeur=="0")
+        {
+            return "0";
+        }
+        else
+        {
+    
+            $demmandeur = DB::select("select * from $type 
+            where id = $id_demandeur");
 
-
-        $demmandeur = DB::select("select * from $type 
-        where id = $id_demandeur");
-
-        return $demmandeur[0]->email ?? "";
+            return $demmandeur[0]->email ?? "";
+        }
 
         // code...
     }

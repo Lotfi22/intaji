@@ -69,7 +69,7 @@ class LoginController extends Controller
     {
         return view('auth.auth', [
             'url' => 'commercial',
-            'img' => '/auth/CSS.png'
+            'img' => '/auth/commercial.jpeg'
         ]);
     }
     

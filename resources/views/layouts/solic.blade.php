@@ -237,7 +237,7 @@
                                     
                                     @endif    
 
-                                    @if(!Check::CheckAuth(['commercial']))
+                                    @if(Check::CheckAuth(['admin','depot','production']))
 
                                         <li aria-haspopup="true">
                                             
@@ -298,7 +298,7 @@
 
                                     @endif
 
-                                    @if(!Check::CheckAuth(['commercial']))
+                                    @if(Check::CheckAuth(['admin','depot','production']))
 
                                         <li aria-haspopup="true" data-toggle="modal" data-target="#livreurModal">
                                             

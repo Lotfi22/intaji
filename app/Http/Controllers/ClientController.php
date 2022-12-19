@@ -4,21 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Commune;
 use App\Wilaya;
-
-
 use Hash;
 use Response;
-
-
+use App\Check;
 use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
+
 class ClientController extends Controller
 {
 
     public function index()
     {
+
+        if(Check::CheckAuth(['admin','commercial'])==false)
+        {
+            return redirect()->route('login.admin');
+        }
+
         $clients = Client::all();
         $telephones = Client::all('telephone');
 
@@ -41,6 +45,23 @@ class ClientController extends Controller
     
     public function store(Request $request)
     {
+
+        if(Check::CheckAuth(['admin','commercial'])==false)
+        {
+            return redirect()->route('login.admin');
+        }
+
+        $num_tel = $request['telephone'];
+        
+        $client = DB::select("select * from clients where telephone = '$num_tel'");
+        
+        if (count($client)>0) 
+        {
+            
+            return redirect()->route('client.index')->with('danger','Insertion impossible');
+
+            // code...
+        } 
 
         $id_commune = ($request->commune_id);
         

@@ -408,7 +408,7 @@ class Livraison extends Model
     public static function get_balance()
     {
 
-        $balance = DB::select("select sum(prix*qte) as balance 
+        $balance = DB::select("select sum(prix*qte*(1-(remise/100))) as balance 
         from livraisons l
         where l.statut <> 'rejeté' and l.statut <> 'annulé'");
 
@@ -438,7 +438,7 @@ class Livraison extends Model
     public static function get_balance_interval($date_debut,$date_fin)
     {
 
-        $balance = DB::select("select sum(prix*qte) as balance 
+        $balance = DB::select("select sum(prix*qte*(1-(remise/100))) as balance 
         from livraisons l
         where l.statut <> 'rejeté' and l.statut <> 'annulé'
         and date(l.updated_at) between date('$date_debut') and date('$date_fin') ");
@@ -546,9 +546,9 @@ class Livraison extends Model
         $date_debut = Date('Y-m-d');
         $date_fin = Date('Y-m-d');
 
-        $versements_aujoudhui=Livraison::get_versements_interval($date_debut,$date_fin);
+        $versements_aujoudhui = (float)Livraison::get_versements_interval($date_debut,$date_fin);
         
-        $versement_total = Livraison::get_versements();
+        $versement_total = (float)Livraison::get_versements();
 
         $reste = Livraison::get_restes();
 
@@ -577,7 +577,7 @@ class Livraison extends Model
 
         $stock = DB::select("select p.id,p.nom,count(*) as qte
         from produits p, tickets t
-        where (t.id_produit = p.id)
+        where (t.id_produit = p.id and t.satut <> 'annulé')
         group by p.id,p.nom
         order by p.id,p.nom");
 

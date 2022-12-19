@@ -35,7 +35,6 @@ class CommandeController extends Controller
 
         }
 
-
         $date_debut = date("Y-m-d",strtotime("-1 month"));
         $date_fin = date('Y-m-d');        
 
@@ -69,6 +68,12 @@ class CommandeController extends Controller
 
     public function show($id_commande)
     {
+
+        if(Check::CheckAuth(['admin','commercial'])==false){
+
+            return redirect()->route('login.admin');     
+        }
+
         $num_commande = $id_commande;
         
         $commandes =  Commande::where('num_commande',$id_commande)->get();
@@ -108,6 +113,13 @@ class CommandeController extends Controller
 
     public function create(Request $request)
     {   
+
+        if(Check::CheckAuth(['admin','commercial'])==false)
+        {
+
+            return redirect()->route('login.admin');     
+        }
+
 
         $clients = Client::all();
         $produits = Produit::all();
@@ -207,6 +219,11 @@ class CommandeController extends Controller
 
     public function store(Request $request)
     {
+
+        if(Check::CheckAuth(['admin','commercial'])==false){
+
+            return redirect()->route('login.admin');     
+        }
 
         $num_commande = Commande::orderBy('created_at', 'desc')->first();//dernier kamel  +1 
         foreach ($request['dynamic_form2']['dynamic_form2'] as $array) {

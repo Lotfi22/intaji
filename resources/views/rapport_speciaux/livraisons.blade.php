@@ -1,4 +1,4 @@
-<h2 class="text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 border-right text-primary"> Livraisons <i class="mdi mdi-forklift"> </h2>
+<h2 class="text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 border-right text-primary"> Livraisons <i class="mdi mdi-forklift"></i> </h2>
 
 <div class="card">
 
@@ -55,8 +55,10 @@
 			<div class="card-body text-center">
 				
 				<h6 class="mb-3">Livraison Validées</h6>
-
-				<i class="fa fa-check" aria-hidden="true"></i>
+				
+				<img src="{{ asset('/img/fa_check.png') }}" width="24%">
+				
+				{{-- <i class="fa fa-check" aria-hidden="true"></i>	 --}}
 
 				@foreach ($livraisons as $livraison)
 					
@@ -80,7 +82,9 @@
 				
 				<h6 class="mb-3">Livraisons BL</h6>
 
-				<i class="fa fa-truck fa-2" aria-hidden="true"></i>
+				<img src="{{ asset('/img/forklift.jpg') }}" width="30%">
+
+				{{-- <i class="fa fa-truck fa-2" aria-hidden="true"></i> --}}
 
 				@foreach ($livraisons as $livraison)
 					

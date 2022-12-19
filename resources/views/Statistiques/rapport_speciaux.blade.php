@@ -68,7 +68,7 @@
 
 		{{-- Livraisons|||||||||||||||||||||||||||||||||||||||||||||||||||--}}
 
-		@include('rapport_speciaux.livraisons')
+	 	@include('rapport_speciaux.livraisons')
 
 		@include('rapport_speciaux.caisse')
 

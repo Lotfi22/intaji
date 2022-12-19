@@ -79,9 +79,11 @@ function fit_livraisons(livraisons)
 function fit_caisse(caisse) 
 {
     
-    $("#caisse_aujoudhui").text( formatMoney(caisse.versements_aujoudhui) +" DA" );
-    $("#caisse_total").text( formatMoney(caisse.versement_total) +" DA" );
-    $("#caisse_reste").text( formatMoney(caisse.reste) +" DA" );
+    console.log(caisse.versements_aujoudhui);
+
+    $("#caisse_aujoudhui").text( formatMoney(parseFloat(caisse.versements_aujoudhui)) +" DA" );
+    $("#caisse_total").text( formatMoney(parseFloat(caisse.versement_total)) +" DA" );
+    $("#caisse_reste").text( formatMoney(parseFloat(caisse.reste)) +" DA" );
 
     // body...
 }
